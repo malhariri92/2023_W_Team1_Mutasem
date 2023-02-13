@@ -2,7 +2,7 @@
 
 <h4>Description</h4>  
 <p>
-The Perfect Shoes app is a web app for a one-location shoe store. Customers will use the app to view a list of available products, add products to their shopping cart, and checkout.
+The Perfect Shop app is a web app for a one-location store. Customers will use the app to view a list of available products, add products to their shopping cart, and checkout.
 </br>Also, customers can create an account to view their previous orders and save their information for a faster checkout process.
 Employees will also use the app to carry on administrative tasks, such as managing products and orders.</p>
 
