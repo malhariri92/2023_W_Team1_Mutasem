@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PerfectShoes.BusinessLogic;
 using PerfectShoes.Models;
 
@@ -21,13 +20,13 @@ namespace PerfectShoes.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public ActionResult<Customer> Get(int Id)
+        public ActionResult<User> Get(int Id)
         {
-            var customer = _customerService.GetCustomerById(Id);
+            var user = _customerService.GetCustomerById(Id);
 
-            if (customer == null) return NotFound();
+            if (user == null) return NotFound();
 
-            return Ok(customer);
+            return Ok(user);
         }
     }
 }

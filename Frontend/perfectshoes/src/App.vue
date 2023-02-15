@@ -1,43 +1,23 @@
 <template>
   <div>
-  <img alt="Vue logo" src="./assets/images/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App" :count="state.count"/> <br/> <br/>
-
-  <button @click="increment">
-    {{ state.count }}
-  </button><br/> <br/>
-  <p>{{ state.customer.address }}</p>
-  <p>{{ state.address.addressLine1 }}</p>
-
-  <h3>Using Router</h3>
-  <button @click="doRoute('home')">Home</button><br/><br/>
-  <button @click="doRoute('hello')">Hello World</button>
+    <nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" @click="doRoute('home')"
+     role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('hello')"
+     role="tab" aria-controls="nav-profile" aria-selected="false">HelloWorld</a>
+  </div>
+  </nav>
+<router-view/>
 </div>
 </template>
 
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import { reactive } from 'vue'
 import { useRouter } from 'vue-router';
-import $ from 'jquery'
+import { provide } from 'vue';
+import store from '@/store';
 
-const state = reactive({ count: 0,
-  components: { HelloWorld },
-  customer: {},
-  address: {}
-})
-
-function increment() {
-  state.count++
-  $.ajax({
-    url: 'https://localhost:44310/WeatherForecast?Id=2',
-    method: 'get'
-  }).done(function (data) {
-    state.customer = data;
-    state.address = data.address;
-    console.log(state.customer);
-  })
-}
+provide('store', store);
 
 const router = useRouter();
 function doRoute(whereTo) {
@@ -48,6 +28,8 @@ function doRoute(whereTo) {
   case 'hello':
     router.push('/hello');
     break;
+  default:
+    router.push('/');
  }
 }
 </script>
@@ -61,4 +43,8 @@ function doRoute(whereTo) {
   color: #2c3e50;
   margin-top: 60px;
 }
+a {
+  cursor: pointer;
+}
+
 </style>

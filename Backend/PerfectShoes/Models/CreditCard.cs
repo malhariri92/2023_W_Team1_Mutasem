@@ -13,7 +13,7 @@ namespace PerfectShoes.Models
         public string CardNumber { get; set; }
 
         [StringLength(3)]
-        public string CSV { get; set; }
+        public string CVC { get; set; }
         public DateTime ExprDate { get; set; }
     }
 }
