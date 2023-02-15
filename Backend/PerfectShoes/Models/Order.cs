@@ -22,6 +22,7 @@ namespace PerfectShoes.Models
 
         [StringLength(20)]
         public string Status { get; set; }
+        public DateTime? ShipDate { get; set; }
         public List<LineItem> LineItems { get; set; }
     }
 }

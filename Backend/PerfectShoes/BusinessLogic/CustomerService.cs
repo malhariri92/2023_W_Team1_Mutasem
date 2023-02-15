@@ -3,20 +3,13 @@ using PerfectShoes.Models;
 
 namespace PerfectShoes.BusinessLogic
 {
-    public class CustomerService : ICustomerService
+    public class CustomerService : Service, ICustomerService
     {
-        private readonly DataContext _context;
-        public CustomerService(DataContext context)
+        public CustomerService(DataContext context) : base(context) { }
+        public User? GetCustomerById(int Id)
         {
-            _context = context;
-        }
-        public Customer? GetCustomerById(int Id)
-        {
-            var customer = _context.Customers.Include(c => c.Address)
-                .Include(c => c.CreditCard)
-                .Include(c => c.Orders)
-                .FirstOrDefault(c => c.Id == Id);
-            return customer;
+            var user = _context.Users.Find(Id);
+            return user;
         }
     }
 }

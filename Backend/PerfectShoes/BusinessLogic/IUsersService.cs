@@ -1,9 +1,10 @@
 ﻿using PerfectShoes.Models;
+using PerfectShoes.Models.DTO;
 
 namespace PerfectShoes.BusinessLogic
 {
-    public interface ICustomerService
+    public interface IUsersService
     {
-       User? GetCustomerById(int Id);
+
     }
 }
