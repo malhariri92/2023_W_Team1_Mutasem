@@ -8,8 +8,6 @@
      role="tab" aria-controls="nav-profile" aria-selected="false">HelloWorld</a>
      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('products')"
      role="tab" aria-controls="nav-profile" aria-selected="false">Products</a>
-     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('login')"
-     role="tab" aria-controls="nav-profile" aria-selected="false">Login</a>
   </div>
   </nav>
 <router-view/>
@@ -34,9 +32,6 @@ function doRoute(whereTo) {
     break;
   case 'products':
     router.push('/products');
-    break;
-  case 'login':
-    router.push('/login');
     break;
   default:
     router.push('/');

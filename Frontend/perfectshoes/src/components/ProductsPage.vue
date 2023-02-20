@@ -1,7 +1,7 @@
 <template>
     <div>
       <h1>Products </h1>
-      <div class="products">
+      <div class= "products">
         <div  class="product" v-for="(item, id) in state.user"  :key="id">
            
           <img :src="item.imageUrl" :alt="item.description"/> 
