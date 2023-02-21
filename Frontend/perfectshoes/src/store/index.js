@@ -1,7 +1,7 @@
 import { reactive } from 'vue';
 import $ from 'jquery'
 
-const user = reactive([{"firstName": "John", "lastName" : "Smith"}, {"firstName": "Jane", "lastName" : "Doe"}]);
+const user = reactive({});
 const products = reactive([]);
 
 const methods = {
@@ -12,6 +12,15 @@ const methods = {
         }).done(data => {
             products.value = data;
         })    
+    },
+    login(email, password) {
+        $.ajax({
+            url: 'https://localhost:44310/api/Employee?email=' + email + '&password=' + password,
+            methods: 'get',
+            success: (data) => {
+                user.value = data;
+            },
+            })
     }
     
 };

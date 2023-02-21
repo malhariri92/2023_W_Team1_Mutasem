@@ -33,6 +33,7 @@ const routes = [
         name: 'TestDialog',
         component: TestDialog 
     },
+    {
         path: '/login',
         name: 'LoginPage',
         component: LoginPage
