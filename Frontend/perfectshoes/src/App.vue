@@ -1,17 +1,26 @@
 <template>
   <div>
     <nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" @click="doRoute('home')"
-     role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('hello')"
-     role="tab" aria-controls="nav-profile" aria-selected="false">HelloWorld</a>
-     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('products')"
-     role="tab" aria-controls="nav-profile" aria-selected="false">Products</a>
+      <div class="nav nav-tabs justify-content-end" role="tablist">
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('home')"
+        role="tab">Home</a>
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('hello')"
+        role="tab">HelloWorld</a>
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('products')"
+        role="tab">Products</a>
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('add')"
+        role="tab">Add Product</a>
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('test')"
+        role="tab">Test</a>
+        <a class="nav-item nav-link " title="Log In" data-toggle="tab tooltip" @click="doRoute('test')"
+        role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
+        <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('test')"
+        role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
+     
+      </div>
+    </nav>
+    <router-view/>
   </div>
-  </nav>
-<router-view/>
-</div>
 </template>
 
 <script setup>
@@ -33,6 +42,12 @@ function doRoute(whereTo) {
   case 'products':
     router.push('/products');
     break;
+  case 'add':
+    router.push('/add');
+    break;
+  case 'test':
+    router.push('/test');
+    break;
   default:
     router.push('/');
  }
@@ -46,10 +61,13 @@ function doRoute(whereTo) {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 a {
   cursor: pointer;
+}
+.p-dialog-title {
+  margin: 0 auto;
 }
 
 </style>
