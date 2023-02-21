@@ -8,6 +8,15 @@
       <p class="error" v-text="errorMessage" />
     </form>
   </div>  
+  <div>
+  <!-- This div is for the account creation -->
+    <h2>Don't have an account? Create one here!</h2>
+    <form class="create" @submit="createAccount">
+      input type="newEmail" v-model="newEmail" placeholder="Email">
+      input type="newPass" v-model="newPass" placeholder="Password">
+      <button type="submit">Create Account</button>
+    </form>
+  </div>
 </template>
   
 <script>
