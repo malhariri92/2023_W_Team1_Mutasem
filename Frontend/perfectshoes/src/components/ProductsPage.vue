@@ -3,7 +3,6 @@
       <h1>Products </h1>
       <div class= "products">
         <div  class="product" v-for="(item, id) in store.products.value"  :key="id">
-           
           <img :src="item.imageUrl" :alt="item.description"/> 
           <h3>{{ item.name}}</h3> 
           <div class="price">${{item.price.toFixed(2)}}</div>

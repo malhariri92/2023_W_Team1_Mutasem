@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));

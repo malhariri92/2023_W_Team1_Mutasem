@@ -16,10 +16,12 @@
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
         <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('test')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
-     
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('login')"
+        role="tab" aria-controls="nav-profile" aria-selected="false">Login</a>
       </div>
     </nav>
     <router-view/>
+     
   </div>
 </template>
 
@@ -47,6 +49,8 @@ function doRoute(whereTo) {
     break;
   case 'test':
     router.push('/test');
+  case 'login':
+    router.push('/login');
     break;
   default:
     router.push('/');

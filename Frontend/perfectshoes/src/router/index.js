@@ -4,6 +4,8 @@ import HomePage from '../components/HomePage.vue';
 import ProductsPage from '../components/ProductsPage.vue';
 import AddProduct from '../components/AddProduct.vue';
 import TestDialog from '../components/TestDialog.vue';
+import LoginPage from '../components/LoginPage.vue';
+import AdminPage from '../components/AdminPage.vue';
 
 const routes = [
     {
@@ -30,6 +32,15 @@ const routes = [
         path: '/test',
         name: 'TestDialog',
         component: TestDialog 
+    },
+        path: '/login',
+        name: 'LoginPage',
+        component: LoginPage
+    },
+    {
+        path: '/admin',
+        name: 'AdminPage',
+        component: AdminPage
     }
 ]
 const router = createRouter({
