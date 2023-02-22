@@ -43,10 +43,14 @@
         <div>
             <div v-for="(attr, index) in state.specs" :key="index" class="row g-3 justify-content-center mt-2">
             <div class="col-md-5">
-                <input v-model="attr['Name']" type="text" class="form-control" placeholder="Attribute Name *" required>
+                <input v-model="attr['Name']" type="text" class="form-control" placeholder="Attribute Name *" required 
+                oninvalid="this.setCustomValidity('Attribute name is required!')"
+                    oninput="this.setCustomValidity('')">
             </div>
             <div class="col-2">
-                <input v-model="attr['Value']" type="text" class="form-control" placeholder="Value *" required>
+                <input v-model="attr['Value']" type="text" class="form-control" placeholder="Value *" required
+                oninvalid="this.setCustomValidity('Attribute value is required!')"
+                    oninput="this.setCustomValidity('')">
             </div>
             <div class="col-1">
                 <p class="mt-2 addSpec" @click.prevent="removeSpec(index)">Remove</p>
@@ -61,8 +65,10 @@
         </div>
 
         <div class="row g-1 justify-content-center mt-2">
-            <button type="submit" class="btn btn-danger col-4 ms-1" @click.prevent="close"> Cancel</button>
-            <button type="submit" class="btn btn-success col-4 ms-1" @click="insertProduct($event)">Save </button> 
+            <!-- <button type="submit" class="btn btn-danger col-4 ms-1" @click.prevent="close"> Cancel</button> -->
+            <Button type="submit" label="Cancel" @click="close" class="p-button-danger col-4 ms-1"/>
+            <Button type="submit" label="Save" @click="insertProduct($event)" class="p-button-success col-4 ms-1"/>
+            <!-- <button type="submit" class="btn btn-success col-4 ms-1" @click="insertProduct($event)">Save </button>  -->
         </div>
         <div class="row g-3 justify-content-center mt-2">
             <div class="col-8 mb-3">
@@ -80,6 +86,7 @@
 <script setup>
 import { reactive, onMounted, inject } from "vue";
 import $ from 'jquery'
+import Button from 'primevue/button';
 
 const dialogRef = inject("dialogRef");
 
@@ -152,20 +159,27 @@ function removeSpec(index) {
     state.specs.splice(index,1);
 }
 function validateProduct(){
-    if(state.product.categoryId <= 0) return false;
-    if(state.product.name === "") return false;
-    if(state.product.description === "") return false;
-    if(state.product.imageUrl === "") return false;
-    if(state.product.price <= 0.00) return false;
-    if(state.product.quantity <= 0) return false;
-    if(state.product.specs === []) return false;
+    if (state.product.categoryId <= 0 |
+    state.product.name === "" |
+    state.product.description === "" |
+    state.product.imageUrl === "" |
+    state.product.price <= 0.00 |
+    state.product.quantity <= 0) return false;
+
+    if(state.product.specs != null) {
+        state.product.specs.forEach(e => {
+            if (e.Name === '' | e.Value === '') {
+                return false;
+            }
+        })
+    } 
     return true;
 }
 
 function insertProduct(e) {   
-    state.product.categoryId = parseInt(state.categoryId);
-    state.product.price = parseFloat(state.price);
-    state.product.quantity = parseInt(state.qty);
+    state.product.categoryId = state.categoryId;
+    state.product.price = state.price;
+    state.product.quantity = state.qty;
     state.product.specs = state.specs.length > 0 ? state.specs : null;
 
     if (!validateProduct()) return;

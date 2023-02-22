@@ -16,7 +16,7 @@ import 'primeicons/primeicons.css';
 library.add(fas);
 const app = createApp(App)
 app.use(router);
-app.use(PrimeVue);
+app.use(PrimeVue, {ripple: true});
 app.use(DialogService);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount("#app");

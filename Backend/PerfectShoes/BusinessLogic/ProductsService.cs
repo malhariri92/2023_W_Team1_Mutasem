@@ -10,7 +10,7 @@ namespace PerfectShoes.BusinessLogic
 
         public List<Product> GetAllProducts()
         {
-           return _context.Products.Include(c => c.Category)
+           return _context.Products.Where(p => p.IsActive).Include(c => c.Category)
                 .Include(s => s.Specs).OrderBy(x => x.CategoryId).ToList();
         }
 

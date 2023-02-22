@@ -14,19 +14,22 @@ import { provide } from 'vue';
   const dialog = useDialog();
   provide('dialog', dialog);
 
+  const product = {};
+
   function addProduct() {
     dialog.open(AddProduct, {
               props: {
                 header: 'Add Product',
                   style: {
-                    width: '50vw',
+                    width: '40vw',
                   }, 
                   breakpoints:{
                     '960px': '75vw',
                     '640px': '90vw'
                 },               
                 modal: true,
-              },                        
+              }, 
+              data: product,                       
           });
   }
       
