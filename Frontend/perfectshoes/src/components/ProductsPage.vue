@@ -2,23 +2,35 @@
     <div>
       <h1>Products </h1>
       <div class= "products">
-        <div  class="product" v-for="(item, id) in store.products.value"  :key="id">
+        <div class="product" v-for="(item, id) in store.products.value"  :key="id">
+          <div  @click="productDetails(item)">
           <img :src="item.imageUrl" :alt="item.description"/> 
           <h3>{{ item.name}}</h3> 
           <div class="price">${{item.price.toFixed(2)}}</div>
-       
+        </div>
       </div>
-</div>
+      </div>
     </div>  
-  </template>
+</template>
   
 <script setup>
-  import { onMounted, inject } from 'vue'
+  import { onMounted, inject } from 'vue';
+  import { useRouter } from 'vue-router';
 
+  const router = useRouter();
   const store = inject('store');
-  onMounted(() => {
-        store.methods.loadProducts();
-    })
+
+  onMounted(() => 
+  {
+    store.methods.loadProducts();
+  });
+
+  function productDetails(product) {
+    store.methods.setCurrentProduct(product);
+    router.push('/productDetails');
+  }
+  
+  
   
 </script>
   

@@ -3,6 +3,7 @@ import $ from 'jquery'
 
 const user = reactive({});
 const products = reactive([]);
+const currentProduct = reactive({});
 
 const methods = {
     loadProducts() {
@@ -21,6 +22,10 @@ const methods = {
                 user.value = data;
             },
             })
+    },
+    setCurrentProduct(product) {
+        currentProduct.value = product;
+        console.log(currentProduct.value)
     }
     
 };
@@ -28,5 +33,6 @@ const methods = {
 export default {
  user,
  methods,
- products
+ products,
+ currentProduct
 }

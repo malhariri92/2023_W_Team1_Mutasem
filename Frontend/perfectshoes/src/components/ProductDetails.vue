@@ -1,37 +1,49 @@
 <template>
-  <div class = "productDetails">
-    <div class= "productName">
-      <h3>Product Name </h3>
-      {{productName}}
-    </div>
-    <div class= "productImage">
-      <h3>Product Image </h3>
-    {{productImage}}
-    </div>
-    <div class= "productPrice">
-      <h3>Product Price </h3>
-       ${{productPrice}}
-    </div>
-    <div class= "productOptions">
-      <h3>Product Options </h3>
-    The Options for this product are {{productOptions}}
-    </div>
-    <div class= "productDescription">
-      <h3>Product Description </h3>
-    The Description is {{productDesc}}
-    </div>
-  </div>  
+  <div>
+    <div class = "productDetails">
+      <div class= "productName">
+        <h3>Product Name </h3>
+        {{ state.product.name }}
+      </div>
+      <div class= "productImage">
+        <h3>Product Image </h3>
+      {{ state.product.imageUrl }}
+      </div>
+      <div class= "productPrice">
+        <h3>Product Price </h3>
+        ${{ state.product.price }}
+      </div>
+      <div class= "productOptions" v-if="state.product.specs !== null && state.product.specs.length !== 0">
+        <h3>Product Options </h3>
+        The Options for this product are:
+        <div v-for="(attr, index) in state.product.specs" :key="index">
+          <p>Attribute name: {{ attr.name }} Attribute value: {{ attr.value }}</p>
+        </div>
+      </div>
+      <div class= "productDescription">
+        <h3>Product Description </h3>
+      The Description is: {{ state.product.description }}
+      </div>
+      <button class="btn btn-primary col-4 ms-1" @click="back">Back </button>
+      <button class="btn btn-success col-4 ms-1">Add to Cart </button>
+    </div> 
+</div> 
 </template>
 
 <script setup>
-import { defineProps, onMounted } from 'vue'
+import { inject, reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
-const props = defineProps(['productName', 'productImage', 'productPrice', 'productOptions', 'productDesc']);
- 
-onMounted(() => {
-  console.log(props);
-}) 
+const router = useRouter();
+const  store = inject('store');
 
+const state = reactive({
+  product: store.currentProduct.value
+});
+
+function back() {
+  router.push('/products');
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
