@@ -42,6 +42,9 @@ function doRoute(whereTo) {
   case 'products':
     router.push('/products');
     break;
+    case 'productDetails':
+    router.push('/productDetails');
+    break;
   case 'add':
     router.push('/add');
     break;
