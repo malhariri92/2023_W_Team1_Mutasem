@@ -6,6 +6,8 @@ import AddProduct from '../components/AddProduct.vue';
 import TestDialog from '../components/TestDialog.vue';
 import LoginPage from '../components/LoginPage.vue';
 import AdminPage from '../components/AdminPage.vue';
+import ProductDetails from '../components/ProductDetails.vue';
+
 
 const routes = [
     {
@@ -22,6 +24,11 @@ const routes = [
         path: '/products',
         name: 'ProductsPage',
         component: ProductsPage
+    },
+    {
+        path: '/productDetails',
+        name: 'ProductDetails',
+        component: ProductDetails
     },
     {
         path: '/add',
