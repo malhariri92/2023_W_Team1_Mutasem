@@ -1,6 +1,6 @@
 <template>
     <div>  
-      <button @click="addProduct" class="btn btn-success mt-2" type="submit">New Product <font-awesome-icon icon="fa-solid fa-plus"/></button>
+      <button @click="addProduct" class="btn btn-primary mt-2" type="submit">New Product <font-awesome-icon icon="fa-solid fa-plus"/></button>
       <DynamicDialog />
     </div>   
 </template>

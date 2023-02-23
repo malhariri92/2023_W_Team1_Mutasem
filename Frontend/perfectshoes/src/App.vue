@@ -8,6 +8,8 @@
         role="tab">HelloWorld</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('products')"
         role="tab">Products</a>
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
+        role="tab">Inventory</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('add')"
         role="tab">Add Product</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('test')"
@@ -53,6 +55,9 @@ function doRoute(whereTo) {
     break;
   case 'login':
     router.push('/login');
+    break;
+    case 'inventory':
+    router.push('/inventory');
     break;
   default:
     router.push('/');
