@@ -7,6 +7,7 @@ import TestDialog from '../components/TestDialog.vue';
 import LoginPage from '../components/LoginPage.vue';
 import AdminPage from '../components/AdminPage.vue';
 import ProductDetails from '../components/ProductDetails.vue';
+import InventoryPage from '../components/InventoryPage.vue';
 
 
 const routes = [
@@ -49,6 +50,11 @@ const routes = [
         path: '/admin',
         name: 'AdminPage',
         component: AdminPage
+    },
+    {
+        path: '/inventory',
+        name: 'InventoryPage',
+        component: InventoryPage
     }
 ]
 const router = createRouter({
