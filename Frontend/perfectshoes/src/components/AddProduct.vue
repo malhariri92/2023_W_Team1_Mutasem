@@ -141,7 +141,7 @@ const initialState =  {
  };
  onMounted(() =>  {
     $.ajax({
-        url: 'https://localhost:44310/api/Products/categories',
+        url: 'https://localhost:44310/api/categories',
         method: 'get'
       }).done(data => {
         state.categories = data;

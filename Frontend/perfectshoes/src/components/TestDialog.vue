@@ -1,27 +1,21 @@
 <template>
     <div>  
-      <button @click="addProduct" class="btn btn-primary mt-2" type="submit">New Product <font-awesome-icon icon="fa-solid fa-plus"/></button>
-      <DynamicDialog />
+      <button @click="openDialog" class="btn btn-primary mt-2" type="submit">{{ props.title }} <font-awesome-icon icon="fa-solid fa-plus"/></button>
     </div>   
 </template>
     
 <script setup>
-import { useDialog } from 'primevue/usedialog';
-import AddProduct from '@/components/AddProduct.vue'
-import DynamicDialog from 'primevue/dynamicdialog';
-import { provide } from 'vue';
+import { defineProps } from 'vue';
 
-  const dialog = useDialog();
-  provide('dialog', dialog);
+  const props = defineProps(['title', 'component', 'dialogTitle', 'width', 'dialog'])
+  const data = {};
 
-  const product = {};
-
-  function addProduct() {
-    dialog.open(AddProduct, {
+  function openDialog() {
+    props.dialog.open(props.component, {
               props: {
-                header: 'Add Product',
+                header: props.dialogTitle,
                   style: {
-                    width: '40vw',
+                    width: props.width,
                   }, 
                   breakpoints:{
                     '960px': '75vw',
@@ -29,7 +23,7 @@ import { provide } from 'vue';
                 },               
                 modal: true,
               }, 
-              data: product,                       
+              data: data,                       
           });
   }
       

@@ -14,20 +14,24 @@ const methods = {
             products.value = data;
         })    
     },
-    login(email, password) {
-        $.ajax({
+    async login(email, password) {
+        await $.ajax({
             url: 'https://localhost:44310/api/Employee?email=' + email + '&password=' + password,
-            methods: 'get',
-            success: (data) => {
+            methods: 'get'}).then((data) => {
+                console.log(data);
                 user.value = data;
-            },
+            }).catch((error) => {
+                user.value = {};
+                console.log(error);
             })
     },
     setCurrentProduct(product) {
         currentProduct.value = product;
         console.log(currentProduct.value)
+    },
+    logout() {
+        user.value = {};
     }
-    
 };
 
 export default {

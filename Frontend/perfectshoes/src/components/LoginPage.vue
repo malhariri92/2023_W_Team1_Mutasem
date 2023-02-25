@@ -37,11 +37,11 @@
     password: "",
   });
 
-  function login(e) {
+  async function login(e) {
     if (state.email.endsWith('@perfectshoes.com') && state.password !== "") {
       e.preventDefault();
-      store.methods.login(state.email, state.password)
-      if (store.user !== {}) {
+      await store.methods.login(state.email, state.password)
+      if (store.user.value?.firstName !== undefined) {
         console.log(store.user.firstName);
         router.push('/admin');
       } 

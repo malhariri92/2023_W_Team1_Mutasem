@@ -30,10 +30,5 @@ namespace PerfectShoes.BusinessLogic
             _context.Products.Add(product);
             return _context.SaveChanges() > 0;          
         }
-
-        public List<Category> GetAllCategories()
-        {
-            return _context.Categories.ToList();
-        }
     }
 }
