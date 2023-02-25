@@ -1,19 +1,16 @@
-  <template>
-    <div>
-      <h1>Admin</h1>
-    </div>  
-  </template>
-  
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
-  
-  img{
-    width: 200px;
-    height: 200px;
-    text-align: center;
-    margin: 0 auto;
-    display:block;
-  }
+<template>
+  <div>
+    <h1>Admin</h1>
+    {{ store.user.value.firstName }}
+  </div>  
+</template>
 
-  </style>
+<script setup>
+  import { inject } from "vue"
+  const store = inject('store');
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
   

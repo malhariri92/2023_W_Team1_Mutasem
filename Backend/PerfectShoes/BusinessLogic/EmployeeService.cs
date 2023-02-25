@@ -10,7 +10,7 @@ namespace PerfectShoes.BusinessLogic
 
         public Employee? AuthenticateAsEmployee(string email, string password)
         {
-            return this._context.Employees.FirstOrDefault(employee => employee.Email == email && employee.Password == password);
+            return _context.Employees.FirstOrDefault(e => email.Equals(e.Email) && password.Equals(e.Password));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PerfectShoes.BusinessLogic;
 using PerfectShoes.Models;
+using PerfectShoes.Models.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,5 +27,11 @@ namespace PerfectShoes.Controllers
             return Ok(products);
         }
 
+        [HttpPost(Name = "InsertProduct")]
+        public ActionResult InsertProduct(ProductDto productDto)
+        {
+            if (_productsService.InsertProduct(productDto)) return Ok();
+            return BadRequest();
+        }
     }
 }

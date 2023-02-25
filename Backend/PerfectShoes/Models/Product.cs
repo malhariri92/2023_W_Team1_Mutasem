@@ -17,7 +17,7 @@ namespace PerfectShoes.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
-        public string Category { get; set; }       
+        public Category? Category { get; set; }       
         public string ImageUrl { get; set; }
         public List<Specification>? Specs { get; set; }
         public bool IsActive { get; set; }
