@@ -7,10 +7,17 @@ namespace PerfectShoes.Models.DTO
     public class ProductDto
     {
         public int Id { get; set; }
+
+        [StringLength(50)]
         public string Name { get; set; }
+        public string Description { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }       
         public string ImageUrl { get; set; }
+        public List<Specification>? Specs { get; set; }
         public bool IsActive { get; set; }
         public int Quantity { get; set; }
     }

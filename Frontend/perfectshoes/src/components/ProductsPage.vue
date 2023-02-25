@@ -2,40 +2,40 @@
     <div>
       <h1>Products </h1>
       <div class= "products">
-        <div  class="product" v-for="(item, id) in state.user"  :key="id">
-           
+        <div class="product" v-for="(item, id) in store.products.value"  :key="id">
+          <div  @click="productDetails(item)">
           <img :src="item.imageUrl" :alt="item.description"/> 
           <h3>{{ item.name}}</h3> 
           <div class="price">${{item.price.toFixed(2)}}</div>
-       
+        </div>
       </div>
-</div>
+      </div>
     </div>  
-  </template>
+</template>
   
-  <script setup>
-  import { reactive, onMounted } from 'vue'
-    import $ from 'jquery'
+<script setup>
+  import { onMounted, inject } from 'vue';
+  import { useRouter } from 'vue-router';
 
-    const state = reactive({ 
-      user: [],
-    })
+  const router = useRouter();
+  const store = inject('store');
 
+  onMounted(() => 
+  {
+    store.methods.loadProducts();
+  });
 
-  onMounted(() => {
-      $.ajax({
-        url: 'https://localhost:44310/api/Products',
-        method: 'get'
-      }).done(data => {
-        state.user = data;
-        console.log(state.user);
-      })    
-    })
+  function productDetails(product) {
+    store.methods.setCurrentProduct(product);
+    router.push('/productDetails');
+  }
   
-  </script>
   
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
+  
+</script>
+  
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
   div.products{
     display:flex;
     flex-wrap:wrap;
@@ -67,5 +67,5 @@
     outline: .1rem solid blue
   }
 
-  </style>
+</style>
   
