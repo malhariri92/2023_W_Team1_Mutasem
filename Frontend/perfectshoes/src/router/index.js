@@ -8,7 +8,7 @@ import LoginPage from '../components/LoginPage.vue';
 import AdminPage from '../components/AdminPage.vue';
 import ProductDetails from '../components/ProductDetails.vue';
 import InventoryPage from '../components/InventoryPage.vue';
-
+import ShoppingCart from '../components/ShoppingCart.vue';
 
 const routes = [
     {
@@ -55,7 +55,13 @@ const routes = [
         path: '/inventory',
         name: 'InventoryPage',
         component: InventoryPage
+    },
+    {
+        path: "/cart",
+        name: "ShoppingCart",
+        component: ShoppingCart
     }
+
 ]
 const router = createRouter({
     history: createWebHistory(),
