@@ -14,23 +14,13 @@
         role="tab">Add Product</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('test')"
         role="tab">Test</a>
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('cart')"
-        role="tab">ShoppingCart</a>
-        <a class="nav-item nav-link " title="Log In" data-toggle="tab tooltip" @click="doRoute('login')"
-        <a class="nav-item nav-link " v-bind:title="store.user.value?.firstName !== undefined ? 'Log out' : 'Log in'" data-toggle="tab tooltip" @click="handleLogin()"
+        <a class="nav-item nav-link " :title="store.user.value !== undefined ? 'Log out' : 'Log in'" data-toggle="tab tooltip" @click="handleLogin()"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
-        <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('test')"
+        <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
       </div>
     </nav>
     <router-view/>
-     
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" @click="doRoute('home')"
-     role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" @click="doRoute('hello')"
-     role="tab" aria-controls="nav-profile" aria-selected="false">HelloWorld</a>
-  </div>
   </div>
 </template>
 
