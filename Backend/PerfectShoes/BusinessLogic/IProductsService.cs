@@ -7,6 +7,5 @@ namespace PerfectShoes.BusinessLogic
     {
         List<Product> GetAllProducts();
         bool InsertProduct(ProductDto productDto);
-        List<Category> GetAllCategories();
     }
 }

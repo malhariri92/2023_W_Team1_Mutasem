@@ -17,6 +17,7 @@
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('cart')"
         role="tab">ShoppingCart</a>
         <a class="nav-item nav-link " title="Log In" data-toggle="tab tooltip" @click="doRoute('login')"
+        <a class="nav-item nav-link " v-bind:title="store.user.value?.firstName !== undefined ? 'Log out' : 'Log in'" data-toggle="tab tooltip" @click="handleLogin()"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
         <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('test')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
@@ -39,6 +40,14 @@ import { provide } from 'vue';
 import store from '@/store';
 
 provide('store', store);
+
+function handleLogin() {
+  if (store.user.value?.firstName !== undefined){
+    store.methods.logout();
+  }
+
+  doRoute('login');
+}
 
 const router = useRouter();
 function doRoute(whereTo) {

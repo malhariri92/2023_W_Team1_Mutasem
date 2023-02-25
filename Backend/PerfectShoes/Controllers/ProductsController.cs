@@ -33,14 +33,5 @@ namespace PerfectShoes.Controllers
             if (_productsService.InsertProduct(productDto)) return Ok();
             return BadRequest();
         }
-
-        [HttpGet("categories", Name = "getCategories")]
-        public ActionResult<List<Category>> GetCategories()
-        {
-            var categories = _productsService.GetAllCategories();
-            if (categories == null) return NotFound();
-            return Ok(categories);
-        }
-
     }
 }

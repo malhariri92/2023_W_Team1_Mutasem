@@ -3,7 +3,9 @@
         <DataTable :value="store.products.value" responsiveLayout="scroll">
             <template #header>
                 <div class="table-header">
-                    <TestDialog />
+                    <TestDialog title="New Product" dialogTitle="Add Product" v-bind:component="AddProduct" width="40vw" v-bind:dialog="dialog"/>
+                    <TestDialog title="New Category" dialogTitle="Add Category" v-bind:component="AddCategory" width="40vw" v-bind:dialog="dialog"/>
+                    <DynamicDialog />
                 </div>
             </template>
             <Column field="name" header="Name">
@@ -48,11 +50,17 @@
   import DataTable from 'primevue/datatable';
   import Column from 'primevue/column';
   import Button from 'primevue/button';
+  import AddProduct from '@/components/AddProduct.vue'
+  import AddCategory from '@/components/AddCategory.vue'
   import 'primeicons/primeicons.css';
   import TestDialog from '@/components/TestDialog.vue';
+  import { useDialog } from 'primevue/usedialog';
+  import { provide } from 'vue';
+  import DynamicDialog from 'primevue/dynamicdialog';
 
   const store = inject('store');
-
+  const dialog = useDialog();
+  provide('dialog', dialog);
 
 </script>
   
