@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1>Admin</h1>
-    {{ store.user.value.firstName }}
+    <div v-if="store.userState.user !== null">
+    {{ store.userState.user.firstName }}
+  </div>
   </div>  
 </template>
 
