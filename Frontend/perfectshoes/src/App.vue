@@ -50,8 +50,11 @@ function doRoute(whereTo) {
   case 'login':
     router.push('/login');
     break;
-    case 'inventory':
+  case 'inventory':
     router.push('/inventory');
+    break;
+  case 'cart':
+    router.push('/cart');
     break;
   default:
     router.push('/');
