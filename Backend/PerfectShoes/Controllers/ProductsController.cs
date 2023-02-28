@@ -33,5 +33,12 @@ namespace PerfectShoes.Controllers
             if (_productsService.InsertProduct(productDto)) return Ok();
             return BadRequest();
         }
+
+        [HttpPut(Name ="UpdateProduct")]
+        public ActionResult UpdateProduct(Product product) 
+        { 
+            if (_productsService.UpdateProduct(product)) return Ok();
+            return BadRequest();
+        }
     }
 }

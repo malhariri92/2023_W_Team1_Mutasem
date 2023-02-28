@@ -41,14 +41,14 @@
             </div>
         </div>
         <div>
-            <div v-for="(attr, index) in state.specs" :key="index" class="row g-3 justify-content-center mt-2">
+            <div v-for="(attr, index) in state.product.specs" :key="index" class="row g-3 justify-content-center mt-2">
             <div class="col-md-5">
-                <input v-model="attr['Name']" type="text" class="form-control" placeholder="Attribute Name *" required 
+                <input v-model="attr['name']" type="text" class="form-control" placeholder="Attribute Name *" required 
                 oninvalid="this.setCustomValidity('Attribute name is required!')"
                     oninput="this.setCustomValidity('')">
             </div>
             <div class="col-2">
-                <input v-model="attr['Value']" type="text" class="form-control" placeholder="Value *" required
+                <input v-model="attr['value']" type="text" class="form-control" placeholder="Value *" required
                 oninvalid="this.setCustomValidity('Attribute value is required!')"
                     oninput="this.setCustomValidity('')">
             </div>
@@ -66,7 +66,7 @@
 
         <div class="row g-1 justify-content-center mt-2">
             <!-- <button type="submit" class="btn btn-danger col-4 ms-1" @click.prevent="close"> Cancel</button> -->
-            <Button type="submit" label="Cancel" @click="close" class="p-button-danger col-4 ms-1"/>
+            <Button label="Cancel" @click="close" class="p-button-danger col-4 ms-1"/>
             <Button type="submit" label="Save" @click="insertProduct($event)" class="p-button-success col-4 ms-1"/>
             <!-- <button type="submit" class="btn btn-success col-4 ms-1" @click="insertProduct($event)">Save </button>  -->
         </div>
@@ -74,7 +74,10 @@
             <div class="col-8 mb-3">
                 <span>* indicates a field is required.</span>
                 <div style="display:none;" id="msg" class="alert alert-success mt-1" role="alert">
-                    Product has been successfuly added!
+                    Product has been successfully added!
+                </div>
+                <div style="display:none;" id="editmsg" class="alert alert-success mt-1" role="alert">
+                    Your changes has been saved successfully!
                 </div>
             </div>
         </div>
@@ -87,76 +90,35 @@
 import { reactive, onMounted, inject } from "vue";
 import $ from 'jquery'
 import Button from 'primevue/button';
+import ProductState from '../store/ProductState';
 
 const dialogRef = inject("dialogRef");
-
+const header = dialogRef.value.options.props.header;
 const store = inject("store");
- const state = reactive({
-    title: 'Add Product',
-    specs: [
-        {
-            "Name": '',
-            "Value": ''
-        }
-    ],
-    categories: [],
-    categoryId: "",
-    price: '',
-    qty: '',
-    product:
-     {
-        "name": "",
-        "description": "",
-        "price": 0.00,
-        "categoryId": 0,
-        "imageUrl": "",
-        "specs": [],
-        "isActive": true,
-        "quantity": 0
-    }
- });
+const state = reactive(dialogRef.value.data.productState);
 
-const initialState =  {
-    specs: [
-        {
-            "Name": '',
-            "Value": ''
-        }
-    ],
-    categories: [],
-    categoryId: "",
-    price: '',
-    qty: '',
-    product:
-     {
-        "name": "",
-        "description": "",
-        "price": 0.00,
-        "categoryId": 0,
-        "imageUrl": "",
-        "specs": [],
-        "isActive": true,
-        "quantity": 0
-    }
- };
  onMounted(() =>  {
+    // Object.assign(state.value, dialogRef.value.data.productState.value);
+    console.log(state);
     $.ajax({
         url: 'https://localhost:44310/api/categories',
         method: 'get'
       }).done(data => {
         state.categories = data;
-        initialState.categories = data;
       }) 
       
 });
 
 function addSpec() {
-    state.specs.push({"Name":'', "Value":''});
+    state.product.specs.push({"name":'', "value":''});
+    if(header === 'Edit Product') {
+        state.product.specs['id'] = state.product.id;
+    }
     console.log(state.specs);
 }
 
 function removeSpec(index) {
-    state.specs.splice(index,1);
+    state.product.specs.splice(index,1);
 }
 function validateProduct(){
     if (state.product.categoryId <= 0 |
@@ -166,9 +128,9 @@ function validateProduct(){
     state.product.price <= 0.00 |
     state.product.quantity <= 0) return false;
 
-    if(state.product.specs != null) {
-        state.product.specs.forEach(e => {
-            if (e.Name === '' | e.Value === '') {
+    if(state.product.specs.length > 0) {
+        state.specs.forEach(e => {
+            if (e.name === '' | e.value === '') {
                 return false;
             }
         })
@@ -180,12 +142,12 @@ function insertProduct(e) {
     state.product.categoryId = state.categoryId;
     state.product.price = state.price;
     state.product.quantity = state.qty;
-    state.product.specs = state.specs.length > 0 ? state.specs : null;
-
+    console.log(state.product);
     if (!validateProduct()) return;
     e.preventDefault();
-
-    $.ajax({
+    
+    if(header === 'Add Product') {
+        $.ajax({
         headers: { 
         'Accept': 'application/json',
         'Content-Type': 'application/json' 
@@ -194,9 +156,27 @@ function insertProduct(e) {
         'method': 'post',
         'data': JSON.stringify(state.product)
       }).done( () => {
-        Object.assign(state, initialState);
+        Object.assign(state, new ProductState());
+        store.methods.loadProducts();
         $("#msg").show().delay(5000).fadeOut();
-      }); 
+      });
+    }
+    else if(header === 'Edit Product') {
+        $.ajax({
+        headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json' 
+        },
+        'url': 'https://localhost:44310/api/Products',
+        'method': 'put',
+        'data': JSON.stringify(state.product)
+      }).done( () => {
+        store.methods.loadProducts();
+        $("#editmsg").show().delay(5000).fadeOut();
+        dialogRef.value.close();
+      });
+    }
+     
 }
 function close() {
     dialogRef.value.close();

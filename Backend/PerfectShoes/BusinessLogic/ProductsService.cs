@@ -30,5 +30,11 @@ namespace PerfectShoes.BusinessLogic
             _context.Products.Add(product);
             return _context.SaveChanges() > 0;          
         }
+
+        public bool UpdateProduct(Product product)
+        {
+            _context.Entry(product).State = EntityState.Modified;
+            return _context.SaveChanges() > 0;
+        }
     }
 }
