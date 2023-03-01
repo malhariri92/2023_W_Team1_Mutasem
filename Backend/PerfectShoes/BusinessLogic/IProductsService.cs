@@ -8,5 +8,6 @@ namespace PerfectShoes.BusinessLogic
         List<Product> GetAllProducts();
         bool InsertProduct(ProductDto productDto);
         bool UpdateProduct(Product product);
+        bool DeleteSpec(int id);
     }
 }

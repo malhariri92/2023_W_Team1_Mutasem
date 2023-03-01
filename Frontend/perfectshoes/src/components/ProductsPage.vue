@@ -14,6 +14,7 @@
 </template>
   
 <script setup>
+  import Order from '@/store/Order';
   import { onMounted, inject } from 'vue';
   import { useRouter } from 'vue-router';
 
@@ -23,6 +24,9 @@
   onMounted(() => 
   {
     store.methods.loadProducts();
+    if(store.cart.order === null) {
+        store.cart.order = new Order();
+    }
   });
 
   function productDetails(product) {

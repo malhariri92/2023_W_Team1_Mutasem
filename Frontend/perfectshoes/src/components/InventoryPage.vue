@@ -74,7 +74,7 @@
   import 'primeicons/primeicons.css';
   import { useDialog } from 'primevue/usedialog';
   import AddProduct from '@/components/AddProduct.vue'
-  //import AddCategory from '@/components/AddCategory.vue'
+  //import AddCategory from '@/components/AddCategory.vue';
   import DynamicDialog from 'primevue/dynamicdialog';
   import ProductState from'../store/ProductState';
 

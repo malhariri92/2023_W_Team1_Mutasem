@@ -1,12 +1,13 @@
 import { reactive } from 'vue';
-import $ from 'jquery'
+import $ from 'jquery';
 
 const userState = reactive({
     user: JSON.parse(sessionStorage.getItem('user')),
 });
+const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
-
+const cart = reactive({ order: null});
 const methods = {
     loadProducts() {
         $.ajax({
@@ -40,6 +41,16 @@ const methods = {
     {
         userState.user = null;
         sessionStorage.removeItem('user');
+    },
+    loadCategories() {
+        $.ajax({
+            url: 'https://localhost:44310/api/categories',
+            method: 'get'
+          }).done(data => {
+            console.log(data);
+            categories.value = data;
+            console.log(categories);
+          })
     }
 };
 
@@ -47,5 +58,7 @@ export default {
  userState,
  methods,
  products,
- currentProduct, 
+ currentProduct,
+ cart,
+ categories
 }
