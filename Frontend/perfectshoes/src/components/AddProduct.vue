@@ -2,18 +2,21 @@
   <div>
     <form id="addProduct" class="col-lg-10 offset-lg-1 ">
         <div class="row g-3 justify-content-center flex" >
-            <div class="col-4">
+            <div class="col-3">
                 <input v-model="state.product.name" required type="text" class="form-control" placeholder="Product Name *"
                     oninvalid="this.setCustomValidity('Product name is required')"
                     oninput="this.setCustomValidity('')">
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <select v-model="state.categoryId" class="form-select" required 
                     oninvalid="this.setCustomValidity('Category is required')"
                     oninput="this.setCustomValidity('')">
-                     <option disabled selected value="">Select Category *</option>
-                     <option v-for="(item, index) in state.categories" :key="index" :value="item.id">{{item.name}}</option>
+                     <option disabled selected value="">Category *</option>
+                     <option v-for="(item, index) in state.categories.value" :key="index" :value="item.id">{{item.name}}</option>
                 </select>
+            </div>
+            <div class="col-2">
+                <p class="addSpec mx-auto" @click.prevent="addCategory">Category <font-awesome-icon id="cart" icon="fa-solid fa-plus"/></p>
             </div>
         </div>
         <div class="row g-3 justify-content-center mt-2">
@@ -83,43 +86,66 @@
         </div>
 
     </form>
+    <ConfirmDialog />
+    <DynamicDialog />
   </div>
 </template>
     
 <script setup>
-import { reactive, onMounted, inject } from "vue";
+import { reactive, onMounted, inject, provide } from "vue";
 import $ from 'jquery'
 import Button from 'primevue/button';
 import ProductState from '../store/ProductState';
+import { useDialog } from 'primevue/usedialog';
+import AddCategory from '@/components/AddCategory.vue';
+import { useConfirm } from "primevue/useconfirm";
 
+const confirm = useConfirm();
 const dialogRef = inject("dialogRef");
 const header = dialogRef.value.options.props.header;
 const store = inject("store");
 const state = reactive(dialogRef.value.data.productState);
 
- onMounted(() =>  {
-    // Object.assign(state.value, dialogRef.value.data.productState.value);
-    console.log(state);
-    $.ajax({
-        url: 'https://localhost:44310/api/categories',
-        method: 'get'
-      }).done(data => {
-        state.categories = data;
-      }) 
-      
+const dialog = useDialog();
+provide('dialog', dialog);
+
+onMounted(() =>  {
+    store.methods.loadCategories();
+    state.categories = store.categories;   
 });
 
 function addSpec() {
-    state.product.specs.push({"name":'', "value":''});
+    
     if(header === 'Edit Product') {
-        state.product.specs['id'] = state.product.id;
+        state.product.specs.push({id: 0, name:'', value:'', productId: state.product.id});
     }
-    console.log(state.specs);
+    else {
+        state.product.specs.push({name:'', value:''})
+    }
 }
 
 function removeSpec(index) {
-    state.product.specs.splice(index,1);
+    if(header === 'Edit Product' && state.product.specs[index].id !== 0) {
+        confirm.require({
+                message: 'Are sure you want to permenantly delete this Attribute?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    var url = 'https://localhost:44310/api/Products/Specs?id=' + state.product.specs[index].id;
+                    $.post(url);
+                    state.product.specs.splice(index,1);
+                },
+                reject: () => {
+                    //nothing
+                }
+            });      
+    }
+    else {
+        state.product.specs.splice(index,1);
+    }
 }
+
 function validateProduct(){
     if (state.product.categoryId <= 0 |
     state.product.name === "" |
@@ -129,11 +155,11 @@ function validateProduct(){
     state.product.quantity <= 0) return false;
 
     if(state.product.specs.length > 0) {
-        state.specs.forEach(e => {
-            if (e.name === '' | e.value === '') {
+        for(let i = 0; i < state.product.specs.length; i++) {
+            if (state.product.specs[i].name === '' || state.product.specs[i].value === '') {
                 return false;
             }
-        })
+        }
     } 
     return true;
 }
@@ -173,11 +199,27 @@ function insertProduct(e) {
       }).done( () => {
         store.methods.loadProducts();
         $("#editmsg").show().delay(5000).fadeOut();
-        dialogRef.value.close();
       });
     }
      
 }
+function addCategory() {
+    dialog.open(AddCategory, {
+              props: {
+                header: 'Add Category',
+                  style: {
+                    width: '20vw',
+                  }, 
+                  breakpoints:{
+                    '960px': '75vw',
+                    '640px': '90vw'
+                },               
+                modal: true,
+              },                      
+          });
+          store.methods.loadProducts();
+    }
+
 function close() {
     dialogRef.value.close();
     store.methods.loadProducts();

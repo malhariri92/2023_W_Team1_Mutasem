@@ -34,6 +34,27 @@ namespace PerfectShoes.BusinessLogic
         public bool UpdateProduct(Product product)
         {
             _context.Entry(product).State = EntityState.Modified;
+            if(product.Specs?.Count > 0 )
+            {
+                foreach (var attr in product.Specs)
+                {
+                    if (attr.Id == 0)
+                    {
+                        _context.Entry(attr).State = EntityState.Added;
+                    }
+                    else
+                    {
+                        _context.Entry(attr).State = EntityState.Modified;
+                    }
+                }
+            }
+            
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool DeleteSpec(int id)
+        {
+           _context.Specifications.Remove(new Specification() { Id = id });
             return _context.SaveChanges() > 0;
         }
     }

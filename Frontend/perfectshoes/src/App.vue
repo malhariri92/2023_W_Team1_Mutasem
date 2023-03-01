@@ -6,7 +6,7 @@
         role="tab">Shop</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
         role="tab">Inventory</a>
-        <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('test')"
+        <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
         <a class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
@@ -85,6 +85,9 @@ a {
   width: 50px !important;
   height: 50px !important;
 }
-
+#cart {
+  width: 50%;
+  margin: 0 auto;
+}
 
 </style>
