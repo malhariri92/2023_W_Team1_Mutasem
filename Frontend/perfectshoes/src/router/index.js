@@ -22,7 +22,7 @@ const routes = [
         component: HomePage
     },
     {
-        path: '/products',
+        path: '/',
         name: 'ProductsPage',
         component: ProductsPage
     },

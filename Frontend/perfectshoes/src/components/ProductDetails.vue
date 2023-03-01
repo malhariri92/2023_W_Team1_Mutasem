@@ -42,7 +42,7 @@ const state = reactive({
 });
 
 function back() {
-  router.push('/products');
+  router.push('/');
 }
 </script>
 
