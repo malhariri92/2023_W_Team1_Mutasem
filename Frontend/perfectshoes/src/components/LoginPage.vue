@@ -4,14 +4,14 @@
     <form class="col-lg-10 offset-lg-1">
       <div class="row g-3 justify-content-center mt-2">
         <div class="col-4">
-            <input v-model="state.email" type="email" class="form-control" placeholder="example@email.com *" required 
+            <input id="email" v-model="state.email" type="email" class="form-control" placeholder="example@email.com *" required 
                 oninvalid="this.setCustomValidity('Email is required')"
                 oninput="this.setCustomValidity('')">
         </div> 
       </div>
       <div class="row g-3 justify-content-center mt-2">
         <div class="col-4">
-            <input v-model="state.password" type="password" class="form-control" placeholder="Password *" required
+            <input id="password" v-model="state.password" type="password" class="form-control" placeholder="Password *" required
               oninvalid="this.setCustomValidity('Password is required')" oninput="this.setCustomValidity('')">
             <div style="display:none;" id="msg" class="alert alert-danger mt-2" role="alert">
               The combination of email/password is invalid
@@ -38,18 +38,19 @@
   });
 
   async function login(e) {
-    if (state.email.endsWith('@perfectshoes.com') && state.password !== "") {
-      e.preventDefault();
-      await store.methods.login(state.email, state.password)
-      if (store.user.value?.firstName !== undefined) {
-        console.log(store.user.firstName);
-        router.push('/admin');
-      } 
-      else {
-        $("#msg").show().delay(5000).fadeOut();
-      }
-      
-    }
+    let email = document.getElementById('email');
+    let password = document.getElementById('password');
+    if(!email.checkValidity() | !password.checkValidity()) return;
+
+    e.preventDefault();
+    await store.methods.login(state.email, state.password).catch(() => {
+      $("#msg").show().delay(5000).fadeOut();
+    });
+
+    if (store.userState.user !== null) {
+      console.log(store.userState.user.firstName);
+      router.push('/admin');
+    } 
   }
 </script>
   

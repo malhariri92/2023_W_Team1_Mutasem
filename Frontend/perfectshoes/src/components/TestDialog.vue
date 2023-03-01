@@ -1,31 +1,32 @@
 <template>
     <div>  
-      <button @click="openDialog" class="btn btn-primary mt-2" type="submit">{{ props.title }} <font-awesome-icon icon="fa-solid fa-plus"/></button>
+      <button @click="addProduct" class="btn btn-primary mt-2" type="submit"> <font-awesome-icon icon="fa-solid fa-plus"/></button>
     </div>   
 </template>
     
 <script setup>
-import { defineProps } from 'vue';
+import { provide } from 'vue'
+import AddProduct from '@/components/AddProduct.vue';
+import { useDialog } from 'primevue/usedialog';
 
-  const props = defineProps(['title', 'component', 'dialogTitle', 'width', 'dialog'])
-  const data = {};
+const dialog = useDialog();
+provide('dialog', dialog);
 
-  function openDialog() {
-    props.dialog.open(props.component, {
+  function addProduct() {
+    dialog.open(AddProduct, {
               props: {
-                header: props.dialogTitle,
+                header: 'Add Product',
                   style: {
-                    width: props.width,
+                    width: '40vw',
                   }, 
                   breakpoints:{
                     '960px': '75vw',
                     '640px': '90vw'
                 },               
                 modal: true,
-              }, 
-              data: data,                       
+              },                     
           });
-  }
+    }
       
 </script>
     

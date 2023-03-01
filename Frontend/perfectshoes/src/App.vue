@@ -1,23 +1,18 @@
 <template>
   <div>
     <nav>
-      <div class="nav nav-tabs justify-content-end" role="tablist">
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('home')"
-        role="tab">Home</a>
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('hello')"
-        role="tab">HelloWorld</a>
+      <div class="nav nav-tabs justify-content-end mb-4" role="tablist">
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('products')"
-        role="tab">Products</a>
+        role="tab">Shop</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
         role="tab">Inventory</a>
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('add')"
-        role="tab">Add Product</a>
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('test')"
-        role="tab">Test</a>
-        <a class="nav-item nav-link " :title="store.user.value !== undefined ? 'Log out' : 'Log in'" data-toggle="tab tooltip" @click="handleLogin()"
-        role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
         <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
+        <a class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
+        role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
+        <a v-if="store.userState.user !== null" class="nav-item nav-link "
+         data-toggle="tab tooltip" @click="store.methods.logout"
+        role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-sign-out" size="2x" /></a>
       </div>
     </nav>
     <router-view/>
@@ -31,14 +26,6 @@ import store from '@/store';
 
 provide('store', store);
 
-function handleLogin() {
-  if (store.user.value?.firstName !== undefined){
-    store.methods.logout();
-  }
-
-  doRoute('login');
-}
-
 const router = useRouter();
 function doRoute(whereTo) {
  switch(whereTo) {
@@ -49,7 +36,7 @@ function doRoute(whereTo) {
     router.push('/hello');
     break;
   case 'products':
-    router.push('/products');
+    router.push('/');
     break;
     case 'productDetails':
     router.push('/productDetails');
@@ -88,6 +75,18 @@ a {
   cursor: pointer;
 }
 .p-dialog-title {
+  margin: 0 auto;
+}
+.p-speeddial {
+    position: relative !important; 
+}
+.p-speeddial-button.p-button {
+  margin-top: 5px;
+  width: 50px !important;
+  height: 50px !important;
+}
+#cart {
+  width: 50%;
   margin: 0 auto;
 }
 
