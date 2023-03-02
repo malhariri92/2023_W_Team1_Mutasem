@@ -4,7 +4,7 @@
         <DataTable :paginator="true" :value="store.products.value" responsiveLayout="scroll" :rows="5"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink
          LastPageLink CurrentPageReport RowsPerPageDropdown" :rowHover="true" :rowsPerPageOptions="[5,10,25,50]" 
-         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  v-model:filters="filters1" :globalFilterFields="['name', 'description', 'category.name']">
             <template #header>  
                 <div class="row g-3 justify-content-between flex">
                     <div class="col-1">
@@ -13,11 +13,14 @@
                     <div class="col-2 mt-4">
                         <span class="p-input-icon-right">
                             <i class="pi pi-search" />
-                            <input class="form-control" placeholder="Keyword Search" />
+                            <input class="form-control" placeholder="Keyword Search" v-model="filters1['global'].value" />
                         </span>
                     </div>
                 </div>
                 <DynamicDialog />
+            </template>
+            <template #empty>
+                No product found.
             </template>
             <Column field="name" header="Name">
               <template #body="slotProps">
@@ -77,6 +80,7 @@
   //import AddCategory from '@/components/AddCategory.vue';
   import DynamicDialog from 'primevue/dynamicdialog';
   import ProductState from'../store/ProductState';
+  import {FilterMatchMode} from 'primevue/api';
 
 
   const dialog = useDialog();
@@ -146,7 +150,9 @@
               data: {productState: state}                     
           });
     }
-    
+    const filters1 = ref({
+            'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
+        });
 </script>
   
 <!-- Add "scoped" attribute to limit CSS to this component only -->
