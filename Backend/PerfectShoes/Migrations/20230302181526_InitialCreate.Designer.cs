@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PerfectShoes.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230214050144_AddedEmployee")]
-    partial class AddedEmployee
+    [Migration("20230302181526_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,10 +187,6 @@ namespace PerfectShoes.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -352,11 +348,13 @@ namespace PerfectShoes.Migrations
 
             modelBuilder.Entity("PerfectShoes.Models.Product", b =>
                 {
-                    b.HasOne("PerfectShoes.Models.Category", null)
+                    b.HasOne("PerfectShoes.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("PerfectShoes.Models.Specification", b =>
