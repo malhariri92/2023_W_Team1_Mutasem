@@ -20,12 +20,16 @@ const methods = {
 
     async login(email, password) {
         await $.ajax({
-            url: 'https://localhost:44310/api/Employee?email=' + email + '&password=' + password,
-            methods: 'get',
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+                },
+            url: 'https://localhost:44310/api/Users',
+            type: 'post',
+            data: JSON.stringify({Email: email, Password: password}),
             success: (data) => {
                 userState.user = data;
                 sessionStorage.setItem('user', JSON.stringify(userState.user));
-                console.log(userState.user);
             },
             error: (jqXHR) => {
                 if(jqXHR.status == 404)

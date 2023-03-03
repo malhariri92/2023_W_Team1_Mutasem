@@ -8,10 +8,10 @@
         role="tab">Inventory</a>
         <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
-        <a class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
+        <a v-if="store.userState.user === null" class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
         <a v-if="store.userState.user !== null" class="nav-item nav-link "
-         data-toggle="tab tooltip" @click="store.methods.logout"
+         data-toggle="tab tooltip" @click="logout()"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-sign-out" size="2x" /></a>
       </div>
     </nav>
@@ -59,6 +59,11 @@ function doRoute(whereTo) {
   default:
     router.push('/');
  }
+}
+
+function logout() {
+  store.methods.logout()
+  doRoute('login')
 }
 </script>
 
