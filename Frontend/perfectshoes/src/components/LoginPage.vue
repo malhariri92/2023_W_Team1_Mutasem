@@ -47,10 +47,16 @@
       $("#msg").show().delay(5000).fadeOut();
     });
 
-    if (store.userState.user !== null) {
-      console.log(store.userState.user.firstName);
+    if (store.userState.user !== null){
+      if (store.userState.user.isAdmin === true) {
+      console.log(store.userState.user);
       router.push('/admin');
     } 
+    else {
+      console.log(store.userState.user);
+      router.push('/');
+    }
+    }
   }
 </script>
   
