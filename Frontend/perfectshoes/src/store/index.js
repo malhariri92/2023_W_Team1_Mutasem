@@ -7,7 +7,7 @@ const userState = reactive({
 const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
-const cart = reactive({ order: null});
+const cart = reactive({ order: JSON.parse(sessionStorage.getItem('order'))});
 const methods = {
     loadProducts() {
         $.ajax({
@@ -35,7 +35,6 @@ const methods = {
     },
     setCurrentProduct(product) {
         currentProduct.value = product;
-        console.log(currentProduct.value)
     },
     logout()
     {
@@ -47,10 +46,11 @@ const methods = {
             url: 'https://localhost:44310/api/categories',
             method: 'get'
           }).done(data => {
-            console.log(data);
             categories.value = data;
-            console.log(categories);
           })
+    },
+    persistCart() {
+        sessionStorage.setItem('order', JSON.stringify(cart.order));
     }
 };
 

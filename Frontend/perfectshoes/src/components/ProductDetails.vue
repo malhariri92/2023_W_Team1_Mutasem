@@ -25,14 +25,19 @@
       The Description is: {{ state.product.description }}
       </div>
       <button class="btn btn-primary col-4 ms-1" @click="back">Back </button>
-      <button class="btn btn-success col-4 ms-1">Add to Cart </button>
+      <button class="btn btn-success col-4 ms-1" @click="addToCart">Add to Cart </button>
+      <div style="display:none;" id="msg" class="alert alert-success mt-1" role="alert">
+        Product was added to your cart!
+      </div>
     </div> 
+    
 </div> 
 </template>
 
 <script setup>
 import { inject, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import $ from 'jquery';
 
 const router = useRouter();
 const  store = inject('store');
@@ -43,6 +48,38 @@ const state = reactive({
 
 function back() {
   router.push('/');
+}
+
+function addToCart()
+{
+  let isInCart = false;
+  if(store.cart.order.lineItems.length > 0)
+  {
+    for(let i = 0; i < store.cart.order.lineItems.length; i++)
+    {
+      if(store.cart.order.lineItems[i].productId === state.product.id) {
+        store.cart.order.lineItems[i].quantity++;
+        isInCart = true;
+        break;
+      }
+    }
+  }
+  if(isInCart) {
+    store.methods.persistCart();
+    $("#msg").show().delay(3000).fadeOut();
+  }
+  else {
+      const lineItem = 
+    {
+      "unitPrice": state.product.price,
+      "quantity": 1,
+      "productId": state.product.id,
+      "product": state.product
+    };
+    store.cart.order.lineItems.push(lineItem);
+    store.methods.persistCart();
+    $("#msg").show().delay(3000).fadeOut();
+  }
 }
 </script>
 

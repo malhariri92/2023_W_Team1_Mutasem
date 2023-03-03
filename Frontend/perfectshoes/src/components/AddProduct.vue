@@ -152,7 +152,7 @@ function validateProduct(){
     state.product.description === "" |
     state.product.imageUrl === "" |
     state.product.price <= 0.00 |
-    state.product.quantity <= 0) return false;
+    state.product.quantity < 0) return false;
 
     if(state.product.specs.length > 0) {
         for(let i = 0; i < state.product.specs.length; i++) {
@@ -168,7 +168,7 @@ function insertProduct(e) {
     state.product.categoryId = state.categoryId;
     state.product.price = state.price;
     state.product.quantity = state.qty;
-    console.log(state.product);
+    
     if (!validateProduct()) return;
     e.preventDefault();
     
