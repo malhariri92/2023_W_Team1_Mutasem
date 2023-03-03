@@ -49,7 +49,7 @@ namespace PerfectShoes.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameOnCard = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CardNumber = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    CSV = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    CVC = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     ExprDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -67,7 +67,6 @@ namespace PerfectShoes.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false)
@@ -146,7 +145,8 @@ namespace PerfectShoes.Migrations
                     Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ShipDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
