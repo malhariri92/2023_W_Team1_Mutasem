@@ -18,7 +18,7 @@ namespace PerfectShoes.Controllers
         }
 
         [HttpPost(Name = "Authenticate")]
-        public ActionResult<User> AuthenticateAsEmployee(AuthentificationDto authentificationDto)
+        public ActionResult<User> Authenticate(AuthentificationDto authentificationDto)
         {
             User? user = _userService.Authenticate(authentificationDto);
 
