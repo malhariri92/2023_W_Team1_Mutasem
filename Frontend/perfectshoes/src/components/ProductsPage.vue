@@ -25,7 +25,8 @@
   {
     store.methods.loadProducts();
     if(store.cart.order === null) {
-        store.cart.order = new Order();
+      sessionStorage.setItem('order', JSON.stringify(new Order()));
+      store.cart.order = JSON.parse(sessionStorage.getItem('order'));
     }
   });
 
