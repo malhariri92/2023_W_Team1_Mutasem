@@ -11,7 +11,7 @@
             ${{ state.product.price }}
           </div>
           <div class="productDescription">
-            <h5>Description</h5>
+            <h5>Description:</h5>
             {{ state.product.description }}
           </div>
           <div class="productOptions" v-if="state.product.specs !== null && state.product.specs.length !== 0">
