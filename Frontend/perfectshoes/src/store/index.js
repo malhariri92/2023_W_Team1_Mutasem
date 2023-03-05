@@ -7,7 +7,7 @@ const userState = reactive({
 const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
-const cart = reactive({ order: null});
+const cart = reactive({ order: JSON.parse(sessionStorage.getItem('order'))});
 const methods = {
     loadProducts() {
         $.ajax({
@@ -20,12 +20,16 @@ const methods = {
 
     async login(email, password) {
         await $.ajax({
-            url: 'https://localhost:44310/api/Employee?email=' + email + '&password=' + password,
-            methods: 'get',
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+                },
+            url: 'https://localhost:44310/api/Users',
+            type: 'post',
+            data: JSON.stringify({Email: email, Password: password}),
             success: (data) => {
                 userState.user = data;
                 sessionStorage.setItem('user', JSON.stringify(userState.user));
-                console.log(userState.user);
             },
             error: (jqXHR) => {
                 if(jqXHR.status == 404)
@@ -35,7 +39,6 @@ const methods = {
     },
     setCurrentProduct(product) {
         currentProduct.value = product;
-        console.log(currentProduct.value)
     },
     logout()
     {
@@ -47,10 +50,11 @@ const methods = {
             url: 'https://localhost:44310/api/categories',
             method: 'get'
           }).done(data => {
-            console.log(data);
             categories.value = data;
-            console.log(categories);
           })
+    },
+    persistCart() {
+        sessionStorage.setItem('order', JSON.stringify(cart.order));
     }
 };
 

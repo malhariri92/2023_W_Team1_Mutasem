@@ -30,8 +30,12 @@
             <p>Total: ${{ store.cart.order.total.toFixed(2) }}</p>
             </div>
         </div>
-        <div v-else>empty</div>
-</div>
+        <div v-else>
+            <font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="10x" /> <br/><br/>
+            <h3>Your cart is empty!</h3>
+            <Button label="Add Some Items" class="p-button-primary p-button-sm" @click="router.push('/')"></Button>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -39,8 +43,9 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import { onBeforeMount, inject } from 'vue'
-import Order from '@/store/Order';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const store = inject('store');
 const taxRate = .08
 
@@ -79,12 +84,10 @@ function calcCost() {
     store.cart.order.subtotal = subTotal();
     store.cart.order.tax = store.cart.order.subtotal * taxRate
     store.cart.order.total = store.cart.order.subtotal + store.cart.order.tax
+    store.methods.persistCart();
 }
 
 onBeforeMount(() => {
-    if(store.cart.order === null) {
-        store.cart.order = new Order();
-    }
     calcCost()
 })
 
