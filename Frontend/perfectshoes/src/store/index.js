@@ -55,6 +55,18 @@ const methods = {
     },
     persistCart() {
         sessionStorage.setItem('order', JSON.stringify(cart.order));
+    },
+    async insertEmployee(email, password, firstName, lastName) {
+        await $.ajax({
+            headers: {'Accept': 'application/json', 'Content-Type': 'application/json' },
+            url: 'https://localhost:44310/api/Users/Employee',
+            type: 'post',
+            data:JSON.stringify({Email: email, Password:password, FirstName:firstName, LastName:lastName, Role:"admin", IsAdmin:true}),
+            error: (jqXHR) => {
+                if(jqXHR.status == 400)
+                {alert("Error, user password already set.");}
+            }
+        })
     }
 };
 

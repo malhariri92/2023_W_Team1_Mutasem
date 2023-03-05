@@ -26,5 +26,12 @@ namespace PerfectShoes.Controllers
 
             return Ok(user);
         }
+
+        [HttpPost("Employee", Name ="InsertEmployee")]
+        public ActionResult InsertEmployee(EmployeeDto employeeDto)
+        {
+            if (_userService.InsertEmployee(employeeDto)) return Ok();
+            return BadRequest();
+        }
     }
 }
