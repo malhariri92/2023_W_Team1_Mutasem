@@ -81,6 +81,7 @@
   import DynamicDialog from 'primevue/dynamicdialog';
   import ProductState from'../store/ProductState';
   import {FilterMatchMode} from 'primevue/api';
+  import $ from 'jquery'
 
 
   const dialog = useDialog();
@@ -96,6 +97,7 @@
     {
         label: 'Remove',
         icon: 'pi pi-trash',
+        command: () => {removeProduct(selectedProduct)}
     },
     {
         label: 'Edit',
@@ -149,6 +151,29 @@
               }, 
               data: {productState: state}                     
           });
+    }
+    function removeProduct(p) {
+        const state = new ProductState();
+        state.product = p.value;
+        state.product.specs = p.value.specs?.slice();
+        state.specs = p.value.specs?.slice();
+        state.categoryId = p.value.categoryId;
+        state.price = p.value.price;
+        state.qty = p.value.quantity;
+        state.product.isActive= false;
+        console.log(state);
+        $.ajax({
+        headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json' 
+        },
+        'url': 'https://localhost:44310/api/Products',
+        'method': 'put',
+        'data': JSON.stringify(state.product)
+      }).done( () => {
+        store.methods.loadProducts();
+        $("#editmsg").show().delay(5000).fadeOut();
+      });
     }
     const filters1 = ref({
             'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
