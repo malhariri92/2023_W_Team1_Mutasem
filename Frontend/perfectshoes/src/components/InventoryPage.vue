@@ -81,7 +81,6 @@ import SpeedDial from 'primevue/speeddial';
 import 'primeicons/primeicons.css';
 import { useDialog } from 'primevue/usedialog';
 import AddProduct from '@/components/AddProduct.vue'
-import DynamicDialog from 'primevue/dynamicdialog';
 import ProductState from '../store/ProductState';
 import { FilterMatchMode } from 'primevue/api';
 import $ from 'jquery'
