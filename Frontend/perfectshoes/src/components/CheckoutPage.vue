@@ -47,11 +47,18 @@
                 oninput="this.setCustomValidity('')">
         </div>
     </form>
+    <Button label="Place Order" class="p-button-success" @click="placeOrder()"></Button>
 </template>
 
 <script setup>
 
 import { inject } from 'vue'
+import Button from 'primevue/button';
+
 const store = inject('store');
+
+function placeOrder() {
+    alert("Order is placed");
+}
 
 </script>
