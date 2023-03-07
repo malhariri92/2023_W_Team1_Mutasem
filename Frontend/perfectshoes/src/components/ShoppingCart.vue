@@ -28,6 +28,7 @@
             <p>Subtotal cost: ${{ store.cart.order.subtotal.toFixed(2) }}</p>
             <p>Tax: ${{ store.cart.order.tax.toFixed(2) }}</p>
             <p>Total: ${{ store.cart.order.total.toFixed(2) }}</p>
+            <Button label="Checkout As Guest" class="p-button-success" @click="router.push('checkout')"></Button>
             </div>
         </div>
         <div v-else>
@@ -86,6 +87,8 @@ function calcCost() {
     store.cart.order.total = store.cart.order.subtotal + store.cart.order.tax
     store.methods.persistCart();
 }
+
+
 
 onBeforeMount(() => {
     calcCost()
