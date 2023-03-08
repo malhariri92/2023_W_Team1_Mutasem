@@ -4,7 +4,7 @@
             <DataTable :paginator="true" :value="store.products.value" responsiveLayout="scroll" :rows="5"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink
              LastPageLink CurrentPageReport RowsPerPageDropdown" :rowHover="true" :rowsPerPageOptions="[5, 10, 25, 50]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" v-model:filters="filters1"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" :filters="filters1"
                 :globalFilterFields="['name', 'description', 'category.name']">
                 <template #header>
                     <div class="row g-3 justify-content-between flex">
@@ -52,8 +52,7 @@
                 <Column header="Status">
                     <template #body="slotProps">
                         <span class="product-badge outofstock" v-if="slotProps.data.quantity == 0"> OUTOFSTOCK</span>
-                        <span class="product-badge lowstock"
-                            v-else-if="slotProps.data.quantity <= 10 && slotProps.data.quantity != 0">
+                        <span class="product-badge lowstock" v-else-if="slotProps.data.quantity <= 10">
                             LOWSTOCK</span>
                         <span class="product-badge instock" v-else> INSTOCK</span>
                     </template>
@@ -69,6 +68,7 @@
                 </template>
             </DataTable>
         </div>
+        <ConfirmDialog />
     </div>
 </template>
   
@@ -83,11 +83,13 @@ import { useDialog } from 'primevue/usedialog';
 import AddProduct from '@/components/AddProduct.vue'
 import ProductState from '../store/ProductState';
 import { FilterMatchMode } from 'primevue/api';
-import $ from 'jquery'
+import $ from 'jquery';
+import { useConfirm } from "primevue/useconfirm";
 
 
 const dialog = useDialog();
 provide('dialog', dialog);
+const confirm = useConfirm();
 
 const store = inject('store');
 const selectedProduct = ref({});
@@ -155,27 +157,30 @@ function editProduct(p) {
     });
 }
 function removeProduct(p) {
-    const state = new ProductState();
-    state.product = p.value;
-    state.product.specs = p.value.specs?.slice();
-    state.specs = p.value.specs?.slice();
-    state.categoryId = p.value.categoryId;
-    state.price = p.value.price;
-    state.qty = p.value.quantity;
-    state.product.isActive = false;
-    console.log(state);
-    $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        'url': 'https://localhost:44310/api/Products',
-        'method': 'put',
-        'data': JSON.stringify(state.product)
-    }).done(() => {
-        store.methods.loadProducts();
-        $("#editmsg").show().delay(5000).fadeOut();
-    });
+    p.value.isActive = false;
+    confirm.require({
+                message: 'Are sure you want to permenantly delete this Product?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'url': 'https://localhost:44310/api/Products',
+                        'method': 'put',
+                        'data': JSON.stringify(p.value)
+                    }).done(() => {
+                        store.methods.loadProducts();
+                        $("#editmsg").show().delay(3000).fadeOut();
+                    });
+                },
+                reject: () => {
+                    //nothing
+                }
+            });   
 }
 const filters1 = ref({
     'global': { value: null, matchMode: FilterMatchMode.CONTAINS }

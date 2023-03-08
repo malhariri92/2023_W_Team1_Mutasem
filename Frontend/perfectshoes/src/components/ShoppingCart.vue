@@ -8,11 +8,11 @@
                 <Column field="unitPrice" header="Price"></Column>
                 <Column field="quantity" header="Quantity">
                 <template #body="slotProps">
-                    <Button icon="pi pi-minus" class="p-button-sm p-button-text m-1" @click="decreaseQuantity(slotProps.index)" />
-                    
-                    {{ slotProps.data.quantity }}
-                    <Button icon="pi pi-plus" class="p-button-sm p-button-text m-1" @click="increaseQuantity(slotProps.index)" />
-                    
+                    <span class="p-buttonset">
+                        <Button icon="pi pi-minus" class="p-button-sm p-button-text " @click="decreaseQuantity(slotProps.index)" />                  
+                        <Button disabled class="p-button-sm p-button-text">{{ slotProps.data.quantity }}</Button>
+                        <Button icon="pi pi-plus" class="p-button-sm p-button-text" @click="increaseQuantity(slotProps.index)" />
+                    </span>
                 </template>
                 </Column>
                 
