@@ -1,6 +1,10 @@
 <template>
     <div>  
-      <button @click="addProduct" class="btn btn-primary mt-2" type="submit"> <font-awesome-icon icon="fa-solid fa-plus"/></button>
+      <button @click="addProduct" class="btn btn-primary m-2" type="submit"> 
+        <font-awesome-icon icon="fa-solid fa-plus"/> Add Address</button>
+        <button @click="addProduct" class="btn btn-primary m-2" type="submit">
+           <font-awesome-icon icon="fa-solid fa-plus"/> Edit Address</button>
+      <DynamicDialog />
     </div>   
 </template>
     
@@ -8,11 +12,13 @@
 import { provide } from 'vue'
 import AddProduct from '@/components/AddProduct.vue';
 import { useDialog } from 'primevue/usedialog';
+import ProductState from '../store/ProductState';
 
 const dialog = useDialog();
 provide('dialog', dialog);
 
   function addProduct() {
+    const state = new ProductState();
     dialog.open(AddProduct, {
               props: {
                 header: 'Add Product',
@@ -24,7 +30,8 @@ provide('dialog', dialog);
                     '640px': '90vw'
                 },               
                 modal: true,
-              },                     
+              }, 
+              data: { productState: state }                    
           });
     }
       
