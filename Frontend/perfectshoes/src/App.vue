@@ -2,6 +2,8 @@
   <div>
     <nav>
       <div class="nav nav-tabs justify-content-end mb-4" role="tablist">
+        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('test')"
+        role="tab">Test</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('products')"
         role="tab">Shop</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
