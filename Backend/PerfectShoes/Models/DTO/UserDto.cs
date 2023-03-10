@@ -15,5 +15,7 @@ namespace PerfectShoes.Models.DTO
         [Required(ErrorMessage = "Email name is required")]
         public string Email { get; set; }
         public string? Password { get; set; }
+
+        public string Type { get; set; }
     }
 }
