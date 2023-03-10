@@ -9,6 +9,7 @@ import AdminPage from '../components/AdminPage.vue';
 import ProductDetails from '../components/ProductDetails.vue';
 import InventoryPage from '../components/InventoryPage.vue';
 import ShoppingCart from '../components/ShoppingCart.vue';
+import CheckoutPage from "../components/CheckoutPage.vue";
 
 const routes = [
     {
@@ -60,6 +61,11 @@ const routes = [
         path: "/cart",
         name: "ShoppingCart",
         component: ShoppingCart
+    },
+    {
+        path: "/checkout",
+        name: "CheckoutPage",
+        component: CheckoutPage
     }
 
 ]

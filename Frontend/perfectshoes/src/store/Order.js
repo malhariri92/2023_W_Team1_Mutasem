@@ -14,7 +14,7 @@ export default class Order {
             "creditCard": {
                     "nameOnCard": "",
                     "cardNumber": "",
-                    "cvc": "str",
+                    "cvc": "",
                     "exprDate": "" 
                 },
         }
