@@ -24,54 +24,49 @@ namespace PerfectShoes.BusinessLogic
                 Password = userDto.Password,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
-                Type = userDto.Type,
             };
-            //check to see if theyre already in the database
-            if (user.Type == "employee")
-                InsertEmployee(user);
-            else if (user.Type == "customer")
-                InsertCustomer(user);
-            
-            //this will ensure that if a change is made to the database the insert method returns true
-            return _context.SaveChanges() > 0;
+            //check to see if they are already in the database
+            if (userDto.Type == "employee")
+                return InsertEmployee(user);
+            else return InsertCustomer(user);
         }
         private bool InsertEmployee(User user)
         {
-            bool valid=false;
-            Employee? first = (Employee?)_context.Users.FirstOrDefault(e=> user.Email.Equals(e.Email) && e.Password==null);
+            Employee? first = _context.Employees.FirstOrDefault(e => user.Email.Equals(e.Email) && e.Password == null);
             if (first != null)
             {
-                first.FirstName=user.FirstName;
-                first.LastName=user.LastName;
-                first.Password=user.Password;
-                first.Type = user.Type;
+                first.FirstName = user.FirstName;
+                first.LastName = user.LastName;
+                first.Password = user.Password;
                 first.Role = "admin";
-                first.IsAdmin= true;
-                valid = true;
-                _context.Entry(first).State= EntityState.Modified;
+                first.IsAdmin = true;
+                _context.Entry(first).State = EntityState.Modified;
             }
-            return valid;
+            return _context.SaveChanges() > 0;
         }//end of InsertEmployee method
 
         private bool InsertCustomer(User user)
         {
-            bool valid = false;
-            Customer? first = (Customer?)_context.Users.FirstOrDefault(e => user.Email.Equals(e.Email));
+            Customer? first = _context.Customers.FirstOrDefault(e => user.Email.Equals(e.Email));
             if (first == null)
             {
-                _context.Users.Add(user);
-                valid = true;
+                first = new Customer // this ensures the object type is a customer
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Password = user.Password,
+                };
+                _context.Users.Add(first);
             }
             else if(first.Password == null)
             {
                 first.FirstName = user.FirstName;
                 first.LastName = user.LastName;
                 first.Password = user.Password;
-                first.Type = user.Type;
-                valid = true;
                 _context.Entry(first).State= EntityState.Modified;
             }
-            return valid;
+            return _context.SaveChanges() > 0;
         }//end of InsertCustomer method
     }
 }
