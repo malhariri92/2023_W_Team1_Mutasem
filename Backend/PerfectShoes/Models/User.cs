@@ -17,7 +17,5 @@ namespace PerfectShoes.Models
 
         [StringLength(20, MinimumLength = 8)]
         public string? Password { get; set; }
-
-        public string Type { get; set; }
     }
 }

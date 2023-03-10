@@ -123,16 +123,13 @@
     let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$!@?])[a-zA-Z0-9#$!@?]{8,20}$/;
 
     if(!email.checkValidity() | !password.checkValidity()
-     | !firstName.checkValidity() | !lastName.checkValidity()) return;
+    | !firstName.checkValidity() | !lastName.checkValidity()) return;
 
-    if(password.length<8||password.length>20)
+    if(!regex.test(state.signUpPassword))
     {
-      $("#msg3").show().delay(5000).fadeOut(4000);
-      return;
-    }
-    if(!regex.test(password))
-    {
-      $("#msg3").show().delay(5000).fadeOut(4000);
+      e.preventDefault();
+      state.signUpPassword = "";
+      $("#msg3").show().delay(6000).fadeOut();
       return;
     }
 
@@ -160,7 +157,7 @@
         type: 'post',
         data:JSON.stringify(user),
         success: () => {
-          $("#msg1").show().delay(3000).fadeOut();
+          $("#msg1").show().delay(5000).fadeOut();
           state.firstName = "";
           state.lastName = "";
           state.signUpEmail = "";
@@ -168,7 +165,7 @@
         },
         error: (jqXHR) => {
           if(jqXHR.status == 400)
-          $("#msg2").show().delay(3000).fadeOut();
+          $("#msg2").show().delay(5000).fadeOut();
         }
       }
     );
