@@ -86,7 +86,6 @@
         </div>
 
     </form>
-    <ConfirmDialog />
     <DynamicDialog />
   </div>
 </template>
@@ -100,7 +99,7 @@ import { useDialog } from 'primevue/usedialog';
 import AddCategory from '@/components/AddCategory.vue';
 import { useConfirm } from "primevue/useconfirm";
 
-const confirm = useConfirm();
+const confirm1 = useConfirm();
 const dialogRef = inject("dialogRef");
 const header = dialogRef.value.options.props.header;
 const store = inject("store");
@@ -126,7 +125,7 @@ function addSpec() {
 
 function removeSpec(index) {
     if(header === 'Edit Product' && state.product.specs[index].id !== 0) {
-        confirm.require({
+        confirm1.require({
                 message: 'Are sure you want to permenantly delete this Attribute?',
                 header: 'Delete Confirmation',
                 icon: 'pi pi-exclamation-triangle',
