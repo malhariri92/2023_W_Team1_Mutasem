@@ -66,6 +66,9 @@
                 <div style="display:none;" id="msg2" class="alert alert-danger mt-1" role="alert">
                     Email is already in use!
                 </div>
+                <div style="display:none;" id="msg3" class="alert alert-danger mt-1" role="alert">
+                  Password needs to be 8-20 characters and include an Uppercase letter, lowercase letter, number, and one of these: #$!@?
+                </div>
             </div>
         </div>
     </form>
@@ -117,9 +120,21 @@
     let lastName = document.getElementById('firstName');
     let email = document.getElementById('signUpEmail');
     let password = document.getElementById('signUpPassword');
+    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$!@?])[a-zA-Z0-9#$!@?]{8,20}$/;
 
     if(!email.checkValidity() | !password.checkValidity()
      | !firstName.checkValidity() | !lastName.checkValidity()) return;
+
+    if(password.length<8||password.length>20)
+    {
+      $("#msg3").show().delay(5000).fadeOut(4000);
+      return;
+    }
+    if(!regex.test(password))
+    {
+      $("#msg3").show().delay(5000).fadeOut(4000);
+      return;
+    }
 
     e.preventDefault();
     const user = {
@@ -141,7 +156,7 @@
     $.ajax(
       {
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json' },
-        url: 'https://localhost:44310/api/Users/Employee',
+        url: 'https://localhost:44310/api/Users/User',
         type: 'post',
         data:JSON.stringify(user),
         success: () => {

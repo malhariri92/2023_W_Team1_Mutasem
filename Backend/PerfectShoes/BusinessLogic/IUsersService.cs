@@ -7,6 +7,6 @@ namespace PerfectShoes.BusinessLogic
     {
         public User? Authenticate(AuthentificationDto authentificationDto);
 
-        public bool InsertEmployee(EmployeeDto employeeDto);
+        public bool InsertUser(UserDto userDto);
     }
 }
