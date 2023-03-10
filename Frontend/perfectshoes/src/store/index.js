@@ -7,10 +7,10 @@ const userState = reactive({
 const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
-const cart = reactive({ order: JSON.parse(sessionStorage.getItem('order'))});
+const cart = reactive({ order: null});
 const methods = {
-    loadProducts() {
-        $.ajax({
+    async loadProducts() {
+        await $.ajax({
             url: 'https://localhost:44310/api/Products',
             method: 'get'
         }).done(data => {
@@ -39,6 +39,7 @@ const methods = {
     },
     setCurrentProduct(product) {
         currentProduct.value = product;
+        console.log(currentProduct.value)
     },
     logout()
     {
@@ -50,12 +51,11 @@ const methods = {
             url: 'https://localhost:44310/api/categories',
             method: 'get'
           }).done(data => {
+            console.log(data);
             categories.value = data;
+            console.log(categories);
           })
-    },
-    persistCart() {
-        sessionStorage.setItem('order', JSON.stringify(cart.order));
-    },
+    }
 };
 
 export default {
