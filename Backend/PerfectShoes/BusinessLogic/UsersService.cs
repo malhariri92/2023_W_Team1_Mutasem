@@ -12,7 +12,15 @@ namespace PerfectShoes.BusinessLogic
 
         public User? Authenticate(AuthentificationDto authentificationDto)
         {
-            return _context.Users.FirstOrDefault(e => authentificationDto.Email.Equals(e.Email) && authentificationDto.Password.Equals(e.Password));
+            if (authentificationDto.Email.EndsWith("@perfectshoes.com"))
+            {
+                return _context.Users.FirstOrDefault(e => authentificationDto.Email.Equals(e.Email) && authentificationDto.Password.Equals(e.Password));
+            }
+            else
+            {
+                return _context.Customers.Include(c => c.Address)
+                .Include(c => c.CreditCard).FirstOrDefault(e => authentificationDto.Email.Equals(e.Email) && authentificationDto.Password.Equals(e.Password));
+            }
         }
 
         public bool InsertUser(UserDto userDto)

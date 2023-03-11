@@ -10,6 +10,8 @@
         role="tab">Inventory</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('checkout')"
         role="tab">Checkout temp</a>
+        <a v-if="store.userState.user !== null" class="nav-item nav-link" data-toggle="tab" @click="doRoute('customer')"
+        role="tab">Profile</a>
         <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
         <a v-if="store.userState.user === null" class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
@@ -62,6 +64,9 @@ function doRoute(whereTo) {
     break;
   case 'checkout':
     router.push('/checkout')
+    break;
+  case 'customer':
+    router.push('/customer')
     break;
   default:
     router.push('/');
