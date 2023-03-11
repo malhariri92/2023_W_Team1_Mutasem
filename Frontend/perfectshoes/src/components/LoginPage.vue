@@ -110,7 +110,7 @@
     } 
     else {
       console.log(store.userState.user.firstName);
-      router.push('/');
+      router.push('/customer');
     }
     }
   }
