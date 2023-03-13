@@ -15,12 +15,13 @@ export default class Order {
                     "nameOnCard": "",
                     "cardNumber": "",
                     "cvc": "",
-                    "exprDate": "" 
+                    "exprDate": null 
                 },
         }
         this.subtotal = 0.00,
         this.tax = 0.00,
         this.total = 0.00,
-        this.lineItems = []
+        this.lineItems = [],
+        this.status = ""
     }
 }

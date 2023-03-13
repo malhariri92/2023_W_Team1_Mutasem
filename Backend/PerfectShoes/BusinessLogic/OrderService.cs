@@ -10,18 +10,39 @@ namespace PerfectShoes.BusinessLogic
         public OrderService(DataContext context) : base(context) { }
 
         // Update to use OrderDTO in future
-        public bool InsertOrder(Order order)
+        public int InsertOrder(OrderDto dto)
         {
-            var ord = new Order
+            Order order = new Order()
             {
-                Customer = order.Customer,
-                Subtotal = order.Subtotal,
-                Tax = order.Tax,
-                Total= order.Total,
-                LineItems = order.LineItems
+                Customer = dto.Customer,
+                CustomerName = dto.Customer.FirstName + " " + dto.Customer.LastName,
+                CustomerEmail = dto.Customer.Email,
+                ShippingAddress = dto.Customer.Address.ToString(),
+                CreditCard = dto.Customer.CreditCard,
+                Status = "recieved",
+                Date = DateTime.Now,
+                LineItems = dto.LineItems,
+                Subtotal= dto.Subtotal,
+                Tax = dto.Tax,
+                Total = dto.Total,
             };
-            _context.Orders.Add(ord);
-            return _context.SaveChanges() > 0;
+            Customer? customer = order.Customer;
+
+            if (customer.Id == 0)
+            {
+                _context.Entry(order.CreditCard).State = EntityState.Added;
+                order.CreditCardId = order.CreditCard.Id;
+            }
+            
+            _context.Entry(order).State = EntityState.Added;
+
+            foreach (LineItem item in order.LineItems)
+            {
+                item.OrderId = order.Id;
+                _context.Entry(item).State = EntityState.Added;
+            }
+
+            return _context.SaveChanges() > 0 ? order.Id : 0;
         }
     }
 }
