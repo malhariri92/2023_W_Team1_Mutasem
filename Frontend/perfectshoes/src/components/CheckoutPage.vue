@@ -1,4 +1,5 @@
 <template>
+    <div>
     <h2>Contact Information: </h2>
     <form id=nameAndEmail class="col-lg-10 offset-lg-1 ">
         <div>
@@ -22,9 +23,7 @@
                 </div>
             </div>
         </div>
-    </form>
     <h2>Address information:</h2>
-    <form id="address" class="col-lg-10 offset-lg-1 ">
         <div class="row g-3 justify-content-center mt-2">
             <div class="col-8">
                 <input v-model="store.cart.order.customer.address.addressLine1" id="addr1" required type="text"
@@ -55,9 +54,7 @@
                     oninput="this.setCustomValidity('')">
             </div>
         </div>
-    </form>
     <h2>Card information:</h2>
-    <form id="cardInfo" class="col-lg-10 offset-lg-1 ">
         <div class="row g-3 justify-content-center mt-2">
             <div class="col-8">
                 <input v-model="store.cart.order.customer.creditCard.nameOnCard" required type="text" class="form-control"
@@ -79,13 +76,17 @@
                     oninput="this.setCustomValidity('')">
             </div>
             <div class="col-3">
-                <input v-model="store.cart.order.customer.creditCard.exprDate" required type="text" class="form-control"
+                <Calendar v-model="store.cart.order.customer.creditCard.exprDate" dateFormat="mm/y" required
+                  placeholder="Experation date * mm/yy" view="month" oninvalid="this.setCustomValidity('experation date is required')"
+                    oninput="this.setCustomValidity('')"/>
+                <!-- <input v-model="store.cart.order.customer.creditCard.exprDate" required type="text" class="form-control"
                     placeholder="Card experation date *" oninvalid="this.setCustomValidity('experation date is required')"
-                    oninput="this.setCustomValidity('')">
+                    oninput="this.setCustomValidity('')"> -->
             </div>
         </div>
+        <Button type="submit" label="Place Order" class="p-button-success" @click="placeOrder($event)"></Button>
     </form>
-    <Button label="Place Order" class="p-button-success" @click="placeOrder()"></Button>
+</div>
 </template>
 
 <script setup>
@@ -93,11 +94,16 @@
 import { inject } from 'vue'
 import $ from 'jquery'
 import Button from 'primevue/button';
+import Calendar from 'primevue/calendar';
 
 const store = inject('store');
 
-function placeOrder() {
-    console.log("placing order")
+function placeOrder(e) {
+    if(!document.forms['nameAndEmail'].reportValidity()) return;
+    e.preventDefault();
+    var date = new Date(store.cart.order.customer.creditCard.exprDate);
+    store.cart.order.customer.creditCard.exprDate = date.toJSON();
+    
     $.ajax({
         headers: {
             'Accept': 'application/json',

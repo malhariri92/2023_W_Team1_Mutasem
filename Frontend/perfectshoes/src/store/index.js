@@ -7,7 +7,7 @@ const userState = reactive({
 const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
-const cart = reactive({ order: null});
+const cart = reactive({ order: JSON.parse(sessionStorage.getItem('order'))});
 const methods = {
     async loadProducts() {
         await $.ajax({
@@ -54,8 +54,11 @@ const methods = {
             console.log(data);
             categories.value = data;
             console.log(categories);
-          })
-    }
+          });
+    },
+    persistCart() {
+        sessionStorage.setItem('order', JSON.stringify(cart.order));
+    },
 };
 
 export default {
