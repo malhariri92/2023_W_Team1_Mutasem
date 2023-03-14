@@ -19,9 +19,10 @@ namespace PerfectShoes.Controllers
         // Update to use order dto when created.
         
         [HttpPost(Name = "InsertOrder")]
-        public ActionResult InsertOrder(Order order)
+        public ActionResult InsertOrder(OrderDto orderDto)
         {
-            if (_orderService.InsertOrder(order)) return Ok();
+            int id = _orderService.InsertOrder(orderDto);
+            if (id != 0) return Ok(id);
             return BadRequest();
         }
         

@@ -18,5 +18,10 @@ namespace PerfectShoes.Models
 
         [StringLength(5)]
         public string Zip { get; set; }
+
+        public override string? ToString()
+        {
+            return AddressLine1 + " " + AddressLine2 + "\n" + City + ", " + State + " " + Zip;
+        }
     }
 }
