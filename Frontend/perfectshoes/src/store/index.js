@@ -7,6 +7,7 @@ const userState = reactive({
 const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
+const orders = reactive([]);
 const cart = reactive({ order: JSON.parse(sessionStorage.getItem('order'))});
 const methods = {
     async loadProducts() {
@@ -16,6 +17,15 @@ const methods = {
         }).done(data => {
             products.value = data;
         })    
+    },
+
+    async loadOrders() {
+        await $.ajax({
+            url: 'https://localhost:44310/api/Order',
+            method: 'get'
+        }).done(data => {
+            orders.value = data;
+        })
     },
 
     async login(email, password) {
@@ -65,6 +75,7 @@ export default {
  userState,
  methods,
  products,
+ orders,
  currentProduct,
  cart,
  categories
