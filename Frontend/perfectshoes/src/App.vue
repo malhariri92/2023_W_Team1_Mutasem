@@ -10,6 +10,8 @@
         role="tab">Inventory</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('checkout')"
         role="tab">Checkout temp</a>
+        <a v-if="isAdmin()" class="nav-item nav-link" data-toggle="tab" @click="doRoute('admin')"
+        role="tab"> Admin</a>
         <a v-if="store.userState.user !== null" class="nav-item nav-link" data-toggle="tab" @click="doRoute('customer')"
         role="tab">Profile</a>
         <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
@@ -68,6 +70,9 @@ function doRoute(whereTo) {
   case 'customer':
     router.push('/customer')
     break;
+  case 'admin':
+    router.push('/admin')
+    break;
   default:
     router.push('/');
  }
@@ -76,6 +81,10 @@ function doRoute(whereTo) {
 function logout() {
   store.methods.logout()
   doRoute('login')
+}
+
+function isAdmin(){
+  return store.userState.user.isAdmin;
 }
 </script>
 

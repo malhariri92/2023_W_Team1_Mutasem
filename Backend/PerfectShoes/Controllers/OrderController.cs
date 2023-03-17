@@ -25,6 +25,16 @@ namespace PerfectShoes.Controllers
             if (id != 0) return Ok(id);
             return BadRequest();
         }
-        
+
+        [HttpGet(Name = "GetOrder")]
+        public ActionResult<List<Order>> Get()
+        {
+            var orders = _orderService.GetAllOrders();
+
+            if (orders == null) return NotFound();
+
+            return Ok(orders);
+        }
+
     }
 }

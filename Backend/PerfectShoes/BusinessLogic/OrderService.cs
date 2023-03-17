@@ -19,7 +19,7 @@ namespace PerfectShoes.BusinessLogic
                 CustomerEmail = dto.Customer.Email,
                 ShippingAddress = dto.Customer.Address.ToString(),
                 CreditCard = dto.Customer.CreditCard,
-                Status = "recieved",
+                Status = "received",
                 Date = DateTime.Now,
                 LineItems = dto.LineItems,
                 Subtotal= dto.Subtotal,
@@ -43,6 +43,12 @@ namespace PerfectShoes.BusinessLogic
             }
 
             return _context.SaveChanges() > 0 ? order.Id : 0;
+        }
+
+        public List<Order> GetAllOrders()
+        {
+            return _context.Orders.Where(p => p.Status == "received")
+                 .OrderBy(x => x.Date).ToList();
         }
     }
 }
