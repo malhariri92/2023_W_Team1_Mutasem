@@ -117,7 +117,7 @@
 
   async function createAccount(e) {
     let firstName = document.getElementById('firstName');
-    let lastName = document.getElementById('firstName');
+    let lastName = document.getElementById('lastName');
     let email = document.getElementById('signUpEmail');
     let password = document.getElementById('signUpPassword');
     let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$!@?])[a-zA-Z0-9#$!@?]{8,20}$/;

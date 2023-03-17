@@ -10,7 +10,7 @@
               <form>
                 <select v-model="categoryId" class="form-select" @change="HandleChange()">
                      <option selected value="">All</option>
-                     <option v-for="(item, index) in store.categories.value" :key="index" :value="item.id">{{item.name}}</option>
+                     <option v-for="(item, index) in store.categories.value" :key="index" :value="item.name">{{item.name}}</option>
                 </select>
               </form>
             </div>
@@ -69,10 +69,24 @@
   }
   
   function HandleChange(){  
-    if (state.filters === "")  state.products = store.products.value;
-    else state.products = store.products.value?.filter(x => x.name.toLowerCase().includes(state.filters.toLocaleLowerCase())
+    //both empty
+    if (state.filters === "" && categoryId.value==="All")  state.products = store.products.value;
+    //search empty category selected
+    else if(state.filters==="" && categoryId.value!=="All") 
+    {state.products = store.products.value?.filter(x => x.category.name.toLowerCase().includes(categoryId.value.toLowerCase()));}
+    //search not empty category not selected
+    else if(state.filters!=="" && categoryId.value==="All")
+    {state.products = store.products.value?.filter(x => x.name.toLowerCase().includes(state.filters.toLocaleLowerCase())
         || x.description.toLowerCase().includes(state.filters.toLowerCase())
-        || x.category.name.toLowerCase().includes(state.filters.toLowerCase()));
+        || x.category.name.toLowerCase().includes(state.filters.toLowerCase()));}
+    //both full
+    else
+    {
+      state.products = store.products.value?.filter(x => (x.name.toLowerCase().includes(state.filters.toLocaleLowerCase())
+      &&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase())) ||
+      (x.name.toLowerCase().includes(state.filters.toLowerCase())&&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase())) || 
+      x.category.name.toLowerCase().includes(state.filters.toLowerCase())&&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase()))
+    }
   }
   
 </script>
@@ -83,7 +97,7 @@
     display:flex;
     flex-wrap:wrap;
     width: 100%;
-    justify-content:center ;
+    justify-content:center;
     margin: 50px 0;
   }
   img{
