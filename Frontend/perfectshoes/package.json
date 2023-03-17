@@ -16,6 +16,7 @@
     "jquery": "^3.6.3",
     "primeicons": "^6.0.1",
     "primevue": "^3.23.0",
+    "v-mask": "^2.3.0",
     "vue": "^3.2.13",
     "vue-router": "^4.1.6"
   },

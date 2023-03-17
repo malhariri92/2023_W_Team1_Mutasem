@@ -37,9 +37,10 @@
                 <input type="text" id="creditCard" 
                 :value="store.userState.user.creditCard.cardNumber.substring(store.userState.user.creditCard.cardNumber.length - 4, 
                 store.userState.user.creditCard.cardNumber.length)"><br>
-                <Button> Update Credit Card</Button>
+                <Button @click="editCreditCard" label="Update Credit Card" icon="pi pi-plus" class="p-button-primary" />
         </div>
-        <div v-else><Button> Add Credit Card</Button></div>
+        <div v-else><Button @click="addCreditCard" label="Add Credit Card" icon="pi pi-plus" class="p-button-primary" /></div>
+        <DynamicDialog />
     </TabPanel>
     <TabPanel header="Order History">
         <!-- add logic to show customer order history here -->
@@ -48,14 +49,55 @@
   </template>
   
   <script setup>
-    import { inject } from "vue";
+    import { inject, provide } from "vue";
     import Button from 'primevue/button';
     import TabView from 'primevue/tabview';
     import TabPanel from 'primevue/tabpanel';
+    import CreditCardState from '../store/CreditCardState';
+    import { useDialog } from 'primevue/usedialog';
+    import AddCreditCard from '@/components/AddCreditCard.vue';
     const store = inject('store');  
     console.log(store.userState.user)
     
+    const dialog = useDialog();
+    provide('dialog', dialog);
 
+    function editCreditCard() {
+    const state = new CreditCardState();
+    state.creditCard = store.userState.user.creditCard;
+    dialog.open(AddCreditCard, {
+        props: {
+            header: 'Edit Credit Card',
+            style: {
+                width: '40vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true,
+        },
+        data: { creditCardState: state }
+        });
+    }
+
+    function addCreditCard() {
+    const state = new CreditCardState();
+    dialog.open(AddCreditCard, {
+        props: {
+            header: 'Add Credit Card',
+            style: {
+                width: '40vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true,
+        },
+        data: { creditCardState: state }
+    });
+}
   </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
