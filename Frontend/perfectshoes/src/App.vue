@@ -6,17 +6,15 @@
         role="tab">Test</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('products')"
         role="tab">Shop</a>
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
+        <a v-if="isAdmin()" class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
         role="tab">Inventory</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('checkout')"
         role="tab">Checkout temp</a>
-        <a v-if="isAdmin()" class="nav-item nav-link" data-toggle="tab" @click="doRoute('admin')"
-        role="tab"> Admin</a>
-        <a v-if="store.userState.user !== null" class="nav-item nav-link" data-toggle="tab" @click="doRoute('customer')"
-        role="tab">Profile</a>
-        <a class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
+        <a v-if="isAdmin()" class="nav-item nav-link" data-toggle="tab" @click="doRoute('orders')"
+        role="tab">Orders</a>
+        <a v-if="isCustomer" class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-cart-shopping" size="2x" /></a>
-        <a v-if="store.userState.user === null" class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
+        <a class="nav-item nav-link " data-toggle="tab tooltip" @click="doRoute('login')"
         role="tab"><font-awesome-icon id="cart" icon="fa-solid fa-user" size="2x" /></a>
         <a v-if="store.userState.user !== null" class="nav-item nav-link "
          data-toggle="tab tooltip" @click="logout()"
@@ -29,12 +27,32 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { provide } from 'vue';
+import { provide, computed } from 'vue';
 import store from '@/store';
 
 provide('store', store);
-
+const isCustomer = computed(() => {
+return (store.userState.user === null | !isAdmin())
+});
 const router = useRouter();
+
+router.beforeEach((to, from, next) => {
+      if(to.path === '/login') {
+        if(isAdmin()) {
+          next('/inventory');
+        }
+        else if(store.userState.user !== null) {
+          next('/customer');
+        }
+        else {
+          next();
+        }
+      }
+      else {
+        next();
+      }
+});
+
 function doRoute(whereTo) {
  switch(whereTo) {
   case 'home':
@@ -70,8 +88,8 @@ function doRoute(whereTo) {
   case 'customer':
     router.push('/customer')
     break;
-  case 'admin':
-    router.push('/admin')
+  case 'orders':
+    router.push('/orders')
     break;
   default:
     router.push('/');
@@ -84,7 +102,7 @@ function logout() {
 }
 
 function isAdmin(){
-  return store.userState.user.isAdmin;
+  return store.userState.user !== null && store.userState.user.isAdmin;
 }
 </script>
 

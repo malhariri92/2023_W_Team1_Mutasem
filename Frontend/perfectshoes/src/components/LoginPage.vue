@@ -104,9 +104,9 @@
     });
 
     if (store.userState.user !== null){
-      if (store.userState.user.isAdmin === true) {
+      if (store.userState.user.isAdmin) {
       console.log(store.userState.user);
-      router.push('/admin');
+      router.push('/inventory');
     } 
     else {
       console.log(store.userState.user.firstName);

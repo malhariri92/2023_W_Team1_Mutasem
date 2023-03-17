@@ -31,7 +31,7 @@
 
               <Column field="date" header="Date" sortable>
                   <template #body="slotProps">
-                      {{ slotProps.data.date }}
+                      {{ slotProps.data.date.replace('T', ' ').slice(0, 19) }}
                   </template>
               </Column>
               <template #footer>
