@@ -16,6 +16,7 @@ namespace PerfectShoes.Models.DTO
 
         [StringLength(3)]
         public string cvc { get; set; }
+
         public string ExprDate { get; set; }
     }
 }
