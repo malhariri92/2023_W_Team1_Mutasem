@@ -64,7 +64,15 @@
 
     function editCreditCard() {
     const state = new CreditCardState();
+    state.customerId = store.userState.user.id;
     state.creditCard = store.userState.user.creditCard;
+    const date = new Date(state.creditCard.exprDate)
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+
+    if (month < 10) month = '0' + month;
+    state.creditCard.exprDate = month + '/' + year.toString().slice(-2)
+
     dialog.open(AddCreditCard, {
         props: {
             header: 'Edit Credit Card',
@@ -83,6 +91,7 @@
 
     function addCreditCard() {
     const state = new CreditCardState();
+    state.customerId = store.userState.user.id;
     dialog.open(AddCreditCard, {
         props: {
             header: 'Add Credit Card',

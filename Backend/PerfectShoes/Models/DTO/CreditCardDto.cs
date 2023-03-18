@@ -6,6 +6,8 @@ namespace PerfectShoes.Models.DTO
     {
         public int? Id { get; set; }
 
+        public int CustomerId { get; set; }
+
         [StringLength(50)]
         public string NameOnCard { get; set; }
 

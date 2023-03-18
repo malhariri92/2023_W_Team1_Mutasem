@@ -1,5 +1,6 @@
-export default class ProductState {
+export default class CreditCardState {
         constructor() {
+            this.customerId = 0,
             this.creditCard =
                 {
                     "id": 0,    

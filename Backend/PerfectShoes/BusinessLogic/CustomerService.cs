@@ -6,10 +6,15 @@ namespace PerfectShoes.BusinessLogic
     public class CustomerService : Service, ICustomerService
     {
         public CustomerService(DataContext context) : base(context) { }
-        public User? GetCustomerById(int Id)
+        public Customer? GetCustomerById(int Id)
         {
-            var user = _context.Users.Find(Id);
-            return user;
+            return _context.Customers.Find(Id);
+        }
+
+        public bool UpdateCustomer(Customer customer)
+        {
+            _context.Customers.Update(customer);
+            return _context.SaveChanges() > 0;
         }
     }
 }

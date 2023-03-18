@@ -13,14 +13,15 @@ namespace PerfectShoes.BusinessLogic
             return _context.CreditCards.Find(Id);
         }
 
-        public CreditCard? UpsertCreditCard(CreditCardDto dto)
+        public CreditCard UpsertCreditCard(CreditCardDto dto)
         {
+            string[] dateSeparated = dto.ExprDate.Split('/');
             CreditCard card = new CreditCard()
             {
                 CardNumber = dto.CardNumber,
                 CVC = dto.cvc,
                 NameOnCard = dto.NameOnCard,
-                ExprDate = DateTime.Parse(dto.ExprDate),
+                ExprDate = new DateTime(int.Parse("20" + dateSeparated[1]), int.Parse(dateSeparated[0]), 1),
             };
 
             if (dto.Id != null)

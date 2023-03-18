@@ -7,6 +7,6 @@ namespace PerfectShoes.BusinessLogic
     {
         public CreditCard? GetCreditCardById(int Id);
 
-        public CreditCard? UpsertCreditCard(CreditCardDto dto);
+        public CreditCard UpsertCreditCard(CreditCardDto dto);
     }
 }
