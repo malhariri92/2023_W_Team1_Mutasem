@@ -92,7 +92,7 @@
     
 <script setup>
 import { reactive, onMounted, inject, provide } from "vue";
-import $ from 'jquery'
+import $ from 'jquery';
 import Button from 'primevue/button';
 import ProductState from '../store/ProductState';
 import { useDialog } from 'primevue/usedialog';
