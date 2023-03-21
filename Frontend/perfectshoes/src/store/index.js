@@ -4,6 +4,7 @@ import $ from 'jquery';
 const userState = reactive({
     user: JSON.parse(sessionStorage.getItem('user')),
 });
+let isLoggingInAndCheckingOut = false;
 const categories = reactive([]);
 const products = reactive([]);
 const currentProduct = reactive({});
@@ -29,6 +30,7 @@ const methods = {
     },
 
     async login(email, password) {
+        isLoggingInAndCheckingOut = true;
         await $.ajax({
             headers: { 
                 'Accept': 'application/json',
@@ -54,6 +56,7 @@ const methods = {
     logout()
     {
         userState.user = null;
+        isLoggingInAndCheckingOut = false;
         sessionStorage.removeItem('user');
     },
     loadCategories() {
@@ -78,5 +81,6 @@ export default {
  orders,
  currentProduct,
  cart,
- categories
+ categories,
+ isLoggingInAndCheckingOut
 }

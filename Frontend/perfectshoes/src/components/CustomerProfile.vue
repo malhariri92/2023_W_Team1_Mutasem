@@ -42,9 +42,10 @@
                 <input type="text" id="creditCard" 
                 :value="store.userState.user.creditCard.cardNumber.substring(store.userState.user.creditCard.cardNumber.length - 4, 
                 store.userState.user.creditCard.cardNumber.length)"><br>
-                <Button> Update Credit Card</Button>
+                <Button @click="editCreditCard" label="Update Credit Card" icon="pi pi-plus" class="p-button-primary" />
         </div>
-        <div v-else><Button> Add Credit Card</Button></div>
+        <div v-else><Button @click="addCreditCard" label="Add Credit Card" icon="pi pi-plus" class="p-button-primary" /></div>
+        <DynamicDialog />
     </TabPanel>
     <TabPanel header="Order History">
         <!-- add logic to show customer order history here -->
@@ -53,6 +54,7 @@
   </template>
   
   <script setup>
+
     import { inject, provide, onMounted } from "vue";
     import Button from 'primevue/button';
     import TabView from 'primevue/tabview';
@@ -60,6 +62,7 @@
     import Address from "../store/Address";
     import AddAddress from "./AddAddress.vue";
     import { useDialog } from 'primevue/usedialog';
+    import CreditCardState from '../store/CreditCardState';
 
 
     onMounted(() => {
@@ -67,13 +70,14 @@
     });
 
     const store = inject("store");
-    const dialog = useDialog();
+    const dialog1 = useDialog();
+    const dialog2 = useDialog();
     provide('dialog', dialog);
 
     function addAddress() {
     const address = new Address();
     address.customerId = store.userState.user.id;
-    dialog.open(AddAddress, {
+    dialog1.open(AddAddress, {
         props: {
             header: 'Add Address',
             style: {
@@ -107,7 +111,52 @@
         data: { addressState: address }
     });
     }
+    
+    function editCreditCard() {
+    const state = new CreditCardState();
+    state.customerId = store.userState.user.id;
+    state.creditCard = store.userState.user.creditCard;
+    const date = new Date(state.creditCard.exprDate)
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
 
+    if (month < 10) month = '0' + month;
+    state.creditCard.exprDate = month + '/' + year.toString().slice(-2)
+
+    dialog2.open(AddCreditCard, {
+        props: {
+            header: 'Edit Credit Card',
+            style: {
+                width: '40vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true,
+        },
+        data: { creditCardState: state }
+        });
+    }
+
+    function addCreditCard() {
+    const state = new CreditCardState();
+    state.customerId = store.userState.user.id;
+    dialog2.open(AddCreditCard, {
+        props: {
+            header: 'Add Credit Card',
+            style: {
+                width: '40vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true,
+        },
+        data: { creditCardState: state }
+    });
+}
   </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->

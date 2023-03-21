@@ -29,6 +29,8 @@
             <p>Tax: ${{ store.cart.order.tax.toFixed(2) }}</p>
             <p>Total: ${{ store.cart.order.total.toFixed(2) }}</p>
             <Button label="Checkout As Guest" class="p-button-success" @click="router.push('checkout')"></Button>
+            <Button label="Login and checkout" icon="primary" @click="loginAndCheckout()"></Button>
+            <DynamicDialog />
             </div>
         </div>
         <div v-else>
@@ -43,8 +45,14 @@
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
-import { onBeforeMount, inject } from 'vue'
+import { onBeforeMount, inject, provide } from 'vue'
 import { useRouter } from 'vue-router';
+import { useDialog } from 'primevue/usedialog';
+import LoginPage from '../components/LoginPage.vue';
+
+
+const dialog = useDialog();
+provide('dialog', dialog);
 
 const router = useRouter();
 const store = inject('store');
@@ -88,6 +96,25 @@ function calcCost() {
     store.methods.persistCart();
 }
 
+function loginAndCheckout() {
+    store.isLogingInAndSigningOut = true
+    dialog.open(LoginPage, {
+              props: {
+                header: 'Login',
+                  style: {
+                    width: '50vw',
+                  }, 
+                  breakpoints:{
+                    '960px': '75vw',
+                    '640px': '90vw'
+                },               
+                modal: true,
+              },    
+                  
+          });
+        
+   
+}
 
 
 onBeforeMount(() => {

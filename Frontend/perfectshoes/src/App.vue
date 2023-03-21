@@ -37,6 +37,7 @@ return (store.userState.user === null | !isAdmin())
 const router = useRouter();
 
 router.beforeEach((to, from, next) => {
+      
       if(to.path === '/login') {
         if(isAdmin()) {
           next('/inventory');
