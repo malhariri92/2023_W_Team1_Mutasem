@@ -1,4 +1,5 @@
 <template>
+    <div>
     <h2>Contact Information: </h2>
     <form id=nameAndEmail class="col-lg-10 offset-lg-1 ">
         <div>
@@ -179,6 +180,7 @@
         <a href="#" @click="enterUserInfo()">No Credit Card and/or Address information, would you like to add that to your
             profile</a>
     </div>
+</div>
 </template>
 
 <script setup>

@@ -7,7 +7,7 @@ export default class CreditCardState {
                     "nameOnCard": "",
                     "cardNumber": "",
                     "cvc": "",
-                    "exprDate" : "",
+                    "exprDate" : null,
                 }
         }
 }

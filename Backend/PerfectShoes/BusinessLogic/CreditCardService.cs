@@ -2,6 +2,7 @@
 using PerfectShoes.Models;
 using PerfectShoes.Models.DTO;
 using System.Diagnostics.Metrics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PerfectShoes.BusinessLogic
 {
@@ -15,26 +16,39 @@ namespace PerfectShoes.BusinessLogic
 
         public CreditCard UpsertCreditCard(CreditCardDto dto)
         {
-            string[] dateSeparated = dto.ExprDate.Split('/');
             CreditCard card = new CreditCard()
             {
+                Id = dto.Id,
                 CardNumber = dto.CardNumber,
                 CVC = dto.cvc,
                 NameOnCard = dto.NameOnCard,
-                ExprDate = new DateTime(int.Parse("20" + dateSeparated[1]), int.Parse(dateSeparated[0]), 1),
+                ExprDate = dto.ExprDate,
             };
+            Customer customer = _context.Customers.Find(dto.CustomerId);
 
-            if (dto.Id != null)
+            if (card.Id != 0)
             {
-                card.Id = dto.Id.Value;
-                _context.CreditCards.Update(card);
-                _context.SaveChanges();
+                Order? order = _context.Orders.FirstOrDefault(o => o.CreditCardId == card.Id);
+                if (order == null)
+                {
+                    _context.Entry(card).State = EntityState.Modified;
+                }
+                else
+                {
+                    card.Id = 0;
+                    _context.Entry(card).State = EntityState.Added;
+                }
             }
             else
             {
-                _context.CreditCards.Add(card);
+                _context.Entry(card).State = EntityState.Added;
             }
+            _context.SaveChanges();
 
+            customer.CreditCardId = card.Id;
+            _context.Entry(customer).State = EntityState.Modified;
+
+            _context.SaveChanges();
             return card;
         }
     }

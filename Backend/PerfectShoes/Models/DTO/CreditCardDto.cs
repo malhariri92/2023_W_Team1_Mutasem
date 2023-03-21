@@ -4,7 +4,7 @@ namespace PerfectShoes.Models.DTO
 {
     public class CreditCardDto
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public int CustomerId { get; set; }
 
@@ -17,6 +17,6 @@ namespace PerfectShoes.Models.DTO
         [StringLength(3)]
         public string cvc { get; set; }
 
-        public string ExprDate { get; set; }
+        public DateTime ExprDate { get; set; }
     }
 }

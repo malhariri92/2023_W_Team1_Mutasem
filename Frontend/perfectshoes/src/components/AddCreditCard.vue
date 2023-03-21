@@ -1,4 +1,5 @@
 <template>
+    <div>
       <form id="addCreditCard" class="col-lg-10 offset-lg-1 ">
           <div class="row g-3 justify-content-center flex" >
               <div class="col-4">
@@ -21,10 +22,13 @@
                       oninput="this.setCustomValidity('')">
               </div>
               <div class="col-4">
-                  <input v-model="state.creditCard.exprDate" required type="text" class="form-control" placeholder="Expired date *"  minlength="5" maxlength="5"
+                <Calendar v-model="state.creditCard.exprDate" dateFormat="mm/y" required
+                    placeholder="Experation date *" view="month" oninvalid="this.setCustomValidity('experation date is required')"
+                        oninput="this.setCustomValidity('')"/>
+                  <!-- <input v-model="state.creditCard.exprDate" required type="text" class="form-control" placeholder="Expired date *"  minlength="5" maxlength="5"
                       oninvalid="this.setCustomValidity('Expired date is required')"
                       oninput="this.setCustomValidity('')"
-                      @keypress="ValidateMaskInput($event)">
+                      @keypress="ValidateMaskInput($event)"> -->
               </div>
           </div>
   
@@ -40,14 +44,15 @@
 
       </form>
       <DynamicDialog />
-  </template>
+    </div>
+</template>
       
-  <script setup>
+<script setup>
   import { reactive, inject, provide } from "vue";
   import $ from 'jquery'
   import Button from 'primevue/button';
-  import CreditCardState from '../store/CreditCardState';
   import { useDialog } from 'primevue/usedialog';
+  import Calendar from 'primevue/calendar';
   
   const dialogRef = inject("dialogRef");
   const store = inject("store");
@@ -59,7 +64,7 @@
       return state.creditCard.nameOnCard !== "" &&
       state.creditCard.cardNumber !== "" &&
       state.creditCard.cvc !== "" &&
-      state.creditCard.exprDate !== "";
+      state.creditCard.exprDate !== null;
   }
   
   function IsNumber(e) {
@@ -70,18 +75,18 @@
       }
   }
 
-  function ValidateMaskInput(e) {
-      if (IsNumber(e) && state.creditCard.exprDate.length === 2){
-        state.creditCard.exprDate += '/';
-      }
-  }
+//   function ValidateMaskInput(e) {
+//       if (IsNumber(e) && state.creditCard.exprDate.length === 2){
+//         state.creditCard.exprDate += '/';
+//       }
+//   }
 
   function UpsertCreditCard(e) {   
       if (!validateCreditCard()) return;
       e.preventDefault();
       
       state.creditCard.customerId = state.customerId
-
+      state.creditCard.exprDate = state.creditCard.exprDate.toJSON();
       $.ajax({
       headers: { 
       'Accept': 'application/json',
@@ -91,10 +96,11 @@
       'method': 'post',
       'data': JSON.stringify(state.creditCard)
       }).done((data) => {
-      Object.assign(store.userState.user.creditCard, data)
+        console.log(data);
+      store.userState.user.creditCard = data;
+      store.userState.user.creditCardId = data.id;
+      console.log(store.userState.user);
       sessionStorage.setItem('user', JSON.stringify(store.userState.user));
-      Object.assign(state, new CreditCardState());
-      $("#msg").show().delay(5000).fadeOut();
       dialogRef.value.close();
       });
     }

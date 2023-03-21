@@ -51,10 +51,9 @@
         <!-- add logic to show customer order history here -->
     </TabPanel>
 </TabView>
-  </template>
+</template>
   
-  <script setup>
-
+<script setup>
     import { inject, provide, onMounted } from "vue";
     import Button from 'primevue/button';
     import TabView from 'primevue/tabview';
@@ -63,119 +62,114 @@
     import AddAddress from "./AddAddress.vue";
     import { useDialog } from 'primevue/usedialog';
     import CreditCardState from '../store/CreditCardState';
+    import AddCreditCard from './AddCreditCard.vue';
 
+onMounted(() => {
+console.log(store.userState.user)
+});
 
-    onMounted(() => {
-        console.log(store.userState.user)
-    });
+const store = inject("store");
+const dialog1 = useDialog();
+const dialog2 = useDialog();
+provide('dialog', dialog1);
+provide('dialog', dialog2);
 
-    const store = inject("store");
-    const dialog1 = useDialog();
-    const dialog2 = useDialog();
-    provide('dialog', dialog);
-
-    function addAddress() {
-    const address = new Address();
-    address.customerId = store.userState.user.id;
-    dialog1.open(AddAddress, {
-        props: {
-            header: 'Add Address',
-            style: {
-                width: '40vw'
-            },
-            breakpoints: {
-                '960px': '75vw',
-                '640px': '90vw'
-            },
-            modal: true,
-        },
-        data: { addressState: address }
-    });
-    }
-
-    function updateAddress() {
-    const address = new Address();
-    address.customerId = store.userState.user.id;
-    dialog.open(AddAddress, {
-        props: {
-            header: 'Update Address',
-            style: {
-                width: '40vw'
-            },
-            breakpoints: {
-                '960px': '75vw',
-                '640px': '90vw'
-            },
-            modal: true,
-        },
-        data: { addressState: address }
-    });
-    }
-    
-    function editCreditCard() {
-    const state = new CreditCardState();
-    state.customerId = store.userState.user.id;
-    state.creditCard = store.userState.user.creditCard;
-    const date = new Date(state.creditCard.exprDate)
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-
-    if (month < 10) month = '0' + month;
-    state.creditCard.exprDate = month + '/' + year.toString().slice(-2)
-
-    dialog2.open(AddCreditCard, {
-        props: {
-            header: 'Edit Credit Card',
-            style: {
-                width: '40vw',
-            },
-            breakpoints: {
-                '960px': '75vw',
-                '640px': '90vw'
-            },
-            modal: true,
-        },
-        data: { creditCardState: state }
-        });
-    }
-
-    function addCreditCard() {
-    const state = new CreditCardState();
-    state.customerId = store.userState.user.id;
-    dialog2.open(AddCreditCard, {
-        props: {
-            header: 'Add Credit Card',
-            style: {
-                width: '40vw',
-            },
-            breakpoints: {
-                '960px': '75vw',
-                '640px': '90vw'
-            },
-            modal: true,
-        },
-        data: { creditCardState: state }
-    });
+function addAddress() {
+const address = new Address();
+address.customerId = store.userState.user.id;
+dialog1.open(AddAddress, {
+props: {
+    header: 'Add Address',
+    style: {
+        width: '40vw'
+    },
+    breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+    },
+    modal: true,
+},
+data: { addressState: address }
+});
 }
-  </script>
-  
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
-    input[type=text] {
-  width: 50%;
-  text-align: center;
-  padding: 12px 20px;
-  margin: 8px ;
-  border: none;
-  border-bottom: 2px solid blue;
+
+function updateAddress() {
+const address = new Address();
+address.customerId = store.userState.user.id;
+dialog1.open(AddAddress, {
+props: {
+    header: 'Update Address',
+    style: {
+        width: '40vw'
+    },
+    breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+    },
+    modal: true,
+},
+data: { addressState: address }
+});
+}
+
+function editCreditCard() {
+const state = new CreditCardState();
+state.customerId = store.userState.user.id;
+state.creditCard = store.userState.user.creditCard;
+state.creditCard.exprDate = new Date(state.creditCard.exprDate);
+
+dialog2.open(AddCreditCard, {
+props: {
+    header: 'Edit Credit Card',
+    style: {
+        width: '40vw',
+    },
+    breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+    },
+    modal: true,
+},
+data: { creditCardState: state }
+});
+}
+
+function addCreditCard() {
+const state = new CreditCardState();
+state.customerId = store.userState.user.id;
+dialog2.open(AddCreditCard, {
+props: {
+    header: 'Add Credit Card',
+    style: {
+        width: '40vw',
+    },
+    breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+    },
+    modal: true,
+},
+data: { creditCardState: state }
+});
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+input[type=text] {
+width: 50%;
+text-align: center;
+padding: 12px 20px;
+margin: 8px ;
+border: none;
+border-bottom: 2px solid blue;
 }
 label{
-   margin-right: 3em;
-   font-weight: bold;
+margin-right: 3em;
+font-weight: bold;
 }
 
 Button {
-    margin: 1em;
+margin: 1em;
 }
-  </style>
-  
+</style>
