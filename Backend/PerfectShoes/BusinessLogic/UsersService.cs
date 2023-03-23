@@ -18,8 +18,7 @@ namespace PerfectShoes.BusinessLogic
             }
             else
             {
-                return _context.Customers.Include(c => c.Address)
-                .Include(c => c.CreditCard).FirstOrDefault(e => authentificationDto.Email.Equals(e.Email) && authentificationDto.Password.Equals(e.Password));
+                return _context.Customers.Include(c => c.Address).Include(c => c.CreditCard).Include(c => c.Orders).ThenInclude(o => o.LineItems).ThenInclude(p => p.Product).FirstOrDefault(e => authentificationDto.Email.Equals(e.Email) && authentificationDto.Password.Equals(e.Password));
             }
         }
 
