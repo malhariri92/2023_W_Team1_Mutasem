@@ -48,6 +48,32 @@
         <DynamicDialog />
     </TabPanel>
     <TabPanel header="Order History">
+        <Accordion :multiple="true" :activeIndex="[0]">
+            <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="'Order ' + order.id" :key="id">
+               <div class="row g-3">
+                    <div class="col"><label> Name</label></div>
+                    <div class="col"><label>Price</label></div>
+                    <div class="col"><label>Quantity</label></div>
+               </div>
+                <div v-for="(item, i) in order.lineItems" :key="i" class="row g-3">
+                    <div class="col-sm">{{ item.product.name }}</div>
+                    <div class="col-sm">${{ item.product.price.toFixed(2) }}</div>   
+                    <div class="col-sm">{{ item.quantity }}</div>   
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-sm"> <label>Subtotal:</label>${{order.subtotal.toFixed(2)}}</div>
+                    <div class="col-sm"><label>Tax:</label>${{order.tax.toFixed(2) }}</div>
+                    <div class="col-sm"><label>Total:</label>  ${{ order.total.toFixed(2) }}</div>
+                </div>
+                <div class="row g-3 justify-content-center mt-2"><label>Shipping Address:</label>  {{ order.shippingAddress}}</div>
+                <div class="row g-3 mt-2">
+                    <div class="col"> <label>Order Date:</label>{{ order.date.replace('T', ' ').slice(0, 19) }}</div>
+                    <div class="col"><label>Order Status:</label> {{ order.status }}</div>
+                    <div class="col" v-if="order.shipDate != null"><label>Ship Date:</label> {{ order.shipDate  }} </div>
+                    <div class="col" v-else><label>Ship Date:</label> Not Shipped yet</div>
+                </div>
+            </AccordionTab>
+        </Accordion>
         <!-- add logic to show customer order history here -->
     </TabPanel>
 </TabView>
@@ -63,7 +89,8 @@
     import { useDialog } from 'primevue/usedialog';
     import CreditCardState from '../store/CreditCardState';
     import AddCreditCard from './AddCreditCard.vue';
-
+    import Accordion from 'primevue/accordion';
+    import AccordionTab from 'primevue/accordiontab';
 onMounted(() => {
 console.log(store.userState.user)
 });
@@ -165,11 +192,16 @@ border: none;
 border-bottom: 2px solid blue;
 }
 label{
-margin-right: 3em;
+margin-right: 1em;
 font-weight: bold;
 }
 
 Button {
 margin: 1em;
+}
+
+.p-accordion{
+    /* width: 80%; */
+    /* margin-left: 15em; */
 }
 </style>
