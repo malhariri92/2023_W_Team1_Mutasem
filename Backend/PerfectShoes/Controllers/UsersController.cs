@@ -27,10 +27,17 @@ namespace PerfectShoes.Controllers
             return Ok(user);
         }
 
-        [HttpPost("User", Name ="InsertUser")]
+        [HttpPost("Customer", Name ="InsertCustomer")]
         public ActionResult InsertEmployee(UserDto userDto)
         {
-            if (_userService.InsertUser(userDto)) return Ok();
+            if (_userService.InsertCustomer(userDto)) return Ok();
+            return BadRequest();
+        }
+
+        [HttpPost("Employee", Name = "InsertEmployee")]
+        public ActionResult InsertEmployee(EmployeeDto employeeDto)
+        {
+            if (_userService.InsertEmployee(employeeDto)) return Ok();
             return BadRequest();
         }
     }

@@ -147,20 +147,13 @@ async function createAccount(e) {
     LastName: state.lastName,
     Email: state.signUpEmail,
     Password: state.signUpPassword,
+    Type: "customer"
   }
 
-  if (state.signUpEmail.endsWith('@perfectshoes.com')) {
-    user['Type'] = "employee";
-    user['Role'] = "Admin";
-    user['IsAdmin'] = true;
-  }
-  else {
-    user['Type'] = "customer";
-  }
   $.ajax(
     {
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      url: 'https://localhost:44310/api/Users/User',
+      url: 'https://localhost:44310/api/Users/Customer',
       type: 'post',
       data: JSON.stringify(user),
       success: () => {

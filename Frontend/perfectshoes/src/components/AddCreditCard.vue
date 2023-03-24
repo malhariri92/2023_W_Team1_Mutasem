@@ -25,10 +25,6 @@
                 <Calendar v-model="state.creditCard.exprDate" dateFormat="mm/y" required
                     placeholder="Experation date *" view="month" oninvalid="this.setCustomValidity('experation date is required')"
                         oninput="this.setCustomValidity('')"/>
-                  <!-- <input v-model="state.creditCard.exprDate" required type="text" class="form-control" placeholder="Expired date *"  minlength="5" maxlength="5"
-                      oninvalid="this.setCustomValidity('Expired date is required')"
-                      oninput="this.setCustomValidity('')"
-                      @keypress="ValidateMaskInput($event)"> -->
               </div>
           </div>
   
@@ -74,12 +70,6 @@
         return true;
       }
   }
-
-//   function ValidateMaskInput(e) {
-//       if (IsNumber(e) && state.creditCard.exprDate.length === 2){
-//         state.creditCard.exprDate += '/';
-//       }
-//   }
 
   function UpsertCreditCard(e) {   
       if (!validateCreditCard()) return;
