@@ -92,6 +92,9 @@ function doRoute(whereTo) {
   case 'orders':
     router.push('/orders')
     break;
+  case 'orderDetails':
+    router.push('orderDetails')
+    break;
   default:
     router.push('/');
  }

@@ -9,5 +9,9 @@ namespace PerfectShoes.BusinessLogic
         // Update to OrderDTO when the DTO is created
         int InsertOrder(OrderDto orderDto);
         List<Order> GetAllOrders();
+
+        bool FulfillOder(Order order);
+
+        Order? GetOrderbyId(int id);
     }
 }
