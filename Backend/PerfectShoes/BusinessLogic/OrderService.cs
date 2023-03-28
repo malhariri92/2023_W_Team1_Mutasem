@@ -47,8 +47,23 @@ namespace PerfectShoes.BusinessLogic
 
         public List<Order> GetAllOrders()
         {
-            return _context.Orders.Where(p => p.Status == "received")
-                 .OrderBy(x => x.Date).ToList();
+            return _context.Orders.Where(p => p.Status == "received").Include(c =>c.CreditCard).Include(o => o.LineItems).
+                ThenInclude(l => l.Product).OrderBy(x => x.Date).ToList();
+        }
+
+        public bool FulfillOder(Order order)
+        {
+            order.Status = "shipped";
+            order.ShipDate= DateTime.Now;
+            _context.Entry(order).State = EntityState.Modified;
+           
+            return _context.SaveChanges() > 0;
+
+        }
+
+        public Order GetOrderbyId(int id)
+        {
+            return _context.Orders.Find(id);
         }
     }
 }
