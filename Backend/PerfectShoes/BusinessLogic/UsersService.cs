@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerfectShoes.Models;
 using PerfectShoes.Models.DTO;
+using System.Collections.Generic;
+using System.Net;
+
 
 namespace PerfectShoes.BusinessLogic
 {
@@ -78,6 +81,26 @@ namespace PerfectShoes.BusinessLogic
             }
             return _context.SaveChanges() > 0;
         }//end of InsertCustomer method
+
+
+        public bool UpdatePassword(UserDto userDto)
+        {
+            var user = new User
+            {
+                Email = userDto.Email,
+                Password = userDto.Password,
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+            };
+
+            _context.Users.Update(user);
+            User user2 = _context.Users.Find(userDto.Id);
+            _context.SaveChanges();
+            user2.Id = user.Id;
+            _context.Entry(user2).State = EntityState.Modified;
+            _context.SaveChanges();
+            return _context.SaveChanges() > 0;
+        }
 
         public bool AddEmployee(EmployeeDto employeeDto)
         {

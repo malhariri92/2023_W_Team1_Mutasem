@@ -3,6 +3,10 @@
     <TabPanel header="Contact Info">
         <h3>Welcome {{ store.userState.user.firstName }} {{ store.userState.user.lastName }}!</h3>
         <p><strong>Email: </strong>{{ store.userState.user.email }}</p>
+
+        <Button @click="changePassword" label="Change Password" icon="pi pi-plus" class="p-button-primary" />
+        <DynamicDialog />
+
     </TabPanel>
     <TabPanel header="My Address">
 
@@ -79,8 +83,10 @@
     import { useDialog } from 'primevue/usedialog';
     import CreditCardState from '../store/CreditCardState';
     import AddCreditCard from './AddCreditCard.vue';
+    import UpdatePassword from "./UpdatePassword.vue";
     import Accordion from 'primevue/accordion';
     import AccordionTab from 'primevue/accordiontab';
+
 onMounted(() => {
 console.log(store.userState.user)
 });
@@ -116,6 +122,25 @@ address.customerId = store.userState.user.id;
 dialog.open(AddAddress, {
 props: {
     header: 'Update Address',
+    style: {
+        width: '40vw'
+    },
+    breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+    },
+    modal: true,
+},
+data: { addressState: address }
+});
+}
+
+function changePassword() {
+const address = new Address();
+address.customerId = store.userState.user.id;
+dialog.open(UpdatePassword, {
+props: {
+    header: 'Change Password',
     style: {
         width: '40vw'
     },

@@ -33,6 +33,15 @@ namespace PerfectShoes.Controllers
             return BadRequest();
         }
 
+
+        [HttpPost("UpdatePassword", Name = "UpdatePassword")]
+        public ActionResult UpdatePassword(UserDto userDto)
+        {
+            if (_userService.UpdatePassword(userDto)) return Ok();
+            return BadRequest();
+        }
+
+
         [HttpPost("Employee", Name = "AddEmployee")]
         public ActionResult AddEmployee(EmployeeDto employeeDto)
         {
