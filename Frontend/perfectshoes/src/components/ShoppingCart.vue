@@ -28,8 +28,12 @@
             <p>Subtotal cost: ${{ store.cart.order.subtotal.toFixed(2) }}</p>
             <p>Tax: ${{ store.cart.order.tax.toFixed(2) }}</p>
             <p>Total: ${{ store.cart.order.total.toFixed(2) }}</p>
-            <Button label="Checkout As Guest" class="p-button-success" @click="router.push('checkout')"></Button>
-            <Button label="Login and checkout" icon="primary" @click="loginAndCheckout()"></Button>
+            <Button label="Checkout As Guest" class="p-button-primary m-2" @click="router.push('checkout')"
+            v-if="store.userState.user === null"></Button>
+            <Button label="Login and checkout" class="p-button-success m-2" @click="loginAndCheckout()"
+            v-if="store.userState.user === null"></Button>
+            <Button label="Checkout" class="p-button-success" @click="router.push('checkout')"
+            v-if="store.userState.user !== null"></Button>
             <DynamicDialog />
             </div>
         </div>
