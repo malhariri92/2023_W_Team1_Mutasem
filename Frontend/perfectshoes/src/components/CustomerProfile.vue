@@ -1,17 +1,10 @@
 <template>
     <TabView ref="tabview1">
     <TabPanel header="Contact Info">
-
-        <label for="fname">First Name</label>
-        <input type="text" id="fname" name="fname" :value="store.userState.user.firstName" readonly><br>
-        <label for="lname">Last Name</label>
-        <input type="text" id="lname" name="lname" :value="store.userState.user.lastName" readonly><br>
-        <label for="fname">Email</label>
-
-        <input type="text" id="email" name="email" :value="store.userState.user.email" readonly><br>
-
+        <h3>Welcome {{ store.userState.user.firstName }} {{ store.userState.user.lastName }}!</h3>
+        <p><strong>Email: </strong>{{ store.userState.user.email }}</p>
     </TabPanel>
-    <TabPanel header="Address Info">
+    <TabPanel header="My Address">
 
         <div v-if="store.userState.user.address !== null">
             <h4>Shipping Address</h4>
@@ -30,7 +23,7 @@
         <DynamicDialog />
 
     </TabPanel>
-    <TabPanel header="Payment Info">
+    <TabPanel header="My Credit Card">
         <div v-if="store.userState.user.creditCard !== null">
             <h4>Payment Information</h4>
             <p> <strong>Card Holder:</strong> {{ store.userState.user.creditCard.nameOnCard }}</p>
@@ -45,8 +38,8 @@
         </div>
     </TabPanel>
     <TabPanel header="Order History">
-        <Accordion :multiple="true" :activeIndex="[0]">
-            <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="'Order ' + order.id" :key="id">
+        <Accordion :multiple="false" :activeIndex="[0]">
+            <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="new Date(order.date).toString().slice(4,13)" :key="id">
                <div class="row g-3">
                     <div class="col"><label> Name</label></div>
                     <div class="col"><label>Price</label></div>
@@ -198,7 +191,7 @@ margin: 1em;
 }
 
 .p-accordion{
-    /* width: 80%; */
-    /* margin-left: 15em; */
+    width: 50%;
+    margin: 0 auto;
 }
 </style>

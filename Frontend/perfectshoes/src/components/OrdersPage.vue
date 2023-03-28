@@ -64,11 +64,7 @@ onMounted(() => {
 });
 
 const onRowSelect = (event) => {
-    // add logic here to display the additional info
-    
-    
-    
-
+    console.log(event.data)
     dialog.open(OrdersDetails, {
         props: {
             header: 'Order Details',

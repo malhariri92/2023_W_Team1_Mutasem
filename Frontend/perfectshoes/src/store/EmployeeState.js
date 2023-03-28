@@ -5,8 +5,9 @@ export default class EmployeeState {
                 "FirstName": "",
                 "LastName": "",
                 "Email": "",
+                "Type": "employee",
                 "Role": "",
-                "Password": ""
+                "isAdmin": ""
             }
     }
 }

@@ -3,7 +3,6 @@ using PerfectShoes.BusinessLogic;
 using PerfectShoes.Models;
 using PerfectShoes.Models.DTO;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PerfectShoes.Controllers
 {
@@ -27,17 +26,17 @@ namespace PerfectShoes.Controllers
             return Ok(user);
         }
 
-        [HttpPost("Customer", Name ="InsertCustomer")]
-        public ActionResult InsertEmployee(UserDto userDto)
+        [HttpPost("User", Name = "InsertUser")]
+        public ActionResult InsertUser(UserDto userDto)
         {
-            if (_userService.InsertCustomer(userDto)) return Ok();
+            if (_userService.InsertUser(userDto)) return Ok();
             return BadRequest();
         }
 
-        [HttpPost("Employee", Name = "InsertEmployee")]
-        public ActionResult InsertEmployee(EmployeeDto employeeDto)
+        [HttpPost("Employee", Name = "AddEmployee")]
+        public ActionResult AddEmployee(EmployeeDto employeeDto)
         {
-            if (_userService.InsertEmployee(employeeDto)) return Ok();
+            if (_userService.AddEmployee(employeeDto)) return Ok();
             return BadRequest();
         }
     }

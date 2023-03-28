@@ -3,7 +3,8 @@
     <form id="addEmployee" class="col-lg-10 offset-lg-1 ">
         <div class="row g-3 justify-content-center flex" >
               <div class="col-4">
-                  <input v-model="state.employee.FirstName" required type="text" class="form-control" placeholder="Firstname *"
+                  <input v-model="state.employee.FirstName" required type="text" class="form-control"
+                   placeholder="Firstname *"
                       oninvalid="this.setCustomValidity('First Name is required')"
                       oninput="this.setCustomValidity('')">
               </div>
@@ -37,6 +38,14 @@
             <Button label="Cancel" @click="close" size="large" class="p-button-danger col-4 ms-1"/>
             <Button type="submit" label="Save" size="small" @click="insertEmployee($event)" class="p-button-success col-4 ms-1"/>
         </div>
+            <div class="row g-1 justify-content-center mt-2">
+            <div style="display:none;" id="msg1" class="alert alert-success mt-1 col-8" role="alert">
+                Employee has been added!
+            </div>
+            <div style="display:none;" id="msg2" class="alert alert-danger mt-1 col-8" role="alert">
+                Something went wrong!
+            </div>
+        </div>
     </form>
     <DynamicDialog />
   </div>
@@ -48,6 +57,7 @@ import $ from 'jquery';
 import Button from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
 import Dropdown from 'primevue/dropdown';
+import EmployeeState from '../store/EmployeeState';
 
 const RolesEnum = ['admin', 'manager']
 
@@ -57,18 +67,8 @@ const state = reactive(dialogRef.value.data.employeeState);
 const dialog = useDialog();
 provide('dialog', dialog);
 
-function validateEmployee(){
-    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$!@?])[a-zA-Z0-9#$!@?]{8,20}$/;
+function validateEmail(){
     let email = document.getElementById('email');
-    let password = document.getElementById('password');
-
-    if (state.employee.Password === ''){
-        password.setCustomValidity('Password is required');
-    }
-    else if (!regex.test(state.employee.Password)) {
-        password.setCustomValidity('Password needs to be 8-20 characters and include an Uppercase letter, lowercase letter, number, and one of these: #$!@?');
-        return false;
-    }
 
     if (state.employee.Email === ''){
         email.setCustomValidity('Email is required')
@@ -79,19 +79,16 @@ function validateEmployee(){
         return false;
     }
 
-    return (state.employee.FirstName !== "" &&
-    state.employee.LastName !== "" &&
-    state.employee.Email !== "" &&
-    state.employee.Password !== "")
+    return true;
 }
 
 function insertEmployee(e) {
 
-    state.employee.Type = "employee";
-
-    if (!validateEmployee()) return;
+    if (!document.forms['addEmployee'].reportValidity() | !validateEmail()) return;
     e.preventDefault();
-    
+
+    state.employee.isAdmin = true;
+    console.log(state.employee)
     $.ajax({
         headers: { 
         'Accept': 'application/json',
@@ -99,8 +96,16 @@ function insertEmployee(e) {
         },
         'url': 'https://localhost:44310/api/Users/Employee',
         'method': 'post',
-        'data': JSON.stringify(state.employee)
-      }).done(dialogRef.value.close());
+        'data': JSON.stringify(state.employee),
+        success: () => {
+        $("#msg1").show().delay(5000).fadeOut();
+        state.employee = new EmployeeState();
+      },
+      error: (jqXHR) => {
+        if (jqXHR.status == 400)
+          $("#msg2").show().delay(5000).fadeOut();
+      }
+      });
 }
 
 function close() {

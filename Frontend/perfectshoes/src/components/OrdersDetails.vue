@@ -5,17 +5,17 @@
                 <div class="col-3">
                     <label for="cusName">Customer Name</label>
                     <input type="text" id="cusName" name="cusName"
-                        :value="state.customer.FirstName + ' ' + state.customer.lastName" readonly><br>
+                        :value="state.customerName" readonly><br>
                 </div>
                 <div class="col-3">
                     <label for="cusEmail">Email</label>
-                    <input type="text" id="cusEmail" name="cusEmail" :value="state.customer.email" readonly><br>
+                    <input type="text" id="cusEmail" name="cusEmail" :value="state.customerEmail" readonly><br>
                 </div>
             </div>
             <div class="row g-3 justify-content-center mt-2">
                 <div class="col-3">
                     <label for="cusAdd">Customer Address</label>
-                    <p>{{ state.customer.address.addressLine1 }}</p>
+                    <p>{{ state.shippingAddress }}</p>
                 </div>
             </div>
             <div class="row g-3 justify-content-center flex">
@@ -57,22 +57,13 @@
 
 <script setup>
 
-import { reactive, inject, onMounted } from 'vue'
+import { reactive, inject } from 'vue'
 import Button from 'primevue/button';
 import $ from 'jquery'
 const dialogRef = inject("dialogRef");
 // const store = inject('store');
 
-
-
-let state = reactive(dialogRef.value.data.Order);
-
-onMounted(() =>  {
-    console.log("----------------------------------")
-    state = dialogRef.value.data.Order
-    console.log(state) 
-});
-
+const state = reactive(dialogRef.value.data.Order);
 
 function fullfilOrder() {
     
@@ -87,10 +78,6 @@ function fullfilOrder() {
         }).done(() => {
             console.log("Order is fulfilled")
             alert("Order fulfilled");
-        });
-    
-    
+    });   
 }
-
-
 </script>

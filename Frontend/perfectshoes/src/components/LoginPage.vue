@@ -136,6 +136,41 @@ async function createAccount(e) {
 
   if (!regex.test(state.signUpPassword)) {
     e.preventDefault();
+    const user = {
+        FirstName: state.firstName,
+        LastName: state.lastName,
+        Email: state.signUpEmail,
+        Password: state.signUpPassword,
+      }
+
+    if(state.signUpEmail.endsWith('@perfectshoes.com'))
+    {
+      user['Type'] = "employee";
+      user['Role'] = "Admin";
+      user['IsAdmin'] = true; 
+    }
+    else{
+      user['Type'] = "customer";
+    }
+    $.ajax(
+      {
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json' },
+        url: 'https://perfectshopapp.azurewebsites.net/api/Users/User',
+        type: 'post',
+        data:JSON.stringify(user),
+        success: () => {
+          $("#msg1").show().delay(5000).fadeOut();
+          state.firstName = "";
+          state.lastName = "";
+          state.signUpEmail = "";
+          state.signUpPassword = "";
+        },
+        error: (jqXHR) => {
+          if(jqXHR.status == 400)
+          $("#msg2").show().delay(5000).fadeOut();
+        }
+      }
+    );
     state.signUpPassword = "";
     $("#msg3").show().delay(6000).fadeOut();
     return;
@@ -147,13 +182,20 @@ async function createAccount(e) {
     LastName: state.lastName,
     Email: state.signUpEmail,
     Password: state.signUpPassword,
-    Type: "customer"
   }
 
+  if (state.signUpEmail.endsWith('@perfectshoes.com')) {
+    user['Type'] = "employee";
+    user['Role'] = "Admin";
+    user['IsAdmin'] = true;
+  }
+  else {
+    user['Type'] = "customer";
+  }
   $.ajax(
     {
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      url: 'https://localhost:44310/api/Users/Customer',
+      url: 'https://localhost:44310/api/Users/User',
       type: 'post',
       data: JSON.stringify(user),
       success: () => {
