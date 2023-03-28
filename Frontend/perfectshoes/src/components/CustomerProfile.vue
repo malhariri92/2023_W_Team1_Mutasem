@@ -10,6 +10,8 @@
 
         <input type="text" id="email" name="email" :value="store.userState.user.email" readonly><br>
 
+        <Button @click="changePassword" label="Change Password" icon="pi pi-plus" class="p-button-primary" />
+        <DynamicDialog />
     </TabPanel>
     <TabPanel header="Address Info">
 
@@ -63,6 +65,7 @@
     import { useDialog } from 'primevue/usedialog';
     import CreditCardState from '../store/CreditCardState';
     import AddCreditCard from './AddCreditCard.vue';
+    import UpdatePassword from "./UpdatePassword.vue";
 
 onMounted(() => {
 console.log(store.userState.user)
@@ -99,6 +102,25 @@ address.customerId = store.userState.user.id;
 dialog1.open(AddAddress, {
 props: {
     header: 'Update Address',
+    style: {
+        width: '40vw'
+    },
+    breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+    },
+    modal: true,
+},
+data: { addressState: address }
+});
+}
+
+function changePassword() {
+const address = new Address();
+address.customerId = store.userState.user.id;
+dialog1.open(UpdatePassword, {
+props: {
+    header: 'Change Password',
     style: {
         width: '40vw'
     },

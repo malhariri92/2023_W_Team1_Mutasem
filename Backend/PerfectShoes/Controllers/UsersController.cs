@@ -33,5 +33,13 @@ namespace PerfectShoes.Controllers
             if (_userService.InsertUser(userDto)) return Ok();
             return BadRequest();
         }
+
+        [HttpPost("UpdatePassword", Name = "UpdatePassword")]
+        public ActionResult UpdatePassword(UserDto userDto)
+        {
+            if (_userService.UpdatePassword(userDto)) return Ok();
+            return BadRequest();
+        }
+
     }
 }
