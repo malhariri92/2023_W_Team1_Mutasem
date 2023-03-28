@@ -1,21 +1,11 @@
 <template>
     <TabView ref="tabview1">
     <TabPanel header="Contact Info">
-
-
-        <label for="fname">First Name</label>
-        <input type="text" id="fname" name="fname" :value="store.userState.user.firstName" readonly><br>
-        <label for="lname">Last Name</label>
-        <input type="text" id="lname" name="lname" :value="store.userState.user.lastName" readonly><br>
-        <label for="fname">Email</label>
-
-        <input type="text" id="email" name="email" :value="store.userState.user.email" readonly><br>
+        <h3>Welcome {{ store.userState.user.firstName }} {{ store.userState.user.lastName }}!</h3>
+        <p><strong>Email: </strong>{{ store.userState.user.email }}</p>
 
         <Button @click="changePassword" label="Change Password" icon="pi pi-plus" class="p-button-primary" />
         <DynamicDialog />
-
-        <h3>Welcome {{ store.userState.user.firstName }} {{ store.userState.user.lastName }}!</h3>
-        <p><strong>Email: </strong>{{ store.userState.user.email }}</p>
 
     </TabPanel>
     <TabPanel header="My Address">
@@ -148,7 +138,7 @@ data: { addressState: address }
 function changePassword() {
 const address = new Address();
 address.customerId = store.userState.user.id;
-dialog1.open(UpdatePassword, {
+dialog.open(UpdatePassword, {
 props: {
     header: 'Change Password',
     style: {

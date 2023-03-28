@@ -37,11 +37,9 @@
     
   <script setup>
   import $ from 'jquery';
-//   import { useRouter } from 'vue-router';
   import { reactive, inject } from "vue";
   import Button from 'primevue/button';
   
-  // const router = useRouter();
   const dialogRef = inject("dialogRef");
   const store = inject('store');
   const state = reactive({
@@ -53,11 +51,17 @@
   async function changePassword(e) {
     let newPassword = document.getElementById('newPassword');
     let newPasswordConfirm = document.getElementById('newPasswordConfirm');
-    // let currentPassword = document.getElementById('currentPassword');
+    let currentPassword = document.getElementById('currentPassword');
 
     let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$!@?])[a-zA-Z0-9#$!@?]{8,20}$/;
   
     if ( newPassword !== newPasswordConfirm)
+     return;
+
+    if ( newPassword === currentPassword)
+      return;
+
+     if (currentPassword !== state.userState.Password)
      return;
 
     if ( !newPassword.checkValidity())
@@ -89,14 +93,17 @@
         'method': 'post',
         'data': JSON.stringify(user)
       }).done((data) => {
-          store.userState.user['address']= data;
-          Object.assign(store.userState.user.address, data)
+          store.userState.user = data;
+          Object.assign(store.userState.user, data)
           dialogRef.value.close();
       });
       
     }
     
-  
+    function close() {
+      dialogRef.value.close();
+  }
+
   </script>
     
     <!-- Add "scoped" attribute to limit CSS to this component only -->
