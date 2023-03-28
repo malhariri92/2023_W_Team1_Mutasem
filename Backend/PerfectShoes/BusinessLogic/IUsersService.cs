@@ -9,9 +9,7 @@ namespace PerfectShoes.BusinessLogic
 
         public bool InsertUser(UserDto userDto);
 
-
         public bool UpdatePassword(UserDto userDto);
-
 
         public bool AddEmployee(EmployeeDto employeeDto);
 

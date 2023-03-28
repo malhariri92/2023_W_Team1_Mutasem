@@ -99,8 +99,9 @@ namespace PerfectShoes.BusinessLogic
             user2.Id = user.Id;
             _context.Entry(user2).State = EntityState.Modified;
             _context.SaveChanges();
-		}
-		
+            return _context.SaveChanges() > 0;
+        }
+
         public bool AddEmployee(EmployeeDto employeeDto)
         {
             Employee employee = new Employee
