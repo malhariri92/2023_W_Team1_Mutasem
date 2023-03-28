@@ -22,6 +22,7 @@ export default class Order {
         this.tax = 0.00,
         this.total = 0.00,
         this.lineItems = [],
-        this.status = ""
+        this.status = "",
+        this.customerId = 0
     }
 }

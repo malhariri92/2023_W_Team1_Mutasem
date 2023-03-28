@@ -22,13 +22,11 @@
                       oninput="this.setCustomValidity('')">
               </div>
               <div class="col-4">
-                <Calendar v-model="state.creditCard.exprDate" dateFormat="mm/y" required
-                    placeholder="Experation date *" view="month" oninvalid="this.setCustomValidity('experation date is required')"
+                <Calendar id="exprDate" class="custom" v-model="state.creditCard.exprDate"
+                    dateFormat="mm/yy"
+                    placeholder="Experation date * mm/yy" view="month" :manualInput="false"
+                    oninvalid="this.setCustomValidity('experation date is required')"
                         oninput="this.setCustomValidity('')"/>
-                  <!-- <input v-model="state.creditCard.exprDate" required type="text" class="form-control" placeholder="Expired date *"  minlength="5" maxlength="5"
-                      oninvalid="this.setCustomValidity('Expired date is required')"
-                      oninput="this.setCustomValidity('')"
-                      @keypress="ValidateMaskInput($event)"> -->
               </div>
           </div>
   
@@ -48,7 +46,7 @@
 </template>
       
 <script setup>
-  import { reactive, inject, provide } from "vue";
+  import { reactive, inject, provide, onMounted } from "vue";
   import $ from 'jquery'
   import Button from 'primevue/button';
   import { useDialog } from 'primevue/usedialog';
@@ -75,11 +73,12 @@
       }
   }
 
-//   function ValidateMaskInput(e) {
-//       if (IsNumber(e) && state.creditCard.exprDate.length === 2){
-//         state.creditCard.exprDate += '/';
-//       }
-//   }
+  onMounted(() => {
+    var dateField = document.getElementById('exprDate').children[0];
+    dateField.readOnly = false;
+    dateField.required = true;
+    dateField.setCustomValidity('experation date is required');
+});
 
   function UpsertCreditCard(e) {   
       if (!validateCreditCard()) return;
@@ -112,20 +111,8 @@
       
       <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
-  h1 {
-      margin: 0 auto;
-  }
-  
-  .addSpec {
-      color:blue;
-      cursor: pointer;
-      text-decoration: underline;
-  }
-  .addSpec:hover {
-      color:rgb(218, 28, 28);
-      cursor: pointer;
-  }
-  #addProduct {
-      overflow-x: hidden;
-  }
+  .custom {
+    width: 100%;
+    height: 38.18px;
+}
   </style>

@@ -38,18 +38,25 @@
                   In total there are {{ store.orders.value ? store.orders.value.length : 0 }} orders.
               </template>
           </DataTable>
+         
+          <DynamicDialog />
       </div>
   </div>
 </template>
 
 <script setup>
-import { inject, onMounted } from 'vue';
+import { inject, onMounted, provide } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import 'primeicons/primeicons.css';
 
+import { useDialog } from 'primevue/usedialog';
+import OrdersDetails from '../components/OrdersDetails.vue';
+
 
 const store = inject('store');
+const dialog = useDialog();
+provide('dialog', dialog);
 
 
 onMounted(() => {
@@ -57,8 +64,22 @@ onMounted(() => {
 });
 
 const onRowSelect = (event) => {
-    // add logic here to display the additional info
-    alert(event.data.id);
+    console.log(event.data)
+    dialog.open(OrdersDetails, {
+        props: {
+            header: 'Order Details',
+            style: {
+                width: '40vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true,
+        },
+        data: { Order: event.data }
+    });
+    
 };
 
 </script>

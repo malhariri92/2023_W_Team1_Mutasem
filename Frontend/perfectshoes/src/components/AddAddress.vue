@@ -15,9 +15,11 @@
                     oninput="this.setCustomValidity('')">
             </div>
             <div class="col-2">
-                <input v-model="state.state" required type="text" class="form-control" placeholder="State *" minlength="2" maxlength="2"
-                    oninvalid="this.setCustomValidity('State is required')"
-                    oninput="this.setCustomValidity('')">
+                <select v-model="state.state" class="form-select" required
+                    oninvalid="this.setCustomValidity('Select a state')" oninput="this.setCustomValidity('')">
+                     <option selected value=""></option>
+                     <option v-for="(item, index) in store.usStates" :key="index" :value="item">{{item}}</option>
+                </select>
             </div>
             <div class="col-3">
                 <input v-model="state.zip" required class="form-control" placeholder="Zip Code *" minlength="5" maxlength="5" 
@@ -52,10 +54,10 @@
   provide('dialog', dialog);
 
   
-  function AddAddress(e) {   
+  function AddAddress(e) {  
+    if(!document.forms['addAddress'].reportValidity()) return; 
+    e.preventDefault();
     if(header === 'Add Address') {
-      e.preventDefault();
-      
       $.ajax({
       headers: { 
       'Accept': 'application/json',
@@ -71,7 +73,6 @@
       });
 
     } if(header === 'Update Address'){
-      e.preventDefault();
       $.ajax({
       headers: { 
       'Accept': 'application/json',

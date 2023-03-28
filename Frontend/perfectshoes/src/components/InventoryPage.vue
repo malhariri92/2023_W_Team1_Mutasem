@@ -8,8 +8,13 @@
                 :globalFilterFields="['name', 'description', 'category.name']">
                 <template #header>
                     <div class="row g-3 justify-content-between flex">
-                        <div class="col-1">
+                        <div class="col-1 d-flex flex-row">
+                        <div>
                             <Button @click="addProduct" label="Product" icon="pi pi-plus" class="p-button-primary" />
+                        </div>
+                        <div>
+                            <Button v-if="store.userState.user.role === 'manager'" @click="addEmployee" label="Employee" icon="pi pi-plus" class="p-button-primary ms-1" />
+                        </div>
                         </div>
                         <div class="col-2 mt-4">
                             <span class="p-input-icon-right">
@@ -81,7 +86,9 @@ import SpeedDial from 'primevue/speeddial';
 import 'primeicons/primeicons.css';
 import { useDialog } from 'primevue/usedialog';
 import AddProduct from '@/components/AddProduct.vue'
+import AddEmployee from '@/components/AddEmployee.vue'
 import ProductState from '../store/ProductState';
+import EmployeeState from '../store/EmployeeState';
 import { FilterMatchMode } from 'primevue/api';
 import $ from 'jquery';
 import { useConfirm } from "primevue/useconfirm";
@@ -132,9 +139,28 @@ function addProduct() {
     });
 }
 
+function addEmployee() {
+    const state = new EmployeeState();
+    state.employee.Role = "admin"
+    dialog.open(AddEmployee, {
+        props: {
+            header: 'Add Employee',
+            style: {
+                width: '40vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true,
+        },
+        data: { employeeState: state }
+    });
+}
+
 function editProduct(p) {
     const state = new ProductState();
-    state.product = p.value;
+    Object.assign(state.product, p.value);
     state.product.specs = p.value.specs?.slice();
     state.specs = p.value.specs?.slice();
     state.categoryId = p.value.categoryId;

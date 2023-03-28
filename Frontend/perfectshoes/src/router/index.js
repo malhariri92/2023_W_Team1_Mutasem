@@ -11,6 +11,7 @@ import InventoryPage from '../components/InventoryPage.vue';
 import ShoppingCart from '../components/ShoppingCart.vue';
 import CheckoutPage from "../components/CheckoutPage.vue";
 import CustomerProfile from "../components/CustomerProfile.vue";
+import OrdersDetails from "../components/OrdersDetails.vue";
 
 const routes = [
     {
@@ -72,6 +73,11 @@ const routes = [
         path: "/customer",
         name: "CustomerProfile",
         component: CustomerProfile
+    },
+    {
+        path: "/orderDetails",
+        name: "OrderDetails",
+        component: OrdersDetails
     }
 
 ]

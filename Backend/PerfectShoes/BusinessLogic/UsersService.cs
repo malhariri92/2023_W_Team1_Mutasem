@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PerfectShoes.Models;
 using PerfectShoes.Models.DTO;
 using System.Collections.Generic;
 using System.Net;
+
 
 namespace PerfectShoes.BusinessLogic
 {
@@ -20,7 +20,11 @@ namespace PerfectShoes.BusinessLogic
             else
             {
                 return _context.Customers.Include(c => c.Address)
-                .Include(c => c.CreditCard).FirstOrDefault(e => authentificationDto.Email.Equals(e.Email) && authentificationDto.Password.Equals(e.Password));
+                    .Include(c => c.Orders).ThenInclude(o => o.LineItems).ThenInclude(p => p.Product)
+                    .Include(c => c.Orders).ThenInclude(o => o.CreditCard)
+                    .Include(c => c.CreditCard)
+                    .FirstOrDefault(e => authentificationDto.Email.Equals(e.Email)
+                        && authentificationDto.Password.Equals(e.Password));
             }
         }
 
@@ -28,13 +32,13 @@ namespace PerfectShoes.BusinessLogic
         {
             var user = new User
             {
-                //Id = userDto.Id,
-                Email = userDto.Email,
+                //Id = userDto.Id,
+                Email = userDto.Email,
                 Password = userDto.Password,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
             };
-            //check to see if they are already in the database
+            //check to see if they are already in the database
             if (userDto.Type == "employee")
                 return InsertEmployee(user);
             else return InsertCustomer(user);
@@ -44,11 +48,11 @@ namespace PerfectShoes.BusinessLogic
             Employee? first = _context.Employees.FirstOrDefault(e => user.Email.Equals(e.Email) && e.Password == null);
             if (first != null)
             {
-                first.FirstName = user.FirstName;
-                first.LastName = user.LastName;
+                //first.FirstName = user.FirstName;
+                //first.LastName = user.LastName;
                 first.Password = user.Password;
-                first.Role = "admin";
-                first.IsAdmin = true;
+                //first.Role = "admin";
+                //first.IsAdmin = true;
                 _context.Entry(first).State = EntityState.Modified;
             }
             return _context.SaveChanges() > 0;
@@ -68,15 +72,16 @@ namespace PerfectShoes.BusinessLogic
                 };
                 _context.Users.Add(first);
             }
-            else if(first.Password == null)
+            else if (first.Password == null)
             {
                 first.FirstName = user.FirstName;
                 first.LastName = user.LastName;
                 first.Password = user.Password;
-                _context.Entry(first).State= EntityState.Modified;
+                _context.Entry(first).State = EntityState.Modified;
             }
             return _context.SaveChanges() > 0;
         }//end of InsertCustomer method
+
 
         public bool UpdatePassword(UserDto userDto)
         {
@@ -94,6 +99,19 @@ namespace PerfectShoes.BusinessLogic
             user2.Id = user.Id;
             _context.Entry(user2).State = EntityState.Modified;
             _context.SaveChanges();
+		}
+		
+        public bool AddEmployee(EmployeeDto employeeDto)
+        {
+            Employee employee = new Employee
+            {
+                FirstName = employeeDto.FirstName,
+                LastName = employeeDto.LastName,
+                Email = employeeDto.Email,
+                Role = employeeDto.Role,
+                IsAdmin = employeeDto.IsAdmin,
+            };
+            _context.Employees.Add(employee);
             return _context.SaveChanges() > 0;
         }
     }

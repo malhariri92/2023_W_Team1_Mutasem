@@ -36,5 +36,21 @@ namespace PerfectShoes.Controllers
             return Ok(orders);
         }
 
+        [HttpPost("Fulfill", Name = "FulfillOrder")]
+        public ActionResult FulfillOrder(Order order)
+        {
+            if(_orderService.FulfillOder(order)) return Ok();
+            return BadRequest();
+        }
+        /*
+        [HttpGet(Name = "GetOrderById")]
+        public ActionResult<Order> Get(int id)
+        {
+            Order? order = _orderService.GetOrderbyId(id);
+            if (order == null) return NotFound();
+            return Ok(order);
+        }*/
     }
+
 }
+

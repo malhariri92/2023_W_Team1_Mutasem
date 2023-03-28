@@ -2,6 +2,7 @@
     <TabView ref="tabview1">
     <TabPanel header="Contact Info">
 
+
         <label for="fname">First Name</label>
         <input type="text" id="fname" name="fname" :value="store.userState.user.firstName" readonly><br>
         <label for="lname">Last Name</label>
@@ -12,44 +13,71 @@
 
         <Button @click="changePassword" label="Change Password" icon="pi pi-plus" class="p-button-primary" />
         <DynamicDialog />
+
+        <h3>Welcome {{ store.userState.user.firstName }} {{ store.userState.user.lastName }}!</h3>
+        <p><strong>Email: </strong>{{ store.userState.user.email }}</p>
+
     </TabPanel>
-    <TabPanel header="Address Info">
+    <TabPanel header="My Address">
 
         <div v-if="store.userState.user.address !== null">
-
-            <label for="addressLine1">Address Line 1</label>
-            <input type="text" id="ad1" :value="store.userState.user.address.addressLine1"><br>
-            <div v-if="store.userState.user.address.addressLine2 !== null">
-                 <label for="addressLine2">Address Line 2</label>
-                <input type="text" id="ad2" :value="store.userState.user.address.addressLine2"><br>
-            </div>
-            <label for="zipCode">ZipCode</label>
-            <input type="text" id="zip" :value="store.userState.user.address.zip"><br>
-            <label for="city">City</label>
-            <input type="text" id="city" :value="store.userState.user.address.city"><br>
-            <label for="state">State</label>
-            <input type="text" id="state" :value="store.userState.user.address.state"><br>
+            <h4>Shipping Address</h4>
+            <p> <strong>{{ store.userState.user.firstName }} {{ store.userState.user.lastName }} </strong></p>
+            <p> {{ store.userState.user.address.addressLine1 }},
+            {{ store.userState.user.address.addressLine2 }}</p>
+            <p> {{ store.userState.user.address.city }},
+            {{ store.userState.user.address.state }}
+            {{ store.userState.user.address.zip }}</p>
             <Button @click="updateAddress" label="Update Address" icon="pi pi-plus" class="p-button-primary"/>
-
         </div>
         <div v-if="store.userState.user.address === null">
+            <h3>You have not added your address!</h3>
             <Button @click="addAddress" label="Add Address" icon="pi pi-plus" class="p-button-primary" />
         </div>
         <DynamicDialog />
 
     </TabPanel>
-    <TabPanel header="Payment Info">
+    <TabPanel header="My Credit Card">
         <div v-if="store.userState.user.creditCard !== null">
-                <label for="creditCard">Last 4 digits of Credit Card</label><br>
-                <input type="text" id="creditCard" 
-                :value="store.userState.user.creditCard.cardNumber.substring(store.userState.user.creditCard.cardNumber.length - 4, 
-                store.userState.user.creditCard.cardNumber.length)"><br>
+            <h4>Payment Information</h4>
+            <p> <strong>Card Holder:</strong> {{ store.userState.user.creditCard.nameOnCard }}</p>
+            <p><strong>Ending in:</strong> {{ store.userState.user.creditCard.cardNumber.slice(12) }}</p>
+            <p><strong>Expires in:</strong> {{ new Date(store.userState.user.creditCard.exprDate).getMonth() + 1 }} /
+            {{ new Date(store.userState.user.creditCard.exprDate).getFullYear() }}</p>
                 <Button @click="editCreditCard" label="Update Credit Card" icon="pi pi-plus" class="p-button-primary" />
         </div>
-        <div v-else><Button @click="addCreditCard" label="Add Credit Card" icon="pi pi-plus" class="p-button-primary" /></div>
-        <DynamicDialog />
+        <div v-else>
+            <h3>You have not added your credit card!</h3>
+            <Button @click="addCreditCard" label="Add Credit Card" icon="pi pi-plus" class="p-button-primary" />
+        </div>
     </TabPanel>
     <TabPanel header="Order History">
+        <Accordion :multiple="false" :activeIndex="[0]">
+            <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="new Date(order.date).toString().slice(4,13)" :key="id">
+               <div class="row g-3">
+                    <div class="col"><label> Name</label></div>
+                    <div class="col"><label>Price</label></div>
+                    <div class="col"><label>Quantity</label></div>
+               </div>
+                <div v-for="(item, i) in order.lineItems" :key="i" class="row g-3">
+                    <div class="col-sm">{{ item.product.name }}</div>
+                    <div class="col-sm">${{ item.product.price.toFixed(2) }}</div>   
+                    <div class="col-sm">{{ item.quantity }}</div>   
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-sm"> <label>Subtotal:</label>${{order.subtotal.toFixed(2)}}</div>
+                    <div class="col-sm"><label>Tax:</label>${{order.tax.toFixed(2) }}</div>
+                    <div class="col-sm"><label>Total:</label>  ${{ order.total.toFixed(2) }}</div>
+                </div>
+                <div class="row g-3 justify-content-center mt-2"><label>Shipping Address:</label>  {{ order.shippingAddress}}</div>
+                <div class="row g-3 mt-2">
+                    <div class="col"> <label>Order Date:</label>{{ order.date.replace('T', ' ').slice(0, 19) }}</div>
+                    <div class="col"><label>Order Status:</label> {{ order.status }}</div>
+                    <div class="col" v-if="order.shipDate != null"><label>Ship Date:</label> {{ order.shipDate  }} </div>
+                    <div class="col" v-else><label>Ship Date:</label> Not Shipped yet</div>
+                </div>
+            </AccordionTab>
+        </Accordion>
         <!-- add logic to show customer order history here -->
     </TabPanel>
 </TabView>
@@ -66,40 +94,42 @@
     import CreditCardState from '../store/CreditCardState';
     import AddCreditCard from './AddCreditCard.vue';
     import UpdatePassword from "./UpdatePassword.vue";
+    import Accordion from 'primevue/accordion';
+    import AccordionTab from 'primevue/accordiontab';
 
 onMounted(() => {
 console.log(store.userState.user)
 });
 
 const store = inject("store");
-const dialog1 = useDialog();
-const dialog2 = useDialog();
-provide('dialog', dialog1);
-provide('dialog', dialog2);
+const dialog = useDialog();
+
+provide('dialog', dialog);
 
 function addAddress() {
-const address = new Address();
-address.customerId = store.userState.user.id;
-dialog1.open(AddAddress, {
-props: {
-    header: 'Add Address',
-    style: {
-        width: '40vw'
+    const address = new Address();
+    address.customerId = store.userState.user.id;
+    dialog.open(AddAddress, {
+    props: {
+        header: 'Add Address',
+        style: {
+            width: '40vw'
+        },
+        breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw'
+        },
+        modal: true,
     },
-    breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-    },
-    modal: true,
-},
-data: { addressState: address }
-});
+    data: { addressState: address }
+    });
 }
 
 function updateAddress() {
 const address = new Address();
+Object.assign(address, store.userState.user.address);
 address.customerId = store.userState.user.id;
-dialog1.open(AddAddress, {
+dialog.open(AddAddress, {
 props: {
     header: 'Update Address',
     style: {
@@ -137,10 +167,10 @@ data: { addressState: address }
 function editCreditCard() {
 const state = new CreditCardState();
 state.customerId = store.userState.user.id;
-state.creditCard = store.userState.user.creditCard;
+Object.assign(state.creditCard ,store.userState.user.creditCard);
 state.creditCard.exprDate = new Date(state.creditCard.exprDate);
 
-dialog2.open(AddCreditCard, {
+dialog.open(AddCreditCard, {
 props: {
     header: 'Edit Credit Card',
     style: {
@@ -159,7 +189,7 @@ data: { creditCardState: state }
 function addCreditCard() {
 const state = new CreditCardState();
 state.customerId = store.userState.user.id;
-dialog2.open(AddCreditCard, {
+dialog.open(AddCreditCard, {
 props: {
     header: 'Add Credit Card',
     style: {
@@ -187,11 +217,16 @@ border: none;
 border-bottom: 2px solid blue;
 }
 label{
-margin-right: 3em;
+margin-right: 1em;
 font-weight: bold;
 }
 
 Button {
 margin: 1em;
+}
+
+.p-accordion{
+    width: 50%;
+    margin: 0 auto;
 }
 </style>
