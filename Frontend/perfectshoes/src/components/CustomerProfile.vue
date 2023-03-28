@@ -14,23 +14,17 @@
     <TabPanel header="Address Info">
 
         <div v-if="store.userState.user.address !== null">
-
-            <label for="addressLine1">Address Line 1</label>
-            <input type="text" id="ad1" :value="store.userState.user.address.addressLine1"><br>
-            <div v-if="store.userState.user.address.addressLine2 !== null">
-                 <label for="addressLine2">Address Line 2</label>
-                <input type="text" id="ad2" :value="store.userState.user.address.addressLine2"><br>
-            </div>
-            <label for="zipCode">ZipCode</label>
-            <input type="text" id="zip" :value="store.userState.user.address.zip"><br>
-            <label for="city">City</label>
-            <input type="text" id="city" :value="store.userState.user.address.city"><br>
-            <label for="state">State</label>
-            <input type="text" id="state" :value="store.userState.user.address.state"><br>
+            <h4>Shipping Address</h4>
+            <p> <strong>{{ store.userState.user.firstName }} {{ store.userState.user.lastName }} </strong></p>
+            <p> {{ store.userState.user.address.addressLine1 }},
+            {{ store.userState.user.address.addressLine2 }}</p>
+            <p> {{ store.userState.user.address.city }},
+            {{ store.userState.user.address.state }}
+            {{ store.userState.user.address.zip }}</p>
             <Button @click="updateAddress" label="Update Address" icon="pi pi-plus" class="p-button-primary"/>
-
         </div>
         <div v-if="store.userState.user.address === null">
+            <h3>You have not added your address!</h3>
             <Button @click="addAddress" label="Add Address" icon="pi pi-plus" class="p-button-primary" />
         </div>
         <DynamicDialog />
@@ -38,14 +32,17 @@
     </TabPanel>
     <TabPanel header="Payment Info">
         <div v-if="store.userState.user.creditCard !== null">
-                <label for="creditCard">Last 4 digits of Credit Card</label><br>
-                <input type="text" id="creditCard" 
-                :value="store.userState.user.creditCard.cardNumber.substring(store.userState.user.creditCard.cardNumber.length - 4, 
-                store.userState.user.creditCard.cardNumber.length)"><br>
+            <h4>Payment Information</h4>
+            <p> <strong>Card Holder:</strong> {{ store.userState.user.creditCard.nameOnCard }}</p>
+            <p><strong>Ending in:</strong> {{ store.userState.user.creditCard.cardNumber.slice(12) }}</p>
+            <p><strong>Expires in:</strong> {{ new Date(store.userState.user.creditCard.exprDate).getMonth() + 1 }} /
+            {{ new Date(store.userState.user.creditCard.exprDate).getFullYear() }}</p>
                 <Button @click="editCreditCard" label="Update Credit Card" icon="pi pi-plus" class="p-button-primary" />
         </div>
-        <div v-else><Button @click="addCreditCard" label="Add Credit Card" icon="pi pi-plus" class="p-button-primary" /></div>
-        <DynamicDialog />
+        <div v-else>
+            <h3>You have not added your credit card!</h3>
+            <Button @click="addCreditCard" label="Add Credit Card" icon="pi pi-plus" class="p-button-primary" />
+        </div>
     </TabPanel>
     <TabPanel header="Order History">
         <Accordion :multiple="true" :activeIndex="[0]">
@@ -96,34 +93,34 @@ console.log(store.userState.user)
 });
 
 const store = inject("store");
-const dialog1 = useDialog();
-const dialog2 = useDialog();
-provide('dialog', dialog1);
-provide('dialog', dialog2);
+const dialog = useDialog();
+
+provide('dialog', dialog);
 
 function addAddress() {
-const address = new Address();
-address.customerId = store.userState.user.id;
-dialog1.open(AddAddress, {
-props: {
-    header: 'Add Address',
-    style: {
-        width: '40vw'
+    const address = new Address();
+    address.customerId = store.userState.user.id;
+    dialog.open(AddAddress, {
+    props: {
+        header: 'Add Address',
+        style: {
+            width: '40vw'
+        },
+        breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw'
+        },
+        modal: true,
     },
-    breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-    },
-    modal: true,
-},
-data: { addressState: address }
-});
+    data: { addressState: address }
+    });
 }
 
 function updateAddress() {
 const address = new Address();
+Object.assign(address, store.userState.user.address);
 address.customerId = store.userState.user.id;
-dialog1.open(AddAddress, {
+dialog.open(AddAddress, {
 props: {
     header: 'Update Address',
     style: {
@@ -142,10 +139,10 @@ data: { addressState: address }
 function editCreditCard() {
 const state = new CreditCardState();
 state.customerId = store.userState.user.id;
-state.creditCard = store.userState.user.creditCard;
+Object.assign(state.creditCard ,store.userState.user.creditCard);
 state.creditCard.exprDate = new Date(state.creditCard.exprDate);
 
-dialog2.open(AddCreditCard, {
+dialog.open(AddCreditCard, {
 props: {
     header: 'Edit Credit Card',
     style: {
@@ -164,7 +161,7 @@ data: { creditCardState: state }
 function addCreditCard() {
 const state = new CreditCardState();
 state.customerId = store.userState.user.id;
-dialog2.open(AddCreditCard, {
+dialog.open(AddCreditCard, {
 props: {
     header: 'Add Credit Card',
     style: {

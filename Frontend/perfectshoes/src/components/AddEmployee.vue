@@ -4,12 +4,12 @@
         <div class="row g-3 justify-content-center flex" >
               <div class="col-4">
                   <input v-model="state.employee.FirstName" required type="text" class="form-control" placeholder="Firstname *"
-                      oninvalid="this.setCustomValidity('FirstName is required')"
+                      oninvalid="this.setCustomValidity('First Name is required')"
                       oninput="this.setCustomValidity('')">
               </div>
               <div class="col-4">
                 <input v-model="state.employee.LastName" required type="text" class="form-control" placeholder="Lastname *"
-                      oninvalid="this.setCustomValidity('Lastname is required')"
+                      oninvalid="this.setCustomValidity('Last name is required')"
                       oninput="this.setCustomValidity('')">
               </div>
         </div>
@@ -20,22 +20,22 @@
                       oninput="this.setCustomValidity('')">
               </div>
               <div class="col-4">
-                <Dropdown v-model="state.employee.Role" :options="RolesEnum" placeholder="Select a role" class="w-full md:w-14rem" 
+                <Dropdown v-model="state.employee.Role" :options="RolesEnum" placeholder="Select a role" class="w-full md:w-14rem custom" 
                     oninvalid="this.setCustomValidity('Role is required')"
                     oninput="this.setCustomValidity('')"/>
               </div>
         </div>
-
+<!-- 
         <div class="row g-3 justify-content-center mt-2">
               <div class="col-8">
                   <input id="password" v-model="state.employee.Password" required type="password" class="form-control" placeholder="Password *" 
                       oninput="this.setCustomValidity('')">
               </div>
-        </div>
+        </div> -->
 
         <div class="row g-1 justify-content-center mt-2">
-            <Button label="Cancel" @click="close" class="p-button-danger col-4 ms-1"/>
-            <Button type="submit" label="Save" @click="insertEmployee($event)" class="p-button-success col-4 ms-1"/>
+            <Button label="Cancel" @click="close" size="large" class="p-button-danger col-4 ms-1"/>
+            <Button type="submit" label="Save" size="small" @click="insertEmployee($event)" class="p-button-success col-4 ms-1"/>
         </div>
     </form>
     <DynamicDialog />
@@ -111,20 +111,8 @@ function close() {
     
     <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-    margin: 0 auto;
-}
-
-.addSpec {
-    color:blue;
-    cursor: pointer;
-    text-decoration: underline;
-}
-.addSpec:hover {
-    color:rgb(218, 28, 28);
-    cursor: pointer;
-}
-#addProduct {
-    overflow-x: hidden;
+.custom {
+    width: 100%;
+    height: 38.18px;
 }
 </style>

@@ -160,7 +160,7 @@ function addEmployee() {
 
 function editProduct(p) {
     const state = new ProductState();
-    state.product = p.value;
+    Object.assign(state.product, p.value);
     state.product.specs = p.value.specs?.slice();
     state.specs = p.value.specs?.slice();
     state.categoryId = p.value.categoryId;

@@ -2,14 +2,10 @@
   <div>
     <nav>
       <div class="nav nav-tabs justify-content-end mb-4" role="tablist">
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('test')"
-        role="tab">Test</a>
         <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('products')"
         role="tab">Shop</a>
         <a v-if="isAdmin()" class="nav-item nav-link" data-toggle="tab" @click="doRoute('inventory')"
         role="tab">Inventory</a>
-        <a class="nav-item nav-link" data-toggle="tab" @click="doRoute('checkout')"
-        role="tab">Checkout temp</a>
         <a v-if="isAdmin()" class="nav-item nav-link" data-toggle="tab" @click="doRoute('orders')"
         role="tab">Orders</a>
         <a v-if="isCustomer" class="nav-item nav-link" title="Shopping Cart" data-toggle="tab tooltip" @click="doRoute('cart')"
