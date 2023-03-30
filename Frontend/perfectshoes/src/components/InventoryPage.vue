@@ -29,7 +29,7 @@
                 <template #empty>
                     No product found.
                 </template>
-                <Column field="name" header="Name">
+                <Column field="name" header="Name" sortable>
                     <template #body="slotProps">
                         <h4>{{ slotProps.data.name }}</h4>
                     </template>
@@ -44,17 +44,17 @@
                         <p :title="slotProps.data.description">{{ slotProps.data.description }}</p>
                     </template>
                 </Column>
-                <Column field="price" header="Price">
+                <Column field="price" header="Price" sortable>
                     <template #body="slotProps">
                         ${{ slotProps.data.price.toFixed(2) }}
                     </template>
                 </Column>
-                <Column field="category.name" header="Category">
+                <Column field="category.name" header="Category" sortable>
                     <template #body="slotProps">
                         <strong> {{ slotProps.data.category.name }}</strong>
                     </template>
                 </Column>
-                <Column header="Status">
+                <Column field="quantity" header="Status" sortable>
                     <template #body="slotProps">
                         <span class="product-badge outofstock" v-if="slotProps.data.quantity == 0"> OUTOFSTOCK</span>
                         <span class="product-badge lowstock" v-else-if="slotProps.data.quantity <= 10">
