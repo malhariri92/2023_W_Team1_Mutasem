@@ -61,14 +61,18 @@
                 </div>
                 <div class="row g-3 justify-content-center mt-2"><label>Shipping Address:</label>  {{ order.shippingAddress}}</div>
                 <div class="row g-3 mt-2">
-                    <div class="col"> <label>Order Date:</label>{{ order.date.replace('T', ' ').slice(0, 19) }}</div>
-                    <div class="col"><label>Order Status:</label> {{ order.status }}</div>
-                    <div class="col" v-if="order.shipDate != null"><label>Ship Date:</label> {{ order.shipDate  }} </div>
-                    <div class="col" v-else><label>Ship Date:</label> Not Shipped yet</div>
+                    <div class="col"> <label>Order Date:</label></div>
+                    <div class="col"><label>Order Status:</label></div>
+                    <div class="col"><label>Ship Date:</label></div>
+                </div>
+                <div class="row g-3">
+                    <div class="col">{{ order.date.replace('T', ' ').slice(0, 19) }}</div>
+                    <div class="col">{{ order.status }}</div>
+                    <div class="col" v-if="order.shipDate != null">{{ order.shipDate.replace('T', ' ').slice(0, 19)  }} </div>
+                    <div class="col" v-else> Not Shipped yet</div>
                 </div>
             </AccordionTab>
         </Accordion>
-        <!-- add logic to show customer order history here -->
     </TabPanel>
 </TabView>
 </template>
