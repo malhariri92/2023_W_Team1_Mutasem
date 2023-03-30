@@ -11,19 +11,19 @@
                   No Order found.
               </template>
               
-              <Column field="id" header="Order id">
+              <Column field="id" header="Order id" sortable>
                   <template #body="slotProps">
                       {{ slotProps.data.id }}
                   </template>
               </Column>
 
-              <Column field="customerName" header="Customer">
+              <Column field="customerName" header="Customer" sortable>
                   <template #body="slotProps">
                       {{ slotProps.data.customerName }}
                   </template>
               </Column>
 
-              <Column field="customerEmail" header="Email">
+              <Column field="customerEmail" header="Email" sortable>
                   <template #body="slotProps">
                       {{ slotProps.data.customerEmail }}
                   </template>
