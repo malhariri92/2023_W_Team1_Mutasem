@@ -1,42 +1,35 @@
 <template>
-    <form id=orderDetails class="col-lg-10 offset-lg-1 ">
+    <form id=orderDetails class="text-center">
         <div>
             <div class="row g-3 justify-content-center flex">
-                <div class="col-3">
+                <div class="col-5">
                     <label for="cusName">Customer Name</label>
-                    <input type="text" id="cusName" name="cusName"
-                        :value="state.customerName" readonly><br>
+                    <p>{{ state.customerName }}</p>
                 </div>
-                <div class="col-3">
+                <div class="col-5">
                     <label for="cusEmail">Email</label>
-                    <input type="text" id="cusEmail" name="cusEmail" :value="state.customerEmail" readonly><br>
+                    <p>{{ state.customerEmail }}</p>
                 </div>
             </div>
             <div class="row g-3 justify-content-center mt-2">
-                <div class="col-3">
-                    <label for="cusAdd">Customer Address</label>
-                    <p>{{ state.shippingAddress }}</p>
-                </div>
+                 <label>Customer Address</label>
+                 {{ state.shippingAddress }}                
             </div>
-            <div class="row g-3 justify-content-center flex">
-                <div class="col-3">
-                    <label for="subTotal">Subtotal $</label>
-                    <input type="text" id="subTotal" name="subTotal" :value="state.subtotal" readonly><br>
-                </div>
-                <div class="col-3">
-                    <label for="tax">Tax $</label>
-                    <input type="text" id="tax" name="tax" :value="state.tax" readonly><br>
-                </div>
-                <div class="col-3">
-                    <label for="total">Total $</label>
-                    <input type="text" id="total" name="total" :value="state.total" readonly><br>
-                </div>
+            <div class="row g-3 mt-2">
+                    <div class="col"><label> Name</label></div>
+                    <div class="col"><label>Price</label></div>
+                    <div class="col"><label>Quantity</label></div>
             </div>
-            <div class="row g-3 justify-content-center mt-2">
-                <div class="col-3">
-                    <p>Placeholder</p>
-                </div>
+            <div v-for="(item, i) in state.lineItems" :key="i" class="row g-3">
+                    <div class="col">{{ item.product.name }}</div>
+                    <div class="col">${{ item.product.price.toFixed(2) }}</div>   
+                    <div class="col">{{ item.quantity }}</div>   
             </div>
+            <div class="row g-3 mt-2">
+                    <div class="col"> <label>Subtotal:</label>${{state.subtotal.toFixed(2)}}</div>
+                    <div class="col"><label>Tax:</label>${{state.tax.toFixed(2) }}</div>
+                    <div class="col"><label>Total:</label>  ${{ state.total.toFixed(2) }}</div>
+             </div>
             <div class="row g-3 justify-content-center mt-2">
                 <div class="col-3">
                     <Button label="Fullfill Order" icon="primary" @click="fullfilOrder()"></Button>
@@ -60,8 +53,9 @@
 import { reactive, inject } from 'vue'
 import Button from 'primevue/button';
 import $ from 'jquery'
+//import store from '@/store';
 const dialogRef = inject("dialogRef");
-// const store = inject('store');
+const store = inject('store');
 
 const state = reactive(dialogRef.value.data.Order);
 
@@ -76,8 +70,16 @@ function fullfilOrder() {
             'method': 'post',
             'data': JSON.stringify(state)
         }).done(() => {
-            console.log("Order is fulfilled")
-            alert("Order fulfilled");
+            store.methods.loadOrders();
+            dialogRef.value.close();
     });   
 }
+
 </script>
+
+<style scoped>
+label{
+font-weight: bold;
+}
+
+</style>
