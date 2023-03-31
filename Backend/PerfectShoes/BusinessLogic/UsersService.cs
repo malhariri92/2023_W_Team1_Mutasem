@@ -87,18 +87,14 @@ namespace PerfectShoes.BusinessLogic
         {
             var user = new User
             {
+                Id = userDto.Id,
                 Email = userDto.Email,
                 Password = userDto.Password,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
             };
+            _context.Entry(user).State = EntityState.Modified;
 
-            _context.Users.Update(user);
-            User user2 = _context.Users.Find(userDto.Id);
-            _context.SaveChanges();
-            user2.Id = user.Id;
-            _context.Entry(user2).State = EntityState.Modified;
-            _context.SaveChanges();
             return _context.SaveChanges() > 0;
         }
 

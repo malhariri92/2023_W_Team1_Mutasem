@@ -5,8 +5,6 @@
         <p><strong>Email: </strong>{{ store.userState.user.email }}</p>
 
         <Button @click="changePassword" label="Change Password" icon="pi pi-plus" class="p-button-primary" />
-        <DynamicDialog />
-
     </TabPanel>
     <TabPanel header="My Address">
 
@@ -43,7 +41,7 @@
     </TabPanel>
     <TabPanel header="Order History">
         <Accordion :multiple="false" :activeIndex="[0]">
-            <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="new Date(order.date).toString().slice(4,13)" :key="id">
+            <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="new Date(order.date).toString().slice(4,15)" :key="id">
                <div class="row g-3">
                     <div class="col"><label> Name</label></div>
                     <div class="col"><label>Price</label></div>

@@ -5,7 +5,7 @@
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink
              LastPageLink CurrentPageReport RowsPerPageDropdown" :rowHover="true" :rowsPerPageOptions="[5, 10, 25, 50]"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" :filters="filters1"
-                :globalFilterFields="['name', 'description', 'category.name']">
+                :globalFilterFields="['name', 'description', 'category.name']" removableSort>
                 <template #header>
                     <div class="row g-3 justify-content-between flex">
                         <div class="col-1 d-flex flex-row">

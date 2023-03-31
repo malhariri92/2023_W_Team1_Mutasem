@@ -24,7 +24,9 @@
       </div>
       <div class="buttons">
         <button class="btn btn-primary col-4 ms-1" @click="back">Back </button>
-        <button class="btn btn-success col-4 ms-1" @click="addToCart">Add to Cart </button>
+        <button v-if="state.product.quantity > 0" class="btn btn-success col-4 ms-1" @click="addToCart">Add to Cart </button>
+        <button v-else class="btn btn-danger col-4 ms-1" disabled
+        style="text-decoration: line-through;">Out of stock </button>
         <div style="display:none; margin: 0 auto" id="msg" class="alert alert-success mt-2 col-8" role="alert">
           Product was added to your cart!
         </div>

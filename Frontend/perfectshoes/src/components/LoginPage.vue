@@ -221,12 +221,11 @@ p.error {
 }
 
 .divider {
-  width: 100%;
+  width: 32%;
   height: 20px;
   border-bottom: 1px solid black;
   text-align: center;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin: 30px auto;
 }
 
 .divider-title {

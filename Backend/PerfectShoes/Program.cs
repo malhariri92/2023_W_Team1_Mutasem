@@ -20,7 +20,9 @@ builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<ICreditCardService, CreditCardService>();
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Database"),
+        providerOptions => providerOptions.EnableRetryOnFailure());
+    
 });
 
 builder.Services.AddCors(options =>

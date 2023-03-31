@@ -2,10 +2,10 @@
   <div>
       <div style="width: 90%; margin: 0 auto;">
           <DataTable :paginator="true" :value="store.orders.value" responsiveLayout="scroll" :rows="5"
-              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink
+              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink 
            LastPageLink CurrentPageReport RowsPerPageDropdown" :rowHover="true" :rowsPerPageOptions="[5, 10, 25, 50]" 
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
-               @rowSelect="onRowSelect"  selectionMode="single" :metaKeySelection="false">
+               @rowSelect="onRowSelect"  selectionMode="single" :metaKeySelection="false" removableSort>
 
               <template #empty>
                   No Order found.
