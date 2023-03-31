@@ -33,7 +33,9 @@
                     oninput="this.setCustomValidity('')">
             </div>
             <div class="col-4">
-                <input v-model="state.price" type="number" step="0.01" class="form-control" min="0" placeholder="Price *" required>
+                <input v-model="state.price" type="number" step="0.01" class="form-control" min="0" placeholder="Price *" required
+                    oninvalid="this.setCustomValidity('Price is required')"
+                    oninput="this.setCustomValidity('')">
             </div>
         </div>
         <div class="row g-3 justify-content-center mt-2">
@@ -146,12 +148,13 @@ function removeSpec(index) {
 }
 
 function validateProduct(){
-    if (state.product.categoryId <= 0 |
-    state.product.name === "" |
-    state.product.description === "" |
-    state.product.imageUrl === "" |
-    state.product.price <= 0.00 |
-    state.product.quantity < 0) return false;
+    if (state.product.categoryId <= 0 ||
+    state.product.name === "" ||
+    state.product.description === "" ||
+    state.product.imageUrl === "" ||
+    state.product.price <= 0.00 ||
+    state.product.quantity < 0 ||
+    state.product.quantity === '') return false;
 
     if(state.product.specs.length > 0) {
         for(let i = 0; i < state.product.specs.length; i++) {
@@ -168,6 +171,7 @@ function insertProduct(e) {
     state.product.price = state.price;
     state.product.quantity = state.qty;
     
+    console.log(state.product.quantity);
     if (!validateProduct()) return;
     e.preventDefault();
     
