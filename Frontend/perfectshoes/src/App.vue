@@ -33,7 +33,6 @@ return (store.userState.user === null | !isAdmin())
 const router = useRouter();
 
 router.beforeEach((to, from, next) => {
-      
       if(to.path === '/login') {
         if(isAdmin()) {
           next('/inventory');
@@ -43,6 +42,15 @@ router.beforeEach((to, from, next) => {
         }
         else {
           next();
+        }
+      }
+      else if(to.path === '/inventory' || to.path === '/orders')
+      {
+        if (isAdmin()) {
+          next();
+        }
+        else {
+          next('/')
         }
       }
       else {
