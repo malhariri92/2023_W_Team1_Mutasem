@@ -84,7 +84,7 @@
     {
       state.products = store.products.value?.filter(x => (x.name.toLowerCase().includes(state.filters.toLocaleLowerCase())
       &&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase())) ||
-      (x.name.toLowerCase().includes(state.filters.toLowerCase())&&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase())) || 
+      (x.description.toLowerCase().includes(state.filters.toLowerCase())&&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase())) || 
       x.category.name.toLowerCase().includes(state.filters.toLowerCase())&&x.category.name.toLowerCase().includes(categoryId.value.toLowerCase()))
     }
   }
