@@ -50,8 +50,17 @@ router.beforeEach((to, from, next) => {
           next();
         }
         else {
-          next('/')
+          next('/');
         }
+      }
+      else if(to.path ==='/customer')
+      {
+        if(store.userState.user!==null){
+          next();
+        } else {
+          next('/');
+        }
+
       }
       else {
         next();
