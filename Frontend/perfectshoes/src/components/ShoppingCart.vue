@@ -28,11 +28,11 @@
             <p>Subtotal cost: ${{ store.cart.order.subtotal.toFixed(2) }}</p>
             <p>Tax: ${{ store.cart.order.tax.toFixed(2) }}</p>
             <p>Total: ${{ store.cart.order.total.toFixed(2) }}</p>
-            <Button label="Checkout As Guest" class="p-button-primary m-2" @click="router.push('checkout')"
+            <Button label="Checkout As Guest" class="p-button-primary m-2" @click="checkout()"
             v-if="store.userState.user === null"></Button>
             <Button label="Login and checkout" class="p-button-success m-2" @click="loginAndCheckout()"
             v-if="store.userState.user === null"></Button>
-            <Button label="Checkout" class="p-button-success" @click="router.push('checkout')"
+            <Button label="Checkout" class="p-button-success" @click="checkout()"
             v-if="store.userState.user !== null"></Button>
             <DynamicDialog />
             </div>
@@ -42,6 +42,12 @@
             <h3>Your cart is empty!</h3>
             <Button label="Add Some Items" class="p-button-primary p-button-sm" @click="router.push('/')"></Button>
         </div>
+        <div id="msg" style="display: none">
+            <div style="width: 50%; margin: 0 auto" class="alert alert-danger">
+                 Sorry, the followiing product/s are no longer available. Please remove them to continue.
+                <p v-for="item in state.removedProducts" :key="item.id">{{item.name}}</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -49,10 +55,11 @@
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
-import { onBeforeMount, inject, provide } from 'vue'
+import { onBeforeMount, inject, provide, reactive } from 'vue'
 import { useRouter } from 'vue-router';
 import { useDialog } from 'primevue/usedialog';
 import LoginPage from '../components/LoginPage.vue';
+import $ from 'jquery';
 
 
 const dialog = useDialog();
@@ -60,7 +67,12 @@ provide('dialog', dialog);
 
 const router = useRouter();
 const store = inject('store');
-const taxRate = .08
+const taxRate = .08;
+const state = reactive({
+    products: [],
+    removedProducts: []
+});
+
 
 // Loop through the price of items in cart and get the subTotal
 function subTotal() {
@@ -73,7 +85,8 @@ function subTotal() {
 
 function emptyCart() {
     store.cart.order.lineItems = []
-    calcCost()
+    calcCost();
+    $("#msg").hide();
 }
 function increaseQuantity(index) {
     store.cart.order.lineItems[index].quantity++    
@@ -88,9 +101,13 @@ function decreaseQuantity(index) {
     
 }
 
-function deleteProduct(index) {
+async function deleteProduct(index) {
     store.cart.order.lineItems.splice(index, 1);
-    calcCost()
+    calcCost();
+    if(await verifyProduct()) {
+        state.removedProducts = [];
+        $("#msg").hide();
+    }
 }
 
 function calcCost() {
@@ -100,11 +117,11 @@ function calcCost() {
     store.methods.persistCart();
 }
 
-function loginAndCheckout() {
-    store.isLogingInAndSigningOut = true
-    dialog.open(LoginPage, {
+async function loginAndCheckout() {
+    store.isLogingInAndSigningOut = true;
+    if(await verifyProduct()) {
+        dialog.open(LoginPage, {
               props: {
-                header: 'Login',
                   style: {
                     width: '50vw',
                   }, 
@@ -116,15 +133,42 @@ function loginAndCheckout() {
               },    
                   
           });
-        
-   
+    } else {
+        $("#msg").show();
+    }
 }
 
-
 onBeforeMount(() => {
-    calcCost()
-})
+    calcCost();
+});
 
+async function checkout() {
+    store.methods.loadProducts();
+    if (await verifyProduct()) {
+        router.push('/checkout')
+    }
+    else {
+        $("#msg").show();
+    }
+}
+async function verifyProduct() {
+    await store.methods.loadProducts();
+    state.products = store.products.value;
+    state.removedProducts = [];
+    let isProduct = false;
+    for (let i = 0; i < store.cart.order.lineItems.length; i++) {
+        isProduct = false;
+        for (let j = 0; j < state.products.length; j++) {
+            if (store.cart.order.lineItems[i].product.id == state.products[j].id) {
+                isProduct = true;
+            }
+        }      
+        if(!isProduct) {
+            state.removedProducts.push(store.cart.order.lineItems[i].product);
+        }
+    }
+    return state.removedProducts.length === 0;
+}
 </script>
 <style scoped>
 

@@ -40,7 +40,7 @@
         </div>
     </TabPanel>
     <TabPanel header="Order History">
-        <Accordion :multiple="false" :activeIndex="[0]">
+        <Accordion v-if="store.userState.user.orders.length != 0" :multiple="false" :activeIndex="[0]">
             <AccordionTab v-for="(order, id) in store.userState.user.orders"  :header="new Date(order.date).toString().slice(4,15)" :key="id">
                <div class="row g-3">
                     <div class="col"><label> Name</label></div>
@@ -71,6 +71,9 @@
                 </div>
             </AccordionTab>
         </Accordion>
+        <div v-else>
+            You have not placed any orders!
+        </div>
     </TabPanel>
 </TabView>
 </template>
@@ -118,6 +121,7 @@ function addAddress() {
 }
 
 function updateAddress() {
+console.log(store.userState.user)
 const address = new Address();
 Object.assign(address, store.userState.user.address);
 address.customerId = store.userState.user.id;

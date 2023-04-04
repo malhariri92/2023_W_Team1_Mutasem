@@ -187,6 +187,8 @@ function insertProduct(e) {
       }).done( () => {
         Object.assign(state, new ProductState());
         store.methods.loadProducts();
+        store.methods.loadCategories();
+        state.categories = store.categories;
         $("#msg").show().delay(5000).fadeOut();
       });
     }
@@ -201,6 +203,8 @@ function insertProduct(e) {
         'data': JSON.stringify(state.product)
       }).done( () => {
         store.methods.loadProducts();
+        store.methods.loadCategories();
+        state.categories = store.categories;
         $("#editmsg").show().delay(5000).fadeOut();
       });
     }

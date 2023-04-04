@@ -23,8 +23,10 @@ namespace PerfectShoes.BusinessLogic
                     .Include(c => c.Orders).ThenInclude(o => o.LineItems).ThenInclude(p => p.Product)
                     .Include(c => c.Orders).ThenInclude(o => o.CreditCard)
                     .Include(c => c.CreditCard)
-                    .FirstOrDefault(e => authentificationDto.Email.Equals(e.Email)
-                        && authentificationDto.Password.Equals(e.Password));
+                    .Where(e => authentificationDto.Email.Equals(e.Email)
+                        && authentificationDto.Password.Equals(e.Password)).AsEnumerable().FirstOrDefault(c =>
+                    authentificationDto.Email.Equals(c.Email)
+                        && authentificationDto.Password.Equals(c.Password));
             }
         }
 

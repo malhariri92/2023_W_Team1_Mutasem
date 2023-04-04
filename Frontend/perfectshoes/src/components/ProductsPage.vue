@@ -33,8 +33,13 @@
         </div>
         </div>
       </div> 
-      <div v-if="state.products.length == 0 && state.filters !== ''">
-        <h3 class="mt-2">No products found!</h3>
+      <div style="margin-top: 300px;" v-if="state.products.length == 0">
+        <h3 v-if="state.filters === ''" class="mt-2">Loading</h3>
+        <div v-if="state.filters === ''" class="flex justify-content-center">
+        <ProgressSpinner style="width: 100px; height: 100px" strokeWidth="8" fill="var(--surface-ground)"
+            animationDuration="1s" aria-label="Custom ProgressSpinner" />
+        </div>
+        <h3 v-if="state.filters !== ''" class="mt-2">No products found!</h3>
       </div>
   </div> 
 </template>
@@ -44,6 +49,7 @@
   import { onMounted, inject, reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import Toolbar from 'primevue/toolbar';
+  import ProgressSpinner from 'primevue/progressspinner';
 
   const router = useRouter();
   const store = inject('store');

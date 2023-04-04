@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Login</h1>
-    <form class="col-lg-10 offset-lg-1">
+    <form class="col-lg-10 offset-lg-1 text-center">
+      <h1>Login</h1>
       <div class="row g-3 justify-content-center mt-2">
         <div class="col-4">
           <input id="email" v-model="state.email" type="email" class="form-control" placeholder="example@email.com *"
@@ -26,9 +26,9 @@
         </span>
       </div>
     </form>
-    <form class="col-lg-10 offset-lg-1">
-      <h1>Sign Up</h1>
+    <form class="col-lg-10 offset-lg-1 text-center">
       <div class="row g-3 justify-content-center mt-2">
+        <h1>Sign Up</h1>
         <div class="col-2">
           <input id="firstName" v-model="state.firstName" type="text" class="form-control" placeholder="First Name *"
             required oninvalid="this.setCustomValidity('First Name is required')" oninput="this.setCustomValidity('')">
@@ -104,16 +104,9 @@ async function login(e) {
 
   if (store.userState.user !== null) {
     if (store.userState.user.isAdmin) {
-      console.log(store.userState.user);
-      if (store.isLogingInAndSigningOut) {
-        router.push('/checkout');
-      }
-      else {
-        router.push('/inventory');
-      }
+      router.push('/inventory');
     }
     else {
-      console.log(store.userState.user.firstName);
       if (store.isLogingInAndSigningOut) {
         router.push('/checkout');
       }
