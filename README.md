@@ -31,6 +31,5 @@ Employees will also use the app to carry on administrative tasks, such as managi
 	<li><b>Junior Dev (294): </b>Allison Zawodniak</li>
 	<li><b>Junior Dev (294): </b>Jayson Jabradally</li>
 	<li><b>Junior Dev (294): </b>Nicholas Napolitano</li> 
-	<li><b>Junior Dev (294): </b>Scott Colliver</li> 
 	</ul>
 
