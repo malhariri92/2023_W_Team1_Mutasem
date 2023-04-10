@@ -7,7 +7,7 @@ namespace PerfectShoes.BusinessLogic
     public interface IOrderService
     {
         // Update to OrderDTO when the DTO is created
-        int InsertOrder(OrderDto orderDto);
+        Order InsertOrder(OrderDto orderDto);
         List<Order> GetAllOrders();
 
         bool FulfillOder(Order order);

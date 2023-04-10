@@ -10,7 +10,7 @@ namespace PerfectShoes.BusinessLogic
         public OrderService(DataContext context) : base(context) { }
 
         // Update to use OrderDTO in future
-        public int InsertOrder(OrderDto dto)
+        public Order InsertOrder(OrderDto dto)
         {
             Order order = new Order()
             {
@@ -42,7 +42,8 @@ namespace PerfectShoes.BusinessLogic
                 _context.Entry(item).State = EntityState.Added;
             }
 
-            return _context.SaveChanges() > 0 ? order.Id : 0;
+            if(_context.SaveChanges() > 0) return order;
+            return null;
         }
 
         public List<Order> GetAllOrders()

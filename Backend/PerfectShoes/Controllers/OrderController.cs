@@ -21,8 +21,8 @@ namespace PerfectShoes.Controllers
         [HttpPost(Name = "InsertOrder")]
         public ActionResult InsertOrder(OrderDto orderDto)
         {
-            int id = _orderService.InsertOrder(orderDto);
-            if (id != 0) return Ok(id);
+            Order order = _orderService.InsertOrder(orderDto);
+            if (order != null) return Ok(order);
             return BadRequest();
         }
 

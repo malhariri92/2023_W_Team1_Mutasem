@@ -12,7 +12,7 @@
         <div class="col-4">
           <input id="password" v-model="state.password" type="password" class="form-control" placeholder="Password *"
             required oninvalid="this.setCustomValidity('Password is required')" oninput="this.setCustomValidity('')">
-          <div style="display:none;" id="msg" class="alert alert-danger mt-2" role="alert">
+          <div style="display:none;" id="loginMsg" class="alert alert-danger mt-2" role="alert">
             The combination of email/password is invalid
           </div>
         </div>
@@ -99,7 +99,7 @@ async function login(e) {
 
   e.preventDefault();
   await store.methods.login(state.email, state.password).catch(() => {
-    $("#msg").show().delay(5000).fadeOut();
+    $("#loginMsg").show().delay(5000).fadeOut();
   });
 
   if (store.userState.user !== null) {

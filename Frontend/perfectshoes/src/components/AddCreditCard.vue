@@ -3,12 +3,12 @@
       <form id="addCreditCard" class="col-lg-10 offset-lg-1 ">
           <div class="row g-3 justify-content-center flex" >
               <div class="col-4">
-                  <input v-model="state.creditCard.nameOnCard" required type="text" class="form-control" placeholder="Credit Card Holder *"
+                  <input v-model="state.creditCard.nameOnCard" required type="text" class="form-control" placeholder="Card Holder Name *"
                       oninvalid="this.setCustomValidity('Credit Card Holder is required')"
                       oninput="this.setCustomValidity('')">
               </div>
               <div class="col-4">
-                <input v-model="state.creditCard.cardNumber" required type="password" class="form-control" placeholder="Credit Number *" minlength="16" maxlength = "16"
+                <input v-model="state.creditCard.cardNumber" required type="password" class="form-control" placeholder="Card Number *" minlength="16" maxlength = "16"
                       oninvalid="this.setCustomValidity('Credit Number is required')"
                       oninput="this.setCustomValidity('')"
                       @keypress="IsNumber($event)">
@@ -24,8 +24,8 @@
               <div class="col-4">
                 <Calendar id="exprDate" class="custom" v-model="state.creditCard.exprDate"
                     dateFormat="mm/yy"
-                    placeholder="Experation date * mm/yy" view="month" :manualInput="false"
-                    oninvalid="this.setCustomValidity('experation date is required')"
+                    placeholder="Expiration date * mm/yy" view="month" :manualInput="false"
+                    oninvalid="this.setCustomValidity('expiration date is required')"
                         oninput="this.setCustomValidity('')"/>
               </div>
           </div>

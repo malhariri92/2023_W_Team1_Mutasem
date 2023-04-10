@@ -160,7 +160,10 @@ function placeOrder(e) {
         'data': JSON.stringify(store.cart.order)
     }).done((response) => {
         isPlaced.value = true;
-        orderId.value = response;
+        orderId.value = response.id;
+        if(store.userState.user !== null) {
+            store.userState.user.orders.push(response);
+        }
         sessionStorage.setItem('order', JSON.stringify(new Order()));
         store.cart.order = JSON.parse(sessionStorage.getItem('order'));
     }).fail(() => {
@@ -169,20 +172,15 @@ function placeOrder(e) {
 
 }
 onMounted(() => {
+    console.log(store.userState.user)
     if(store.userState.user === null) {
         var dateField = document.getElementById('exprDate').children[0];
         dateField.readOnly = false;
         dateField.required = true;
-        dateField.setCustomValidity('experation date is required');
+        dateField.setCustomValidity('expiration date is required');
     }
 });
 
-// function setDate() {
-//     var date = new Date(store.cart.order.customer.creditCard.exprDate);
-//     store.cart.order.customer.creditCard.exprDate = date.toJSON();
-//     document.getElementById('exprDate').children[0].required = false;
-//     document.getElementById('exprDate').children[0].readOnly = true;
-// }
 </script>
 
 <style scoped>
